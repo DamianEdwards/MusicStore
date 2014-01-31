@@ -30,3 +30,8 @@ build/
 *net45.csproj
 *k10.csproj
 App_Data/
+bower_components/
+node_modules/
+vendor/
+css/
+fonts/
