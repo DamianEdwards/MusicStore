@@ -8,9 +8,9 @@
             options: {
                 banner: '/*! <%= pkg.name %> <%= grunt.template.today("dd-mm-yyyy") %> */\n'
             },
-            dist: {
+            release: {
                 files: {
-                    'public/app.min.js': ['<%= typescript.base.dest %>']
+                    'public/app.min.js': ['<%= typescript.dev.dest %>']
                 }
             }
         },
@@ -27,10 +27,13 @@
                         cwd: "bower_components/",
                         src: [
                             "modernizr/modernizr.js",
-                            "jquery/**/*.js",
+                            "jquery/*.{js,map}",
                             "jquery.validation/jquery.validate.js",
+                            "jquery.validation/additional-methods.js",
                             "bootstrap/dist/**/*.js",
                             "respond/dest/**/*.js",
+                            "angular/*.{js,.js.map}",
+                            "angular-route/*.{js,.js.map}"
                         ],
                         dest: "public/js/",
                         options: { force: true }
@@ -89,6 +92,14 @@
                 }
             }
         },
+        tslint: {
+            options: {
+                
+            },
+            files: {
+                src: ['<%= typescript.dev.src %>']
+            }
+        },
         typescript: {
             dev: {
                 src: ['Assets/**/*.ts'],
@@ -123,6 +134,7 @@
     grunt.loadNpmTasks('grunt-contrib-clean');
     grunt.loadNpmTasks('grunt-contrib-less');
     grunt.loadNpmTasks('grunt-typescript');
+    grunt.loadNpmTasks('grunt-tslint');
     //grunt.loadNpmTasks('grunt-contrib-jshint');
     //grunt.loadNpmTasks('grunt-contrib-qunit');
     //grunt.loadNpmTasks('grunt-contrib-concat');

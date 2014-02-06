@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>@ViewBag.Title – MVC Music Store</title>
     <link rel="stylesheet" href="~/css/site.css" />
+    <script src="~/js/respond.src.js"></script>
     <script src="~/js/modernizr.js"></script>
 </head>
 <body>
@@ -37,11 +38,12 @@
         </footer>
     </div>
 
+    @* TODO: Need to figure out best way to switch these to min links for release, e.g. new helper,
+             Grunt task to replace, etc. *@
     <script src="~/js/jquery.js"></script>
-    <script src="~/js/bootstrap.js"></script>
     <script src="~/js/jquery.validate.js"></script>
-    <script src="~/js/respond.src.js"></script>
-    
+    <script src="~/js/bootstrap.js"></script>
+
     @RenderSection("scripts", required: false)
 </body>
 </html>
