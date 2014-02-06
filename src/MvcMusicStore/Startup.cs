@@ -1,7 +1,9 @@
-﻿using Microsoft.Owin;
+﻿using System.Web.Http;
+using Microsoft.Owin;
 using Owin;
 
 [assembly: OwinStartupAttribute(typeof(MvcMusicStore.Startup))]
+
 namespace MvcMusicStore
 {
     public partial class Startup
@@ -11,6 +13,10 @@ namespace MvcMusicStore
             ConfigureAuth(app);
 
             ConfigureApp(app);
+
+            //GlobalConfiguration.Configure(WebApiConfig.Register);
+
+            //WebApiConfig.Register(GlobalConfiguration.Configuration);
         }
     }
 }

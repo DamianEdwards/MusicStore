@@ -15,6 +15,7 @@ namespace MvcMusicStore.Apis
         private readonly MusicStoreEntities _storeContext = new MusicStoreEntities();
 
         [Route("api/albums/mostPopular")]
+        [HttpGet]
         public async Task<IEnumerable<Album>> MostPopular(int count = 6)
         {
             count = count > 0 && count < 20 ? count : 6;
