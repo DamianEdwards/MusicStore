@@ -1,6 +1,6 @@
 ﻿module.exports = function (grunt) {
 
-    var staticFilePattern = '**/*.{js,css,map,html,htm,jpg,jpeg,png,gif,eot,svg,ttf,woff}';
+    var staticFilePattern = '**/*.{js,css,map,html,htm,ico,jpg,jpeg,png,gif,eot,svg,ttf,woff}';
 
     grunt.initConfig({
         pkg: grunt.file.readJSON('package.json'),
@@ -14,41 +14,59 @@
                 }
             }
         },
-        clean: ['public/vendor', 'public/fonts'],
+        clean: {
+            options: { force: true },
+            build: ['public']
+        },
         copy: {
             bower: {
                 files: [
+                    {   // JavaScript
+                        expand: true,
+                        flatten: true,
+                        cwd: "bower_components/",
+                        src: [
+                            "modernizr/modernizr.js",
+                            "jquery/**/*.js",
+                            "jquery.validation/jquery.validate.js",
+                            "bootstrap/dist/**/*.js",
+                            "respond/dest/**/*.js",
+                        ],
+                        dest: "public/js/",
+                        options: { force: true }
+                    },
+                    {   // CSS
+                        expand: true,
+                        flatten: true,
+                        cwd: "bower_components/",
+                        src: [
+                            "bootstrap/dist/**/*.css",
+                        ],
+                        dest: "public/css/",
+                        options: { force: true }
+                    },
+                    {   // Fonts
+                        expand: true,
+                        flatten: true,
+                        cwd: "bower_components/",
+                        src: [
+                            "bootstrap/**/*.{woff,svg,eot,ttf}",
+                        ],
+                        dest: "public/fonts/",
+                        options: { force: true }
+                    }
+                ]
+            },
+            assets: {
+                files: [
                     {
                         expand: true,
-                        cwd: "bower_components/respond/dest/",
-                        src: staticFilePattern,
-                        dest: "public/vendor/respond/"
-                    },
-                    {
-                        expand: true,
-                        cwd: "bower_components/bootstrap/dist/",
-                        src: staticFilePattern,
-                        dest: "public/vendor/bootstrap/"
-                    },
-                    {
-                        expand: true,
-                        cwd: "bower_components/bootstrap/dist/fonts",
-                        src: staticFilePattern,
-                        dest: "public/fonts/"
-                    },
-                    {
-                        src: "bower_components/jquery.validation/jquery.validate.js",
-                        dest: "public/vendor/jquery.validation/jquery.validate.js"
-                    },
-                    {
-                        src: "bower_components/modernizr/modernizr.js",
-                        dest: "public/vendor/modernizr/modernizr.js"
-                    },
-                    {
-                        expand: true,
-                        cwd: 'bower_components/jquery/',
-                        src: staticFilePattern,
-                        dest: 'public/vendor/jquery/'
+                        cwd: "assets/",
+                        src: [
+                            staticFilePattern
+                        ],
+                        dest: "public/",
+                        options: { force: true }
                     }
                 ]
             }
@@ -59,7 +77,7 @@
                     cleancss: false
                 },
                 files: {
-                    "public/css/site.css": "public/**/*.less"
+                    "public/css/site.css": "assets/**/*.less"
                 }
             },
             release: {
@@ -67,14 +85,34 @@
                     cleancss: true
                 },
                 files: {
-                    "public/css/site.css": "public/**/*.less"
+                    "public/css/site.css": "assets/**/*.less"
+                }
+            }
+        },
+        typescript: {
+            dev: {
+                src: ['Assets/**/*.ts'],
+                dest: 'public/js/site.js',
+                options: {
+                    module: 'amd', // or commonjs
+                    target: 'es5', // or es3
+                    sourcemap: false
+                }
+            },
+            release: {
+                src: ['Assets/**/*.ts'],
+                dest: 'public/js/site.js',
+                options: {
+                    module: 'amd', // or commonjs
+                    target: 'es5', // or es3
+                    sourcemap: true
                 }
             }
         },
         watch: {
-            bower: {
-                files: ['bower_components/' + staticFilePattern],
-                tasks: ['clean', 'copy:bower']
+            dev: {
+                files: ['bower_components/' + staticFilePattern, 'assets/**/*.*'],
+                tasks: ['dev']
             }
         }
     });
@@ -84,12 +122,13 @@
     grunt.loadNpmTasks('grunt-contrib-copy');
     grunt.loadNpmTasks('grunt-contrib-clean');
     grunt.loadNpmTasks('grunt-contrib-less');
+    grunt.loadNpmTasks('grunt-typescript');
     //grunt.loadNpmTasks('grunt-contrib-jshint');
     //grunt.loadNpmTasks('grunt-contrib-qunit');
     //grunt.loadNpmTasks('grunt-contrib-concat');
 
     //grunt.registerTask('test', ['jshint', 'qunit']);
-    grunt.registerTask('dev', ['clean', 'copy', 'less:dev']);
-    grunt.registerTask('release', ['clean', 'copy', 'uglify', 'less:release']);
+    grunt.registerTask('dev', ['clean', 'copy', 'less:dev', 'typescript:dev']);
+    grunt.registerTask('release', ['clean', 'copy', 'uglify', 'less:release', 'typescript:release']);
     grunt.registerTask('default', ['dev']);
 };

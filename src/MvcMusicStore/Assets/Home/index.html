@@ -1,0 +1,10 @@
+﻿<div ng-controller="MusicStore.Home.HomeController as viewModel">
+    <ul class="row list-unstyled" id="album-list" ng-repeat="album in viewModel.albums">
+        <li class="col-lg-2 col-md-2 col-sm-2 col-xs-4 container">
+            <a href="/api/albums/{{ album.AlbumId }}">
+                <img ng-alt="{{ album.Title }}" ng-src="{{ album.AlbumArtUrl }}" />
+                <h4>{{ album.Title }}</h4>
+            </a>
+        </li>
+    </ul>
+</div>
