@@ -13,10 +13,6 @@ namespace MvcMusicStore
             ConfigureAuth(app);
 
             ConfigureApp(app);
-
-            //GlobalConfiguration.Configure(WebApiConfig.Register);
-
-            //WebApiConfig.Register(GlobalConfiguration.Configuration);
         }
     }
 }

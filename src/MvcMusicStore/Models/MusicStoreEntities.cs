@@ -7,6 +7,8 @@ namespace MvcMusicStore.Models
         public MusicStoreEntities()
             : base("name=MusicStoreEntities")
         {
+            Configuration.ProxyCreationEnabled = false;
+            Configuration.LazyLoadingEnabled = false;
         }
 
         public DbSet<Album>     Albums { get; set; }

@@ -8,28 +8,20 @@ using System.Threading.Tasks;
 using System.Web.Http;
 using MvcMusicStore.Models;
 
-namespace MvcMusicStore.Apis
+namespace MvcMusicStore.Controllers
 {
-    public class AlbumsController : ApiController
+    public class GenresApiController : ApiController
     {
         private readonly MusicStoreEntities _storeContext = new MusicStoreEntities();
 
-        [Route("api/albums/mostPopular")]
+        [Route("api/genres")]
         [HttpGet]
-        public async Task<IEnumerable<Album>> MostPopular(int count = 6)
+        public async Task<IEnumerable<Genre>> GenreList()
         {
-            count = count > 0 && count < 20 ? count : 6;
-
-            return await _storeContext.Albums
-                .OrderByDescending(a => a.OrderDetails.Count())
-                .Take(count)
+            return await _storeContext.Genres
+                .Include(g => g.Albums)
+                .OrderBy(g => g.Name)
                 .ToListAsync();
-        }
-
-        [Route("api/albums/{albumId:int}")]
-        public async Task<Album> Details(int albumId)
-        {
-            return await _storeContext.Albums.FindAsync(albumId);
         }
 
         protected override void Dispose(bool disposing)

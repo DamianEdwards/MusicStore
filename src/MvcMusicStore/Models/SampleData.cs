@@ -7,7 +7,7 @@ namespace MvcMusicStore.Models
     {
         public void Seed(MusicStoreEntities context)
         {
-            const string imgUrl = "~/Images/placeholder.png";
+            const string imgUrl = "/images/placeholder.png";
 
             AddAlbums(context, imgUrl, AddGenres(context), AddArtists(context));
 
