@@ -224,6 +224,7 @@
     <Content Include="Assets\favicon.ico" />
     <Content Include="Assets\Home\index.html" />
     <Content Include="Assets\Store\AlbumDetails.html" />
+    <Content Include="Assets\Store\GenreDetails.html" />
     <Content Include="Assets\Store\GenreList.html" />
     <Content Include="Global.asax" />
     <Content Include="Areas\HelpPage\Views\Web.config" />
@@ -314,6 +315,7 @@
     <TypeScriptCompile Include="Assets\Store\GenreListController.ts" />
     <TypeScriptCompile Include="Assets\Store\IAlbumDetailsRouteParams.ts" />
     <TypeScriptCompile Include="Assets\Store\IAlbumDetailsViewModel.ts" />
+    <TypeScriptCompile Include="Assets\Store\IGenreDetailsRouteParams.ts" />
     <TypeScriptCompile Include="Assets\Store\IGenreDetailsViewModel.ts" />
     <TypeScriptCompile Include="Assets\Store\IGenreListViewModel.ts" />
     <TypeScriptCompile Include="Assets\Store\_module.ts" />

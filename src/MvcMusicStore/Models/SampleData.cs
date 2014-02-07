@@ -36,7 +36,7 @@ namespace MvcMusicStore.Models
                     Genre = genres.Single(g => g.Name == "Metal"),
                     Price = 8.99M,
                     Artist = artists.Single(a => a.Name == "Metallica"),
-                    AlbumArtUrl = imgUrl
+                    AlbumArtUrl = "https://ia601005.us.archive.org/12/items/mbid-fce9462d-8444-334d-84d4-2bbf1edfe9b5/mbid-fce9462d-8444-334d-84d4-2bbf1edfe9b5-5114338029_thumb250.jpg"
                 },
                 new Album
                 {

@@ -24,6 +24,18 @@ namespace MvcMusicStore.Controllers
                 .ToListAsync();
         }
 
+        [Route("api/genres/{genreId:int}/albums")]
+        [HttpGet]
+        public async Task<IEnumerable<Album>> GenreAlbums(int genreId)
+        {
+            return await _storeContext.Albums
+                .Where(a => a.GenreId == genreId)
+                .Include(a => a.Genre)
+                .Include(a => a.Artist)
+                .OrderBy(a => a.Genre.Name)
+                .ToListAsync();
+        }
+
         protected override void Dispose(bool disposing)
         {
             if (disposing)
