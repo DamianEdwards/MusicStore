@@ -14,6 +14,18 @@ namespace MvcMusicStore.Controllers
     {
         private readonly MusicStoreEntities _storeContext = new MusicStoreEntities();
 
+        [Route("api/genres/menu")]
+        [HttpGet]
+        public async Task<IEnumerable<Genre>> GenreMenuList(int count = 9)
+        {
+            count = count > 0 && count < 20 ? count : 9;
+
+            return await _storeContext.Genres
+                .OrderByDescending(g => g.Albums.Sum(a => a.OrderDetails.Sum(od => od.Quantity)))
+                .Take(count)
+                .ToListAsync();
+        }
+
         [Route("api/genres")]
         [HttpGet]
         public async Task<IEnumerable<Genre>> GenreList()

@@ -1188,7 +1188,7 @@ namespace MvcMusicStore.Models
                     Genre = genres.Single(g => g.Name == "Pop"),
                     Price = 8.99M,
                     Artist = artists.Single(a => a.Name == "Amy Winehouse"),
-                    AlbumArtUrl = imgUrl
+                    AlbumArtUrl = "http://coverartarchive.org/release/f51a1d11-98aa-4957-9ad1-f1877aee07a8/3487013199-250.jpg"
                 },
                 new Album
                 {
@@ -1508,7 +1508,7 @@ namespace MvcMusicStore.Models
                     Genre = genres.Single(g => g.Name == "Pop"),
                     Price = 8.99M,
                     Artist = artists.Single(a => a.Name == "Pet Shop Boys"),
-                    AlbumArtUrl = imgUrl
+                    AlbumArtUrl = "http://coverartarchive.org/release/b3c637f8-ffce-3ed8-a0cf-2b58ecfc1b88/1715773107-250.jpg"
                 },
                 new Album
                 {

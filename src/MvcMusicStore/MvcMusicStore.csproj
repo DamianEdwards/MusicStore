@@ -226,6 +226,7 @@
     <Content Include="Assets\Store\AlbumDetails.html" />
     <Content Include="Assets\Store\GenreDetails.html" />
     <Content Include="Assets\Store\GenreList.html" />
+    <Content Include="Assets\Store\GenreMenu.html" />
     <Content Include="Global.asax" />
     <Content Include="Areas\HelpPage\Views\Web.config" />
     <Content Include="Areas\HelpPage\Views\Shared\_Layout.cshtml" />
@@ -313,11 +314,13 @@
     <TypeScriptCompile Include="Assets\Store\AlbumDetailsController.ts" />
     <TypeScriptCompile Include="Assets\Store\GenreDetailsController.ts" />
     <TypeScriptCompile Include="Assets\Store\GenreListController.ts" />
+    <TypeScriptCompile Include="Assets\Store\GenreMenuController.ts" />
     <TypeScriptCompile Include="Assets\Store\IAlbumDetailsRouteParams.ts" />
     <TypeScriptCompile Include="Assets\Store\IAlbumDetailsViewModel.ts" />
     <TypeScriptCompile Include="Assets\Store\IGenreDetailsRouteParams.ts" />
     <TypeScriptCompile Include="Assets\Store\IGenreDetailsViewModel.ts" />
     <TypeScriptCompile Include="Assets\Store\IGenreListViewModel.ts" />
+    <TypeScriptCompile Include="Assets\Store\IGenreMenuViewModel.ts" />
     <TypeScriptCompile Include="Assets\Store\_module.ts" />
   </ItemGroup>
   <PropertyGroup>
