@@ -22,10 +22,11 @@ module MusicStore {
     // TODO: Generate this!!
     // Register the application module with AngularJS
     var _app = angular.module("MusicStore", [
-        // Dependencies
+    // Dependencies
         "ngRoute",
         "MusicStore.Home",
         "MusicStore.Store",
+        "MusicStore.UserDetails"
         //"MusicStore.Utils"
     ]);
 

@@ -315,6 +315,7 @@
     <TypeScriptCompile Include="Assets\Store\GenreDetailsController.ts" />
     <TypeScriptCompile Include="Assets\Store\GenreListController.ts" />
     <TypeScriptCompile Include="Assets\Store\GenreMenuController.ts" />
+    <TypeScriptCompile Include="Assets\Store\GenreMenuDirective.ts" />
     <TypeScriptCompile Include="Assets\Store\IAlbumDetailsRouteParams.ts" />
     <TypeScriptCompile Include="Assets\Store\IAlbumDetailsViewModel.ts" />
     <TypeScriptCompile Include="Assets\Store\IGenreDetailsRouteParams.ts" />
@@ -322,6 +323,8 @@
     <TypeScriptCompile Include="Assets\Store\IGenreListViewModel.ts" />
     <TypeScriptCompile Include="Assets\Store\IGenreMenuViewModel.ts" />
     <TypeScriptCompile Include="Assets\Store\_module.ts" />
+    <TypeScriptCompile Include="Assets\UserDetails\UserDetailsService.ts" />
+    <TypeScriptCompile Include="Assets\UserDetails\_module.ts" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

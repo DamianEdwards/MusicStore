@@ -45,6 +45,12 @@
     <script src="~/js/jquery.validate.js"></script>
     <script src="~/js/bootstrap.js"></script>
 
+    <script src="~/js/angular.js"></script>
+    <script src="~/js/angular-route.js"></script>
+    @* TODO: This is currently all the compiled TypeScript, non-minified. Need to explore options
+        for alternate loading schemes, e.g. AMD loader of individual modules, min vs. non-min, etc. *@
+    <script src="~/js/site.js"></script>
+
     @RenderSection("scripts", required: false)
 </body>
 </html>
