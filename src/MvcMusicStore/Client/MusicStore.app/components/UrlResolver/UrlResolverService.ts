@@ -1,6 +1,6 @@
-/// <reference path="_module.ts" />
+/// <reference path="UrlResolver.ts" />
 
-module MusicStore.Common {
+module MusicStore.UrlResolver {
     class UrlResolverService implements IUrlResolverService {
         private _base: string;
 
@@ -31,7 +31,7 @@ module MusicStore.Common {
     }
 
     // TODO: Generate this
-    _module.service("MusicStore.Common.IUrlResolverService", [
+    _module.service("MusicStore.UrlResolver.IUrlResolverService", [
         "$rootElement",
         UrlResolverService
     ]);

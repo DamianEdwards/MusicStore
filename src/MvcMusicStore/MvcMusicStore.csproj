@@ -222,12 +222,12 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Areas\HelpPage\HelpPage.css" />
-    <Content Include="Assets\favicon.ico" />
-    <Content Include="Assets\Home\index.html" />
-    <Content Include="Assets\Store\AlbumDetails.html" />
-    <Content Include="Assets\Store\GenreDetails.html" />
-    <Content Include="Assets\Store\GenreList.html" />
-    <Content Include="Assets\Store\GenreMenu.html" />
+    <Content Include="Client\favicon.ico" />
+    <Content Include="Client\MusicStore.app\Home\index.html" />
+    <Content Include="Client\MusicStore.app\Store\AlbumDetails.html" />
+    <Content Include="Client\MusicStore.app\Store\GenreDetails.html" />
+    <Content Include="Client\MusicStore.app\Store\GenreList.html" />
+    <Content Include="Client\MusicStore.app\components\GenreMenu\GenreMenu.html" />
     <Content Include="Global.asax" />
     <Content Include="Areas\HelpPage\Views\Web.config" />
     <Content Include="Areas\HelpPage\Views\Shared\_Layout.cshtml" />
@@ -249,13 +249,13 @@
     <Content Include="Areas\HelpPage\Views\Help\DisplayTemplates\ApiGroup.cshtml" />
     <Content Include="Areas\HelpPage\Views\Help\Api.cshtml" />
     <Content Include="Areas\HelpPage\Views\_ViewStart.cshtml" />
-    <None Include="Assets\Site.less" />
+    <None Include="Client\Site.less" />
     <Content Include="Gruntfile.js" />
-    <Content Include="Assets\images\home-showcase.png" />
-    <Content Include="Assets\images\logo.png" />
-    <Content Include="Assets\images\logo.svg" />
-    <Content Include="Assets\images\placeholder.png" />
-    <Content Include="Assets\images\placeholder.svg" />
+    <Content Include="Client\images\home-showcase.png" />
+    <Content Include="Client\images\logo.png" />
+    <Content Include="Client\images\logo.svg" />
+    <Content Include="Client\images\placeholder.png" />
+    <Content Include="Client\images\placeholder.svg" />
     <Content Include="bower.json" />
     <Content Include="package.json" />
     <Content Include="Web.config">
@@ -305,32 +305,33 @@
     <Content Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <TypeScriptCompile Include="Assets\Common\IUrlResolverService.ts" />
-    <TypeScriptCompile Include="Assets\Common\UrlResolverService.ts" />
-    <TypeScriptCompile Include="Assets\Common\_module.ts" />
-    <TypeScriptCompile Include="Assets\Home\HomeController.ts" />
-    <TypeScriptCompile Include="Assets\Home\IHomeViewModel.ts" />
-    <TypeScriptCompile Include="Assets\Home\_module.ts" />
-    <TypeScriptCompile Include="Assets\Models\IAlbum.ts" />
-    <TypeScriptCompile Include="Assets\Models\IArtist.ts" />
-    <TypeScriptCompile Include="Assets\Models\IGenre.ts" />
-    <TypeScriptCompile Include="Assets\Startup.ts" />
-    <TypeScriptCompile Include="Assets\Store\AlbumDetailsController.ts" />
-    <TypeScriptCompile Include="Assets\Store\GenreDetailsController.ts" />
-    <TypeScriptCompile Include="Assets\Store\GenreListController.ts" />
-    <TypeScriptCompile Include="Assets\Store\GenreMenuController.ts" />
-    <TypeScriptCompile Include="Assets\Store\GenreMenuDirective.ts" />
-    <TypeScriptCompile Include="Assets\Store\IAlbumDetailsRouteParams.ts" />
-    <TypeScriptCompile Include="Assets\Store\IAlbumDetailsViewModel.ts" />
-    <TypeScriptCompile Include="Assets\Store\IGenreDetailsRouteParams.ts" />
-    <TypeScriptCompile Include="Assets\Store\IGenreDetailsViewModel.ts" />
-    <TypeScriptCompile Include="Assets\Store\IGenreListViewModel.ts" />
-    <TypeScriptCompile Include="Assets\Store\IGenreMenuViewModel.ts" />
-    <TypeScriptCompile Include="Assets\Store\_module.ts" />
-    <TypeScriptCompile Include="Assets\UserDetails\IUserDetails.ts" />
-    <TypeScriptCompile Include="Assets\UserDetails\IUserDetailsService.ts" />
-    <TypeScriptCompile Include="Assets\UserDetails\UserDetailsService.ts" />
-    <TypeScriptCompile Include="Assets\UserDetails\_module.ts" />
+    <TypeScriptCompile Include="Client\MusicStore.app\components\GenreMenu\GenreMenu.ts" />
+    <TypeScriptCompile Include="Client\MusicStore.app\components\UrlResolver\IUrlResolverService.ts" />
+    <TypeScriptCompile Include="Client\MusicStore.app\components\UrlResolver\UrlResolverService.ts" />
+    <TypeScriptCompile Include="Client\MusicStore.app\components\UrlResolver\UrlResolver.ts" />
+    <TypeScriptCompile Include="Client\MusicStore.app\Home\HomeController.ts" />
+    <TypeScriptCompile Include="Client\MusicStore.app\Home\IHomeViewModel.ts" />
+    <TypeScriptCompile Include="Client\MusicStore.app\Home\Home.ts" />
+    <TypeScriptCompile Include="Client\MusicStore.app\Models\IAlbum.ts" />
+    <TypeScriptCompile Include="Client\MusicStore.app\Models\IArtist.ts" />
+    <TypeScriptCompile Include="Client\MusicStore.app\Models\IGenre.ts" />
+    <TypeScriptCompile Include="Client\MusicStore.app\MusicStore.app.ts" />
+    <TypeScriptCompile Include="Client\MusicStore.app\Store\AlbumDetailsController.ts" />
+    <TypeScriptCompile Include="Client\MusicStore.app\Store\GenreDetailsController.ts" />
+    <TypeScriptCompile Include="Client\MusicStore.app\Store\GenreListController.ts" />
+    <TypeScriptCompile Include="Client\MusicStore.app\components\GenreMenu\GenreMenuController.ts" />
+    <TypeScriptCompile Include="Client\MusicStore.app\components\GenreMenu\GenreMenuDirective.ts" />
+    <TypeScriptCompile Include="Client\MusicStore.app\Store\IAlbumDetailsRouteParams.ts" />
+    <TypeScriptCompile Include="Client\MusicStore.app\Store\IAlbumDetailsViewModel.ts" />
+    <TypeScriptCompile Include="Client\MusicStore.app\Store\IGenreDetailsRouteParams.ts" />
+    <TypeScriptCompile Include="Client\MusicStore.app\Store\IGenreDetailsViewModel.ts" />
+    <TypeScriptCompile Include="Client\MusicStore.app\Store\IGenreListViewModel.ts" />
+    <TypeScriptCompile Include="Client\MusicStore.app\components\GenreMenu\IGenreMenuViewModel.ts" />
+    <TypeScriptCompile Include="Client\MusicStore.app\Store\_module.ts" />
+    <TypeScriptCompile Include="Client\MusicStore.app\components\UserDetails\IUserDetails.ts" />
+    <TypeScriptCompile Include="Client\MusicStore.app\components\UserDetails\IUserDetailsService.ts" />
+    <TypeScriptCompile Include="Client\MusicStore.app\components\UserDetails\UserDetailsService.ts" />
+    <TypeScriptCompile Include="Client\MusicStore.app\components\UserDetails\UserDetails.ts" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

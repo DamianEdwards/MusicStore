@@ -1,5 +1,5 @@
-/// <reference path="../bower_components/dt-angular/angular-route.d.ts" />
-/// <reference path="../bower_components/dt-angular/angular.d.ts" />
+/// <reference path="../../bower_components/dt-angular/angular-route.d.ts" />
+/// <reference path="../../bower_components/dt-angular/angular.d.ts" />
 
 module MusicStore {
     class Startup {
@@ -11,10 +11,10 @@ module MusicStore {
 
         public configuration() {
             this._routeProvider
-                .when("/", { templateUrl: "Home/index.html" })
-                .when("/albums/genres", { templateUrl: "Store/GenreList.html" })
-                .when("/albums/genres/:genreId", { templateUrl: "Store/GenreDetails.html" })
-                .when("/albums/:albumId", { templateUrl: "Store/AlbumDetails.html" })
+                .when("/", { templateUrl: "MusicStore.app/Home/index.html" })
+                .when("/albums/genres", { templateUrl: "MusicStore.app/Store/GenreList.html" })
+                .when("/albums/genres/:genreId", { templateUrl: "MusicStore.app/Store/GenreDetails.html" })
+                .when("/albums/:albumId", { templateUrl: "MusicStore.app/Store/AlbumDetails.html" })
                 .otherwise({ redirectTo: "/" });
         }
     }
@@ -22,12 +22,13 @@ module MusicStore {
     // TODO: Generate this!!
     // Register the application module with AngularJS
     var _app = angular.module("MusicStore", [
-    // Dependencies
+        // Dependencies
         "ngRoute",
-        "MusicStore.Home",
-        "MusicStore.Store",
+        "MusicStore.GenreMenu",
+        "MusicStore.UrlResolver",
         "MusicStore.UserDetails",
-        "MusicStore.Common"
+        "MusicStore.Home",
+        "MusicStore.Store"
     ]);
 
     _app.config([

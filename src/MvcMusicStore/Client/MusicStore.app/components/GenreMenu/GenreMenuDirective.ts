@@ -1,4 +1,4 @@
-/// <reference path="_module.ts" />
+/// <reference path="GenreMenu.ts" />
 
 module MusicStore.Store {
     class GenreMenuDirective implements ng.IDirective {
@@ -6,13 +6,14 @@ module MusicStore.Store {
         public restrict = "A";
         public templateUrl;
 
-        constructor(urlResolver: Common.IUrlResolverService) {
-            this.templateUrl = urlResolver.resolveUrl("~/Store/GenreMenu.html");
+        constructor(urlResolver: UrlResolver.IUrlResolverService) {
+            this.templateUrl = urlResolver.resolveUrl("~/MusicStore.app/components/GenreMenu/GenreMenu.html");
         }
     }
 
+    // TODO: Generate this
     _module.directive("genreMenu", [
-        "MusicStore.Common.IUrlResolverService",
+        "MusicStore.UrlResolver.IUrlResolverService",
         function (urlResolver) {
             return new GenreMenuDirective(urlResolver);
         }

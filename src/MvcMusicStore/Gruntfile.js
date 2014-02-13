@@ -16,7 +16,9 @@
         },
         clean: {
             options: { force: true },
-            build: ['public']
+            typescript: ['<%= typescript.dev.dest %>'],
+            bower: ['public'],
+            assets: ['public']
         },
         copy: {
             bower: {
@@ -64,7 +66,7 @@
                 files: [
                     {
                         expand: true,
-                        cwd: "assets/",
+                        cwd: "Client/",
                         src: [
                             staticFilePattern
                         ],
@@ -80,7 +82,7 @@
                     cleancss: false
                 },
                 files: {
-                    "public/css/site.css": "assets/**/*.less"
+                    "public/css/site.css": "Client/**/*.less"
                 }
             },
             release: {
@@ -88,7 +90,7 @@
                     cleancss: true
                 },
                 files: {
-                    "public/css/site.css": "assets/**/*.less"
+                    "public/css/site.css": "Client/**/*.less"
                 }
             }
         },
@@ -102,7 +104,7 @@
         },
         typescript: {
             dev: {
-                src: ['Assets/**/*.ts'],
+                src: ['Client/**/*.ts'],
                 dest: 'public/js/site.js',
                 options: {
                     module: 'amd', // or commonjs
@@ -111,7 +113,7 @@
                 }
             },
             release: {
-                src: ['Assets/**/*.ts'],
+                src: ['Client/**/*.ts'],
                 dest: 'public/js/site.js',
                 options: {
                     module: 'amd', // or commonjs
@@ -121,8 +123,12 @@
             }
         },
         watch: {
+            typescript: {
+                files: ['<%= typescript.dev.src %>'],
+                tasks: ['typescript:dev']
+            },
             dev: {
-                files: ['bower_components/' + staticFilePattern, 'assets/**/*.*'],
+                files: ['bower_components/' + staticFilePattern, 'Client/' + staticFilePattern],
                 tasks: ['dev']
             }
         }

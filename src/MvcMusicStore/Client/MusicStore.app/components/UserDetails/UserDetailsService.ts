@@ -1,4 +1,4 @@
-/// <reference path="_module.ts" />
+/// <reference path="UserDetails.ts" />
 
 module MusicStore.UserDetails {
     class UserDetailsService implements IUserDetailsService {
