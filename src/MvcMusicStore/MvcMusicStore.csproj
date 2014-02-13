@@ -203,6 +203,7 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="HtmlHelpers.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Models\Album.cs" />
     <Compile Include="Models\Artist.cs" />
@@ -304,6 +305,9 @@
     <Content Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
+    <TypeScriptCompile Include="Assets\Common\IUrlResolverService.ts" />
+    <TypeScriptCompile Include="Assets\Common\UrlResolverService.ts" />
+    <TypeScriptCompile Include="Assets\Common\_module.ts" />
     <TypeScriptCompile Include="Assets\Home\HomeController.ts" />
     <TypeScriptCompile Include="Assets\Home\IHomeViewModel.ts" />
     <TypeScriptCompile Include="Assets\Home\_module.ts" />
@@ -323,6 +327,8 @@
     <TypeScriptCompile Include="Assets\Store\IGenreListViewModel.ts" />
     <TypeScriptCompile Include="Assets\Store\IGenreMenuViewModel.ts" />
     <TypeScriptCompile Include="Assets\Store\_module.ts" />
+    <TypeScriptCompile Include="Assets\UserDetails\IUserDetails.ts" />
+    <TypeScriptCompile Include="Assets\UserDetails\IUserDetailsService.ts" />
     <TypeScriptCompile Include="Assets\UserDetails\UserDetailsService.ts" />
     <TypeScriptCompile Include="Assets\UserDetails\_module.ts" />
   </ItemGroup>

@@ -26,8 +26,8 @@ module MusicStore {
         "ngRoute",
         "MusicStore.Home",
         "MusicStore.Store",
-        "MusicStore.UserDetails"
-        //"MusicStore.Utils"
+        "MusicStore.UserDetails",
+        "MusicStore.Common"
     ]);
 
     _app.config([

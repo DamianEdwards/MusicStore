@@ -16,19 +16,16 @@
         </li>
         <li><a href="javascript:document.getElementById('logoutForm').submit()">Log off</a></li>
     </ul>
-    <script type="application/json" id="userDetails">
-        {
-            "isAuthenticated": true,
-            "userName": "@js(User.Identity.GetUserId())",
-            "userId": "@js(User.Identity.GetUserName())",
-            "roles": [
-                @foreach (System.Security.Claims.Claim role in ((System.Security.Claims.ClaimsPrincipal)User).Claims.Where(c => c.Type == System.Security.Claims.ClaimTypes.Role))
-                {
-                    <text>"@js(role.Value)",</text>
-                }
-            ]
-        }
-    </script>
+    
+    @Html.Json("userDetails", new {
+        isAuthenticated = true,
+        userName = User.Identity.GetUserName(),
+        userId = User.Identity.GetUserId(),
+        roles = ((System.Security.Claims.ClaimsPrincipal)User).Claims
+            .Where(c => c.Type == System.Security.Claims.ClaimTypes.Role)
+            .Select(role => role.Value)
+    })
+    
     }
 }
 else
@@ -37,12 +34,11 @@ else
         <li>@Html.ActionLink("Register", "Register", "Account", routeValues: null, htmlAttributes: new { id = "registerLink" })</li>
         <li>@Html.ActionLink("Log in", "Login", "Account", routeValues: null, htmlAttributes: new { id = "loginLink" })</li>
     </ul>
-    <script type="application/json" id="userDetails">
-        {
-        "isAuthenticated": false,
-        "userName": null,
-        "userId": null,
-        "roles": []
-        }
-    </script>
+    
+    @Html.Json("userDetails", new {
+        isAuthenticated = false,
+        userName = (string)null,
+        userId = (string)null,
+        roles = Enumerable.Empty<string>()
+    })
 }
