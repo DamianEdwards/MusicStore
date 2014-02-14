@@ -1,4 +1,4 @@
-module MusicStore.UserDetails {
+module MusicStore.Models {
     export interface IUserDetails {
         isAuthenticated: boolean;
         userName: string;

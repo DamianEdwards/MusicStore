@@ -28,6 +28,7 @@ module MusicStore {
         "MusicStore.UrlResolver",
         "MusicStore.UserDetails",
         "MusicStore.GenreApi",
+        "MusicStore.AlbumApi",
         "MusicStore.Home",
         "MusicStore.Store"
     ]);

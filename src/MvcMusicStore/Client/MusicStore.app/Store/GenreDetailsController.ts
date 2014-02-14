@@ -1,14 +1,21 @@
 /// <reference path="Store.ts" />
 
 module MusicStore.Store {
+    interface IGenreDetailsViewModel {
+        albums: Array<Models.IAlbum>;
+    }
+
+    interface IGenreDetailsRouteParams extends ng.route.IRouteParamsService {
+        genreId: number;
+    }
+
     class GenreDetailsController implements IGenreDetailsViewModel {
         public albums: Array<Models.IAlbum>;
 
-        constructor($http: ng.IHttpService, $routeParams: IGenreDetailsRouteParams, urlResolver: UrlResolver.IUrlResolverService) {
-            var viewModel = this,
-                url = urlResolver.resolveUrl("~/api/genres/" + $routeParams.genreId + "/albums");
+        constructor($routeParams: IGenreDetailsRouteParams, genreApi: GenreApi.IGenreApiService) {
+            var viewModel = this;
 
-            $http.get(url).success(result => {
+            genreApi.getGenreAlbums($routeParams.genreId).success(result => {
                 viewModel.albums = result;
             });
         }
@@ -16,8 +23,8 @@ module MusicStore.Store {
 
     // TODO: Generate this
     _module.controller("MusicStore.Store.GenreDetailsController", [
-        "$http",
         "$routeParams",
-        "MusicStore.UrlResolver.IUrlResolverService",
-        GenreDetailsController]);
+        "MusicStore.GenreApi.IGenreApiService",
+        GenreDetailsController
+    ]);
 }

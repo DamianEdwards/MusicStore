@@ -1,9 +1,13 @@
 /// <reference path="UserDetails.ts" />
 
 module MusicStore.UserDetails {
+    export interface IUserDetailsService {
+        getUserDetails(elementId: string): Models.IUserDetails;
+    }
+
     class UserDetailsService implements IUserDetailsService {
         private _document: ng.IDocumentService;
-        private _userDetails: IUserDetails;
+        private _userDetails: Models.IUserDetails;
 
         constructor($document: ng.IDocumentService) {
             this._document = $document;
@@ -29,7 +33,7 @@ module MusicStore.UserDetails {
     }
 
     // TODO: Generate this!
-    _module.service("MusicStore.UserDetails.UserDetailsService", [
+    _module.service("MusicStore.UserDetails.IUserDetailsService", [
         "$document",
         UserDetailsService
     ]);

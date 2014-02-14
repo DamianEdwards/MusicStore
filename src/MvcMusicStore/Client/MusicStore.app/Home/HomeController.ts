@@ -1,22 +1,25 @@
 /// <reference path="Home.ts" />
 
 module MusicStore.Home {
+    interface IHomeViewModel {
+        albums: Array<Models.IAlbum>
+    }
+
     class HomeController implements IHomeViewModel {
         public albums: Array<Models.IAlbum>;
 
-        constructor($http: ng.IHttpService, urlResolver: UrlResolver.IUrlResolverService) {
-            var viewModel = this,
-                url = urlResolver.resolveUrl("~/api/albums/mostPopular");
+        constructor(albumApi: AlbumApi.IAlbumApiService) {
+            var viewModel = this;
 
-            $http.get(url).success(result => {
-                viewModel.albums = result;
+            albumApi.getMostPopularAlbums().success(albums => {
+                viewModel.albums = albums;
             });
         }
     }
 
     // TODO: Generate this
     _module.controller("MusicStore.Home.HomeController", [
-        "$http",
-        "MusicStore.UrlResolver.IUrlResolverService",
-        HomeController]);
+        "MusicStore.AlbumApi.IAlbumApiService",
+        HomeController
+    ]);
 } 

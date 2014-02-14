@@ -1,6 +1,10 @@
 /// <reference path="UrlResolver.ts" />
 
 module MusicStore.UrlResolver {
+    export interface IUrlResolverService {
+        resolveUrl(relativeUrl: string);
+    }
+
     class UrlResolverService implements IUrlResolverService {
         private _base: string;
 

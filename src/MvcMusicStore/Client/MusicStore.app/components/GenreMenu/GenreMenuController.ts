@@ -1,10 +1,14 @@
 /// <reference path="GenreMenu.ts" />
 
 module MusicStore.GenreMenu {
+    interface IGenreMenuViewModel {
+        genres: Array<Models.IGenre>;
+    }
+
     class GenreMenuController implements IGenreMenuViewModel {
         public genres: Array<Models.IGenre>;
 
-        constructor($http: ng.IHttpService, genreApi: GenreApi.IGenreApiService) {
+        constructor(genreApi: GenreApi.IGenreApiService) {
             var viewModel = this;
 
             genreApi.getGenresMenu().success(genres => {
@@ -15,7 +19,7 @@ module MusicStore.GenreMenu {
 
     // TODO: Generate this
     _module.controller("MusicStore.GenreMenu.GenreMenuController", [
-        "$http",
         "MusicStore.GenreApi.IGenreApiService",
-        GenreMenuController]);
+        GenreMenuController
+    ]);
 }

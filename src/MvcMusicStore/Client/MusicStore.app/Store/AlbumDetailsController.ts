@@ -1,24 +1,31 @@
 /// <reference path="Store.ts" />
 
 module MusicStore.Store {
+    interface IAlbumDetailsViewModel {
+        album: Models.IAlbum;
+    }
+
+    interface IAlbumDetailsRouteParams extends ng.route.IRouteParamsService {
+        albumId: number;
+    }
+
     class AlbumDetailsController implements IAlbumDetailsViewModel {
         public album: Models.IAlbum;
 
-        constructor($http: ng.IHttpService, $routeParams: IAlbumDetailsRouteParams, urlResolver: UrlResolver.IUrlResolverService) {
+        constructor($routeParams: IAlbumDetailsRouteParams, albumApi: AlbumApi.IAlbumApiService) {
             var viewModel = this,
-                albumId = $routeParams.albumId,
-                url = urlResolver.resolveUrl("~/api/albums/" + albumId);
+                albumId = $routeParams.albumId;
 
-            $http.get(url).success(result => {
-                viewModel.album = result;
+            albumApi.getAlbumDetails(albumId).success(album => {
+                viewModel.album = album;
             });
         }
     }
 
     // TODO: Generate this
     _module.controller("MusicStore.Store.AlbumDetailsController", [
-        "$http",
         "$routeParams",
-        "MusicStore.UrlResolver.IUrlResolverService",
-        AlbumDetailsController]);
+        "MusicStore.AlbumApi.IAlbumApiService",
+        AlbumDetailsController
+    ]);
 } 

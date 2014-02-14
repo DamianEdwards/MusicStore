@@ -1,22 +1,25 @@
 /// <reference path="Store.ts" />
 
 module MusicStore.Store {
+    interface IGenreListViewModel {
+        genres: Array<Models.IGenre>;
+    }
+
     class GenreListController implements IGenreListViewModel {
         public genres: Array<Models.IGenre>;
 
-        constructor($http: ng.IHttpService, urlResolver: UrlResolver.IUrlResolverService) {
-            var viewModel = this,
-                url = urlResolver.resolveUrl("~/api/genres");
+        constructor(genreApi: GenreApi.IGenreApiService) {
+            var viewModel = this;
 
-            $http.get(url).success(function (result) {
-                viewModel.genres = result;
+            genreApi.getGenresList().success(function (genres) {
+                viewModel.genres = genres;
             });
         }
     }
 
     // TODO: Generate this
     _module.controller("MusicStore.Store.GenreListController", [
-        "$http",
-        "MusicStore.UrlResolver.IUrlResolverService",
-        GenreListController]);
+        "MusicStore.GenreApi.IGenreApiService",
+        GenreListController
+    ]);
 } 
