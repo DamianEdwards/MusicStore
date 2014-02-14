@@ -311,11 +311,9 @@
     <TypeScriptCompile Include="Client\MusicStore.app\components\GenreApi\GenreApi.ts" />
     <TypeScriptCompile Include="Client\MusicStore.app\components\GenreApi\GenreApiService.ts" />
     <TypeScriptCompile Include="Client\MusicStore.app\components\GenreMenu\GenreMenu.ts" />
-    <TypeScriptCompile Include="Client\MusicStore.app\components\UrlResolver\IUrlResolverService.ts" />
     <TypeScriptCompile Include="Client\MusicStore.app\components\UrlResolver\UrlResolverService.ts" />
     <TypeScriptCompile Include="Client\MusicStore.app\components\UrlResolver\UrlResolver.ts" />
     <TypeScriptCompile Include="Client\MusicStore.app\Home\HomeController.ts" />
-    <TypeScriptCompile Include="Client\MusicStore.app\Home\IHomeViewModel.ts" />
     <TypeScriptCompile Include="Client\MusicStore.app\Home\Home.ts" />
     <TypeScriptCompile Include="Client\MusicStore.app\components\Models\IAlbum.ts" />
     <TypeScriptCompile Include="Client\MusicStore.app\components\Models\IArtist.ts" />
@@ -326,10 +324,8 @@
     <TypeScriptCompile Include="Client\MusicStore.app\Store\GenreListController.ts" />
     <TypeScriptCompile Include="Client\MusicStore.app\components\GenreMenu\GenreMenuController.ts" />
     <TypeScriptCompile Include="Client\MusicStore.app\components\GenreMenu\GenreMenuDirective.ts" />
-    <TypeScriptCompile Include="Client\MusicStore.app\components\GenreMenu\IGenreMenuViewModel.ts" />
     <TypeScriptCompile Include="Client\MusicStore.app\Store\Store.ts" />
-    <TypeScriptCompile Include="Client\MusicStore.app\components\UserDetails\IUserDetails.ts" />
-    <TypeScriptCompile Include="Client\MusicStore.app\components\UserDetails\IUserDetailsService.ts" />
+    <TypeScriptCompile Include="Client\MusicStore.app\components\Models\IUserDetails.ts" />
     <TypeScriptCompile Include="Client\MusicStore.app\components\UserDetails\UserDetailsService.ts" />
     <TypeScriptCompile Include="Client\MusicStore.app\components\UserDetails\UserDetails.ts" />
   </ItemGroup>

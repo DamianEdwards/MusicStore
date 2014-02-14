@@ -8,8 +8,8 @@ namespace System.Web.Mvc
         public static IHtmlString Json<T, TData>(this HtmlHelper<T> helper, string id, TData data)
         {
             var sb = new StringBuilder();
-
-            sb.Append("<script type=\"application/json\" id=\"");
+            
+            sb.Append("<script type=\"application/json\" data-json-id=\"");
             sb.Append(id);
             sb.AppendLine("\">");
 

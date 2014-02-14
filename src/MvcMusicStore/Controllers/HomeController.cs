@@ -13,10 +13,7 @@ namespace MvcMusicStore.Controllers
         // GET: /Home/
         public async Task<ActionResult> Index()
         {
-            return View(await _storeContext.Albums
-                .OrderByDescending(a => a.OrderDetails.Count())
-                .Take(6)
-                .ToListAsync());
+            return View(await new AlbumsApiController().MostPopular());
         }
 
         protected override void Dispose(bool disposing)

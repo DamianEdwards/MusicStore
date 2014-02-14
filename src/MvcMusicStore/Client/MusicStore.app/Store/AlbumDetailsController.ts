@@ -16,7 +16,7 @@ module MusicStore.Store {
             var viewModel = this,
                 albumId = $routeParams.albumId;
 
-            albumApi.getAlbumDetails(albumId).success(album => {
+            albumApi.getAlbumDetails(albumId).then(album => {
                 viewModel.album = album;
             });
         }

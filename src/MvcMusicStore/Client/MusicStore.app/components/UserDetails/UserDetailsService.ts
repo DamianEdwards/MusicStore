@@ -15,7 +15,7 @@ module MusicStore.UserDetails {
 
         public getUserDetails(elementId = "userDetails") {
             if (!this._userDetails) {
-                var el = this._document.querySelector("#" + elementId);
+                var el = this._document.querySelector("[data-json-id='" + elementId + "']");
                 
                 if (el && el.firstChild && el.firstChild.nodeValue) {
                     this._userDetails = angular.fromJson(el.firstChild.nodeValue);

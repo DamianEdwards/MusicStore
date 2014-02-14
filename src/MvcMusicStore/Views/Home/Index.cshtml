@@ -1,4 +1,6 @@
-﻿@{
+﻿@model IEnumerable<MvcMusicStore.Models.Album>
+
+@{
     ViewBag.Title = "Home Page";
     ViewBag.ngApp = "MusicStore";
 }
@@ -10,6 +12,8 @@
 }
 
 <div ng-view></div>
+
+@Html.Json(Url.Content("~/api/albums/mostPopular"), Model)
 
 @section Scripts {
 

@@ -11,7 +11,7 @@ module MusicStore.Home {
         constructor(albumApi: AlbumApi.IAlbumApiService) {
             var viewModel = this;
 
-            albumApi.getMostPopularAlbums().success(albums => {
+            albumApi.getMostPopularAlbums().then(albums => {
                 viewModel.albums = albums;
             });
         }
