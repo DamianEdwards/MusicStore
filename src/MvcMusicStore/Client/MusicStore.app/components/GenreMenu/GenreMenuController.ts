@@ -4,12 +4,11 @@ module MusicStore.GenreMenu {
     class GenreMenuController implements IGenreMenuViewModel {
         public genres: Array<Models.IGenre>;
 
-        constructor($http: ng.IHttpService, urlResolver: UrlResolver.IUrlResolverService) {
-            var viewModel = this,
-                url = urlResolver.resolveUrl("~/api/genres/menu");
+        constructor($http: ng.IHttpService, genreApi: GenreApi.IGenreApiService) {
+            var viewModel = this;
 
-            $http.get(url).success(result => {
-                viewModel.genres = result;
+            genreApi.getGenresMenu().success(genres => {
+                viewModel.genres = genres;
             });
         }
     }
@@ -17,6 +16,6 @@ module MusicStore.GenreMenu {
     // TODO: Generate this
     _module.controller("MusicStore.GenreMenu.GenreMenuController", [
         "$http",
-        "MusicStore.UrlResolver.IUrlResolverService",
+        "MusicStore.GenreApi.IGenreApiService",
         GenreMenuController]);
 }

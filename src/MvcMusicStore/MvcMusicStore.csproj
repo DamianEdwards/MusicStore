@@ -306,6 +306,8 @@
     <Content Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
+    <TypeScriptCompile Include="Client\MusicStore.app\components\GenreApi\GenreApi.ts" />
+    <TypeScriptCompile Include="Client\MusicStore.app\components\GenreApi\GenreApiService.ts" />
     <TypeScriptCompile Include="Client\MusicStore.app\components\GenreMenu\GenreMenu.ts" />
     <TypeScriptCompile Include="Client\MusicStore.app\components\UrlResolver\IUrlResolverService.ts" />
     <TypeScriptCompile Include="Client\MusicStore.app\components\UrlResolver\UrlResolverService.ts" />

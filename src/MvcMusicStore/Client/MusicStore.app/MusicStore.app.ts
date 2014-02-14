@@ -27,6 +27,7 @@ module MusicStore {
         "MusicStore.GenreMenu",
         "MusicStore.UrlResolver",
         "MusicStore.UserDetails",
+        "MusicStore.GenreApi",
         "MusicStore.Home",
         "MusicStore.Store"
     ]);
