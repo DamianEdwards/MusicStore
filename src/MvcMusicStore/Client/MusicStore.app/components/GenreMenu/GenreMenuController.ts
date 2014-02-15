@@ -11,7 +11,7 @@ module MusicStore.GenreMenu {
         constructor(genreApi: GenreApi.IGenreApiService) {
             var viewModel = this;
 
-            genreApi.getGenresMenu().success(genres => {
+            genreApi.getGenresMenu().then(genres => {
                 viewModel.genres = genres;
             });
         }

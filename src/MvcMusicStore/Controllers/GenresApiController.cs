@@ -14,7 +14,7 @@ namespace MvcMusicStore.Controllers
     {
         private readonly MusicStoreEntities _storeContext = new MusicStoreEntities();
 
-        [Route("api/genres/menu")]
+        //[Route("api/genres/menu")]
         [HttpGet]
         public async Task<IEnumerable<Genre>> GenreMenuList(int count = 9)
         {

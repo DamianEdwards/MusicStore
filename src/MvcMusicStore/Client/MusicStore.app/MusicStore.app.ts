@@ -4,12 +4,16 @@
 module MusicStore {
     class Startup {
         private _routeProvider: ng.route.IRouteProvider;
+        private _logProvider;
 
-        constructor(routeProvider: ng.route.IRouteProvider) {
+        constructor(routeProvider: ng.route.IRouteProvider, logProvider) {
             this._routeProvider = routeProvider;
+            this._logProvider = logProvider;
         }
 
         public configuration() {
+            this._logProvider.debugEnabled(true);
+
             this._routeProvider
                 .when("/", { templateUrl: "MusicStore.app/Home/index.html" })
                 .when("/albums/genres", { templateUrl: "MusicStore.app/Store/GenreList.html" })
@@ -24,6 +28,7 @@ module MusicStore {
     var _app = angular.module("MusicStore", [
         // Dependencies
         "ngRoute",
+        "MusicStore.InlineData",
         "MusicStore.GenreMenu",
         "MusicStore.UrlResolver",
         "MusicStore.UserDetails",
@@ -36,10 +41,11 @@ module MusicStore {
     _app.config([
         // Dependencies
         "$routeProvider",
+        "$logProvider",
 
         // Config method
-        function ($routeProvider) {
-            new Startup($routeProvider).configuration();
+        function ($routeProvider, $logProvider) {
+            new Startup($routeProvider, $logProvider).configuration();
         }
     ]);
 }

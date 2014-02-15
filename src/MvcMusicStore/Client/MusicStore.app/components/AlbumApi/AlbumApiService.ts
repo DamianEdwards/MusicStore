@@ -7,13 +7,13 @@ module MusicStore.AlbumApi {
     }
 
     class AlbumApiService implements IAlbumApiService {
-        private _document: ng.IAugmentedJQuery;
+        private _inlineData: ng.ICacheObject;
         private _q: ng.IQService;
         private _http: ng.IHttpService;
         private _urlResolver: UrlResolver.IUrlResolverService;
 
-        constructor($document: ng.IAugmentedJQuery, $q: ng.IQService, $http: ng.IHttpService, urlResolver: UrlResolver.IUrlResolverService) {
-            this._document = $document;
+        constructor($cacheFactory: ng.ICacheFactoryService, $q: ng.IQService, $http: ng.IHttpService, urlResolver: UrlResolver.IUrlResolverService) {
+            this._inlineData = $cacheFactory.get("inlineData");
             this._q = $q;
             this._http = $http;
             this._urlResolver = urlResolver;
@@ -26,13 +26,10 @@ module MusicStore.AlbumApi {
 
         public getMostPopularAlbums(count?: number) {
             var url = this._urlResolver.resolveUrl("~/api/albums/mostPopular"),
-                inlineData = this._document.find("script[data-json-id='" + url + "']").text(),
-                deferred: ng.IDeferred<Array<Models.IAlbum>>;
+                inlineData = this._inlineData ? this._inlineData.get(url) : null;
 
             if (inlineData) {
-                deferred = this._q.defer<Array<Models.IAlbum>>();
-                deferred.resolve(angular.fromJson(inlineData));
-                return deferred.promise;
+                return this._q.when(inlineData);
             } else {
                 if (count && count > 0) {
                     url += "?count=" + count;
@@ -45,7 +42,7 @@ module MusicStore.AlbumApi {
 
     // TODO: Generate this
     _module.service("MusicStore.AlbumApi.IAlbumApiService", [
-        "$document",
+        "$cacheFactory",
         "$q",
         "$http",
         "MusicStore.UrlResolver.IUrlResolverService",

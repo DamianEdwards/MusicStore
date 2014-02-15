@@ -1,6 +1,4 @@
-﻿@model IEnumerable<MvcMusicStore.Models.Album>
-
-@{
+﻿@{
     ViewBag.Title = "Home Page";
     ViewBag.ngApp = "MusicStore";
 }
@@ -13,7 +11,8 @@
 
 <div ng-view></div>
 
-@Html.Json(Url.Content("~/api/albums/mostPopular"), Model)
+@Html.InlineData("GenreMenuList", "GenresApiMvc")
+@Html.InlineData("~/api/albums/mostPopular", (object)ViewBag.MostPopularAlbums)
 
 @section Scripts {
 

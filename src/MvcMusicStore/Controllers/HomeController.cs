@@ -13,7 +13,9 @@ namespace MvcMusicStore.Controllers
         // GET: /Home/
         public async Task<ActionResult> Index()
         {
-            return View(await new AlbumsApiController().MostPopular());
+            ViewBag.MenuGenres = await new GenresApiController().GenreMenuList();
+            ViewBag.MostPopularAlbums = await new AlbumsApiController().MostPopular();
+            return View();
         }
 
         protected override void Dispose(bool disposing)

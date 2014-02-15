@@ -2,23 +2,33 @@
 
 module MusicStore.GenreApi {
     export interface IGenreApiService {
-        getGenresMenu(): ng.IHttpPromise<Array<Models.IGenre>>;
+        getGenresMenu(): ng.IPromise<Array<Models.IGenre>>;
         getGenresList(): ng.IHttpPromise<Array<Models.IGenre>>;
         getGenreAlbums(genreId: number): ng.IHttpPromise<Array<Models.IAlbum>>;
     }
 
     class GenreApiService implements IGenreApiService {
+        private _inlineData: ng.ICacheObject;
+        private _q: ng.IQService;
         private _http: ng.IHttpService;
         private _urlResolver: UrlResolver.IUrlResolverService;
 
-        constructor($http: ng.IHttpService, urlResolver: UrlResolver.IUrlResolverService) {
+        constructor($cacheFactory: ng.ICacheFactoryService, $q: ng.IQService, $http: ng.IHttpService, urlResolver: UrlResolver.IUrlResolverService) {
+            this._inlineData = $cacheFactory.get("inlineData");
+            this._q = $q;
             this._http = $http;
             this._urlResolver = urlResolver;
         }
 
         public getGenresMenu() {
-            var url = this._urlResolver.resolveUrl("~/api/genres/menu");
-            return this._http.get(url);
+            var url = this._urlResolver.resolveUrl("~/api/genres/menu"),
+                inlineData = this._inlineData ? this._inlineData.get(url) : null;
+
+            if (inlineData) {
+                return this._q.when(inlineData);
+            } else {
+                return this._http.get(url).then(result => result.data);
+            }
         }
 
         public getGenresList() {
@@ -34,6 +44,8 @@ module MusicStore.GenreApi {
 
     // TODO: Generate this
     _module.service("MusicStore.GenreApi.IGenreApiService", [
+        "$cacheFactory",
+        "$q",
         "$http",
         "MusicStore.UrlResolver.IUrlResolverService",
         GenreApiService
