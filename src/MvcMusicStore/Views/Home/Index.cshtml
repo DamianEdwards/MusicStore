@@ -5,14 +5,14 @@
 
 @section NavBarItems {
 
-<li genre-menu></li>
+<li mus-genre-menu></li>
 
 }
 
 <div ng-view></div>
 
-@Html.InlineData("GenreMenuList", "GenresApiMvc")
-@Html.InlineData("~/api/albums/mostPopular", (object)ViewBag.MostPopularAlbums)
+@Html.InlineData("GenreMenuList", "genresApi")
+@Html.InlineData("MostPopular", "AlbumsApi")
 
 @section Scripts {
 

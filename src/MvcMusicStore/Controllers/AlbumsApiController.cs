@@ -1,39 +1,38 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Data.Entity;
+﻿using System.Data.Entity;
 using System.Linq;
-using System.Net;
-using System.Net.Http;
-using System.Threading.Tasks;
-using System.Web.Http;
+using System.Web.Mvc;
+using MvcMusicStore.Infrastructure;
 using MvcMusicStore.Models;
 
 namespace MvcMusicStore.Controllers
 {
-    public class AlbumsApiController : ApiController
+    public class AlbumsApiController : Controller
     {
         private readonly MusicStoreEntities _storeContext = new MusicStoreEntities();
 
         [Route("api/albums/mostPopular")]
-        [HttpGet]
-        public async Task<IEnumerable<Album>> MostPopular(int count = 6)
+        public ActionResult MostPopular(int count = 6)
         {
             count = count > 0 && count < 20 ? count : 6;
 
-            return await _storeContext.Albums
-                .OrderByDescending(a => a.OrderDetails.Count())
-                .Take(count)
-                .ToListAsync();
+            return new SmartJsonResult
+            {
+                Data = _storeContext.Albums
+                    .OrderByDescending(a => a.OrderDetails.Count())
+                    .Take(count)
+            };
         }
 
         [Route("api/albums/{albumId:int}")]
-        [HttpGet]
-        public async Task<Album> Details(int albumId)
+        public ActionResult Details(int albumId)
         {
-            return await _storeContext.Albums
-                .Include(a => a.Artist)
-                .Include(a => a.Genre)
-                .SingleOrDefaultAsync(a => a.AlbumId == albumId);
+            return new SmartJsonResult
+            {
+                Data = _storeContext.Albums
+                    .Include(a => a.Artist)
+                    .Include(a => a.Genre)
+                    .SingleOrDefault(a => a.AlbumId == albumId)
+            };
         }
 
         protected override void Dispose(bool disposing)

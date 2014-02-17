@@ -12,7 +12,7 @@ module MusicStore.GenreMenu {
     }
 
     // TODO: Generate this
-    _module.directive("genreMenu", [
+    _module.directive("musGenreMenu", [
         "MusicStore.UrlResolver.IUrlResolverService",
         function (urlResolver) {
             return new GenreMenuDirective(urlResolver);

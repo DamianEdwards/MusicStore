@@ -13,8 +13,8 @@ namespace MvcMusicStore.Controllers
         // GET: /Home/
         public async Task<ActionResult> Index()
         {
-            ViewBag.MenuGenres = await new GenresApiController().GenreMenuList();
-            ViewBag.MostPopularAlbums = await new AlbumsApiController().MostPopular();
+            //ViewBag.MenuGenres = await new GenresApiController().GenreMenuList();
+            //ViewBag.MostPopularAlbums = await new AlbumsApiController().MostPopular();
             return View();
         }
 
