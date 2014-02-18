@@ -96,7 +96,7 @@
         },
         tslint: {
             options: {
-                
+                configuration: grunt.file.readJSON("tslint.json")
             },
             files: {
                 src: ['<%= typescript.dev.src %>']
@@ -125,7 +125,7 @@
         watch: {
             typescript: {
                 files: ['<%= typescript.dev.src %>'],
-                tasks: ['typescript:dev']
+                tasks: ['tslint', 'typescript:dev']
             },
             dev: {
                 files: ['bower_components/' + staticFilePattern, 'Client/' + staticFilePattern],
@@ -146,7 +146,7 @@
     //grunt.loadNpmTasks('grunt-contrib-concat');
 
     //grunt.registerTask('test', ['jshint', 'qunit']);
-    grunt.registerTask('dev', ['clean', 'copy', 'less:dev', 'typescript:dev']);
+    grunt.registerTask('dev', ['clean', 'copy', 'less:dev', 'tslint', 'typescript:dev']);
     grunt.registerTask('release', ['clean', 'copy', 'uglify', 'less:release', 'typescript:release']);
     grunt.registerTask('default', ['dev']);
 };

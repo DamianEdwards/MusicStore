@@ -13,7 +13,10 @@ module MusicStore.GenreApi {
         private _http: ng.IHttpService;
         private _urlResolver: UrlResolver.IUrlResolverService;
 
-        constructor($cacheFactory: ng.ICacheFactoryService, $q: ng.IQService, $http: ng.IHttpService, urlResolver: UrlResolver.IUrlResolverService) {
+        constructor($cacheFactory: ng.ICacheFactoryService,
+                    $q: ng.IQService,
+                    $http: ng.IHttpService,
+                    urlResolver: UrlResolver.IUrlResolverService) {
             this._inlineData = $cacheFactory.get("inlineData");
             this._q = $q;
             this._http = $http;
