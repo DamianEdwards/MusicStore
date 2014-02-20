@@ -29,7 +29,7 @@
                         cwd: "bower_components/",
                         src: [
                             "modernizr/modernizr.js",
-                            "jquery/*.{js,map}",
+                            "jquery/dist/*.{js,map}",
                             "jquery.validation/jquery.validate.js",
                             "jquery.validation/additional-methods.js",
                             "bootstrap/dist/**/*.js",
