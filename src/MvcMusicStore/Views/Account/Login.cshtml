@@ -7,7 +7,8 @@
 
 @section NavBarItems {
 
-    <li mus-genre-menu></li>
+<li app-genre-menu></li>
+@Html.InlineData("GenreMenuList", "GenresApi")
 
 }
 
@@ -19,7 +20,7 @@
             @using (Html.BeginForm("Login", "Account", new { ReturnUrl = ViewBag.ReturnUrl }, FormMethod.Post,
                 new { @class = "form-horizontal", role = "form", novalidate = "", name = "login",
                       ng_cloak = "",
-                      mus_prevent_submit = "login.$invalid",
+                      app_prevent_submit = "login.$invalid",
                       ng_submit = "login.submitAttempted=true" }))
             {
                 @Html.AntiForgeryToken()

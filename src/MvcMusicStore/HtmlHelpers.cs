@@ -32,7 +32,7 @@ namespace System.Web.Mvc.Html
 
             var builder = new TagBuilder("script");
             builder.Attributes["type"] = "application/json";
-            builder.Attributes["mus-inline-data"] = null;
+            builder.Attributes["app-inline-data"] = null;
             builder.Attributes["for"] = url;
             builder.InnerHtml = result.ToString().Replace("<", "\u003C").Replace(">", "\u003E");
 

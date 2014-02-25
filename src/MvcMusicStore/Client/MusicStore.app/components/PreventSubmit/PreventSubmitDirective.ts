@@ -3,7 +3,7 @@
 module MusicStore.PreventSubmit {
     interface IPreventSubmitAttributes extends ng.IAttributes {
         name: string;
-        musPreventSubmit: string;
+        appPreventSubmit: string;
     }
 
     class PreventSubmitDirective implements ng.IDirective {
@@ -17,7 +17,7 @@ module MusicStore.PreventSubmit {
 
         public link(scope: any, element: ng.IAugmentedJQuery, attrs: IPreventSubmitAttributes) {
             element.submit(e => {
-                if (scope.$eval(attrs.musPreventSubmit)) {
+                if (scope.$eval(attrs.appPreventSubmit)) {
                     e.preventDefault();
                     return false;
                 }
@@ -26,7 +26,7 @@ module MusicStore.PreventSubmit {
     }
 
     // TODO: Generate this
-    _module.directive("musPreventSubmit", [
+    _module.directive("appPreventSubmit", [
         function () {
             return new PreventSubmitDirective();
         }

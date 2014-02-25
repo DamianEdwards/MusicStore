@@ -24,7 +24,7 @@ module MusicStore.InlineData {
                 ? angular.fromJson(element.text())
                 : element.text();
 
-            this._log.info("musInlineData: Inline data element found for " + attrs.for);
+            this._log.info("appInlineData: Inline data element found for " + attrs.for);
 
             this._cache.put(attrs.for, data);
 
@@ -33,7 +33,7 @@ module MusicStore.InlineData {
     }
 
     // TODO: Generate this
-    _module.directive("musInlineData", [
+    _module.directive("appInlineData", [
         "$cacheFactory",
         "$log",
         function ($cacheFactory, $log) {
