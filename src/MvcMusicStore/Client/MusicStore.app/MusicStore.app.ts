@@ -29,13 +29,15 @@ module MusicStore {
         // Dependencies
         "ngRoute",
         "MusicStore.InlineData",
+        "MusicStore.PreventSubmit",
         "MusicStore.GenreMenu",
         "MusicStore.UrlResolver",
         "MusicStore.UserDetails",
         "MusicStore.GenreApi",
         "MusicStore.AlbumApi",
         "MusicStore.Home",
-        "MusicStore.Store"
+        "MusicStore.Store",
+        "MusicStore.Login"
     ]);
 
     _app.config([

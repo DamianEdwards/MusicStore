@@ -242,6 +242,8 @@
     <Folder Include="App_Data\" />
     <Folder Include="Client\MusicStore.app\Admin\" />
     <Folder Include="Views\GenresApiMvc\" />
+    <Folder Include="Views\Shared\DisplayTemplates\" />
+    <Folder Include="Views\Shared\EditorTemplates\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="packages.config" />
@@ -254,6 +256,8 @@
     <TypeScriptCompile Include="Client\MusicStore.app\components\GenreApi\GenreApi.ts" />
     <TypeScriptCompile Include="Client\MusicStore.app\components\GenreApi\GenreApiService.ts" />
     <TypeScriptCompile Include="Client\MusicStore.app\components\GenreMenu\GenreMenu.ts" />
+    <TypeScriptCompile Include="Client\MusicStore.app\components\PreventSubmit\PreventSubmit.ts" />
+    <TypeScriptCompile Include="Client\MusicStore.app\components\PreventSubmit\PreventSubmitDirective.ts" />
     <TypeScriptCompile Include="Client\MusicStore.app\components\UrlResolver\UrlResolverService.ts" />
     <TypeScriptCompile Include="Client\MusicStore.app\components\UrlResolver\UrlResolver.ts" />
     <TypeScriptCompile Include="Client\MusicStore.app\Home\HomeController.ts" />
@@ -261,6 +265,8 @@
     <TypeScriptCompile Include="Client\MusicStore.app\components\Models\IAlbum.ts" />
     <TypeScriptCompile Include="Client\MusicStore.app\components\Models\IArtist.ts" />
     <TypeScriptCompile Include="Client\MusicStore.app\components\Models\IGenre.ts" />
+    <TypeScriptCompile Include="Client\MusicStore.app\Login\Login.ts" />
+    <TypeScriptCompile Include="Client\MusicStore.app\Login\LoginController.ts" />
     <TypeScriptCompile Include="Client\MusicStore.app\MusicStore.app.ts" />
     <TypeScriptCompile Include="Client\MusicStore.app\Store\AlbumDetailsController.ts" />
     <TypeScriptCompile Include="Client\MusicStore.app\Store\GenreDetailsController.ts" />

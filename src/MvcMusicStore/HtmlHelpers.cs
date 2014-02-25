@@ -1,5 +1,9 @@
-﻿using System.Text;
+﻿using System.Collections.Generic;
+using System.Linq.Expressions;
+using System.Text;
+using System.Linq;
 using Newtonsoft.Json;
+using System.Web.Routing;
 
 namespace System.Web.Mvc.Html
 {
@@ -24,43 +28,70 @@ namespace System.Web.Mvc.Html
         {
             var result = helper.Action(actionName, controllerName);
             var urlHelper = new UrlHelper(helper.ViewContext.RequestContext);
-
             var url = urlHelper.Action(actionName, controllerName);
 
-            var sb = new StringBuilder();
+            var builder = new TagBuilder("script");
+            builder.Attributes["type"] = "application/json";
+            builder.Attributes["mus-inline-data"] = null;
+            builder.Attributes["for"] = url;
+            builder.InnerHtml = result.ToString().Replace("<", "\u003C").Replace(">", "\u003E");
 
-            sb.Append("<script type=\"application/json\" mus-inline-data for=\"");
-            sb.Append(url);
-            sb.AppendLine("\">");
-
-            sb.AppendLine(result.ToString());
-
-            sb.Append("</script>");
-
-            return helper.Raw(sb.ToString());
+            return helper.Tag(builder);
         }
 
-        public static IHtmlString InlineData<T, TData>(this HtmlHelper<T> helper, string relativeUrl, TData data)
+        public static IHtmlString ngTextboxFor<TModel, TProperty>(this HtmlHelper<TModel> htmlHelper, Expression<Func<TModel, TProperty>> expression, object htmlAttributes)
         {
-            var urlHelper = new UrlHelper(helper.ViewContext.RequestContext);
+            var metadata = ModelMetadata.FromLambdaExpression(expression, htmlHelper.ViewData);
+            var ngAttributes = new Dictionary<string, object>();
+            var passedAttributes = ((IDictionary<string, object>)HtmlHelper.AnonymousObjectToHtmlAttributes(htmlAttributes));
 
-            var sb = new StringBuilder();
+            if (metadata.IsRequired)
+            {
+                ngAttributes["required"] = null;
+            }
 
-            sb.Append("<script type=\"application/json\" mus-inline-data for=\"");
-            sb.Append(urlHelper.Content(relativeUrl));
-            sb.AppendLine("\">");
-
-            sb.AppendLine(JsonConvert.SerializeObject(data));
-
-            sb.Append("</script>");
-
-            return helper.Raw(sb.ToString());
+            return htmlHelper.TextBoxFor(expression, MergeAttributes(ngAttributes, passedAttributes));
         }
 
-        public static IHtmlString InlineApiResult<T, TData>(this HtmlHelper<T> helper, string relativeUrl, TData data)
+        public static IHtmlString ngValidationMessageFor<TModel, TProperty>(this HtmlHelper<TModel> htmlHelper, Expression<Func<TModel, TProperty>> expression)
         {
-            var urlHelper = new UrlHelper(helper.ViewContext.RequestContext);
-            return Json(helper, urlHelper.Content(relativeUrl), data);
+            return ngValidationMessageFor(htmlHelper, expression, ((IDictionary<string, object>)new RouteValueDictionary()));
+        }
+
+        public static IHtmlString ngValidationMessageFor<TModel, TProperty>(this HtmlHelper<TModel> htmlHelper, Expression<Func<TModel, TProperty>> expression, object htmlAttributes)
+        {
+            var passedAttributes = ((IDictionary<string, object>)HtmlHelper.AnonymousObjectToHtmlAttributes(htmlAttributes));
+            return ngValidationMessageFor(htmlHelper, expression, passedAttributes);
+        }
+
+        public static IHtmlString ngValidationMessageFor<TModel, TProperty>(this HtmlHelper<TModel> htmlHelper, Expression<Func<TModel, TProperty>> expression, IDictionary<string, object> htmlAttributes)
+        {
+            var metadata = ModelMetadata.FromLambdaExpression(expression, htmlHelper.ViewData);
+            var ngAttributes = new Dictionary<string, object>();
+            var ngFormName = "myForm";
+            var ngModelName = "input";
+
+            if (metadata.IsRequired)
+            {
+                ngAttributes["ng-show"] = String.Format("{0}.{1}.$error.required", ngFormName, ngModelName);
+            }
+
+            return htmlHelper.ValidationMessageFor(expression, null, MergeAttributes(ngAttributes, htmlAttributes));
+        }
+
+        public static IHtmlString Tag(this HtmlHelper htmlHelper, TagBuilder tagBuilder)
+        {
+            return htmlHelper.Raw(tagBuilder.ToString());
+        }
+
+        private static IDictionary<string, object> MergeAttributes(IDictionary<string, object> source, IDictionary<string, object> target)
+        {
+            foreach (var pair in source)
+            {
+                target[pair.Key] = pair.Value;
+            }
+
+            return target;
         }
     }
 }

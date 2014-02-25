@@ -1504,7 +1504,7 @@ namespace MvcMusicStore.Models
                 },
                 new Album
                 {
-                    Title = "Introspective",
+                    Title = "Introspective > You",
                     Genre = genres.Single(g => g.Name == "Pop"),
                     Price = 8.99M,
                     Artist = artists.Single(a => a.Name == "Pet Shop Boys"),
