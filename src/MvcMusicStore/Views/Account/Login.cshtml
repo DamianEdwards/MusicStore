@@ -35,7 +35,15 @@
                         @Html.ngValidationMessageFor(m => m.UserName, "login", new { @class = "field-validation-error" })
                     </div>
                 </div>
-                
+
+                @*<@div class="form-group" validation-for="UserName" validation-form-name="login" validation-class="has-error">
+                    <@label for="UserName" class="col-md-2 control-label"></@label>
+                    <div class="col-md-10">
+                        <@input for="UserName" class="form-control" />
+                        <@span validation-for="UserName" validation-form-name="login" class="field-validation-error"></@span>
+                    </div>
+                </@div>*@
+
                 <div class="form-group" ng-class="{ 'has-error' : (login.submitAttempted || login.Password.$dirty) && login.Password.$invalid }">
                     @Html.LabelFor(m => m.Password, new { @class = "col-md-2 control-label" })
                     <div class="col-md-10">
