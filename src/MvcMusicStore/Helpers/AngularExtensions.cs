@@ -33,17 +33,7 @@ namespace System.Web.Mvc.Html
                 ngAttributes["required"] = null;
             }
 
-            if (metadata.ModelType == typeof(string))
-            {
-                
-            }
-
             if (string.Equals(metadata.DataTypeName, "EmailAddress", StringComparison.OrdinalIgnoreCase))
-            {
-                ngAttributes["type"] = "email";
-            }
-
-            if (string.Equals(metadata.DataTypeName, "Number", StringComparison.OrdinalIgnoreCase))
             {
                 ngAttributes["type"] = "email";
             }
@@ -70,23 +60,34 @@ namespace System.Web.Mvc.Html
             var validators = metadata.GetValidators(html.ViewContext.Controller.ControllerContext);
             var ngShowFormat = "({0}.submitAttempted || {0}.{1}.$dirty) && {0}.{1}.$error.{2}";
             var tag = new TagBuilder("span");
-
-            if (metadata.IsRequired)
+            
+            foreach (var validator in validators)
             {
-                tag.Attributes["ng-show"] = String.Format(ngShowFormat, formName, modelName, "required");
-                
-                var validationMessage = validators
-                    .Where(v => v.IsRequired)
-                    .SelectMany(v => v.GetClientValidationRules())
-                    .Select(r => r.ErrorMessage)
-                    .FirstOrDefault();
-                
-                tag.SetInnerText(validationMessage);
+                if (validator.IsRequired)
+                {
+                    tag.Attributes["ng-show"] = string.Format(ngShowFormat, formName, modelName, "required");
+
+                    var validationMessage = validator.GetClientValidationRules()
+                        .Select(r => r.ErrorMessage)
+                        .FirstOrDefault();
+
+                    tag.SetInnerText(validationMessage);
+                }
             }
 
             tag.MergeAttributes(htmlAttributes);
 
             return html.Raw(tag.ToString());
+        }
+
+        public static string ngValidationClassFor<TModel, TProperty>(this HtmlHelper<TModel> html, Expression<Func<TModel, TProperty>> expression, string formName, string className)
+        {
+            var expressionText = ExpressionHelper.GetExpressionText(expression);
+            var metadata = ModelMetadata.FromLambdaExpression(expression, html.ViewData);
+            var modelName = html.ViewContext.ViewData.TemplateInfo.GetFullHtmlFieldName(expressionText);
+            var ngClassFormat = "{{ '{0}' : ({1}.submitAttempted || {1}.{2}.$dirty) && {1}.{2}.$invalid }}";
+
+            return string.Format(ngClassFormat, className, formName, modelName);
         }
 
         private static IDictionary<string, object> MergeAttributes(IDictionary<string, object> source, IDictionary<string, object> target)
