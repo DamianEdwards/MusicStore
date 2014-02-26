@@ -32,6 +32,9 @@ namespace MvcMusicStore.Models
     {
         [Required]
         [Display(Name = "User name")]
+        [StringLength(100, MinimumLength = 3)]
+        [MinLength(3)]
+        [MaxLength(100)]
         public string UserName { get; set; }
 
         [Required]
