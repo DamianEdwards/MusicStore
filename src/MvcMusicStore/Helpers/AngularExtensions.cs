@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Web;
@@ -27,15 +28,48 @@ namespace System.Web.Mvc.Html
             var ngAttributes = new Dictionary<string, object>();
 
             ngAttributes["ng-model"] = html.ViewContext.ViewData.TemplateInfo.GetFullHtmlFieldName(expressionText);
-
-            if (metadata.IsRequired)
-            {
-                ngAttributes["required"] = null;
-            }
-
-            if (string.Equals(metadata.DataTypeName, "EmailAddress", StringComparison.OrdinalIgnoreCase))
+            
+            if (string.Equals(metadata.DataTypeName, Enum.GetName(typeof(DataType), DataType.EmailAddress), StringComparison.OrdinalIgnoreCase))
             {
                 ngAttributes["type"] = "email";
+            }
+            else if (string.Equals(metadata.DataTypeName, Enum.GetName(typeof(DataType), DataType.Url), StringComparison.OrdinalIgnoreCase)
+                     || string.Equals(metadata.DataTypeName, Enum.GetName(typeof(DataType), DataType.ImageUrl), StringComparison.OrdinalIgnoreCase))
+            {
+                ngAttributes["type"] = "url";
+            }
+            
+            switch (Type.GetTypeCode(metadata.ModelType))
+            {
+                case TypeCode.Int16:
+                case TypeCode.Int32:
+                case TypeCode.Int64:
+                case TypeCode.UInt16:
+                case TypeCode.UInt32:
+                case TypeCode.UInt64:
+                    ngAttributes["type"] = "number";
+                    break;
+            }
+
+            var clientValidators = metadata.GetValidators(html.ViewContext.Controller.ControllerContext)
+                                           .SelectMany(v => v.GetClientValidationRules());
+
+            foreach (var validator in clientValidators)
+            {
+                if (string.Equals(validator.ValidationType, "length"))
+                {
+                    ngAttributes["ng-minlength"] = validator.ValidationParameters["min"];
+                    ngAttributes["ng-maxlength"] = validator.ValidationParameters["max"];
+                }
+                else if (string.Equals(validator.ValidationType, "required"))
+                {
+                    ngAttributes["required"] = null;
+                }
+                else if (string.Equals(validator.ValidationType, "range"))
+                {
+                    ngAttributes["min"] = validator.ValidationParameters["min"];
+                    ngAttributes["max"] = validator.ValidationParameters["max"];
+                }
             }
 
             return html.TextBoxFor(expression, MergeAttributes(ngAttributes, htmlAttributes));
