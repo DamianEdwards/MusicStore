@@ -27,30 +27,37 @@ namespace System.Web.Mvc.Html
             var metadata = ModelMetadata.FromLambdaExpression(expression, html.ViewData);
             var ngAttributes = new Dictionary<string, object>();
 
+            // Angular binding to client-side model (scope). This is required for Angular validation to work.
             ngAttributes["ng-model"] = html.ViewContext.ViewData.TemplateInfo.GetFullHtmlFieldName(expressionText);
             
+            // Set input type
             if (string.Equals(metadata.DataTypeName, Enum.GetName(typeof(DataType), DataType.EmailAddress), StringComparison.OrdinalIgnoreCase))
             {
                 ngAttributes["type"] = "email";
             }
-            else if (string.Equals(metadata.DataTypeName, Enum.GetName(typeof(DataType), DataType.Url), StringComparison.OrdinalIgnoreCase)
+            else if (metadata.ModelType == typeof(Uri)
+                     || string.Equals(metadata.DataTypeName, Enum.GetName(typeof(DataType), DataType.Url), StringComparison.OrdinalIgnoreCase)
                      || string.Equals(metadata.DataTypeName, Enum.GetName(typeof(DataType), DataType.ImageUrl), StringComparison.OrdinalIgnoreCase))
             {
                 ngAttributes["type"] = "url";
             }
-            
-            switch (Type.GetTypeCode(metadata.ModelType))
+            else if (IsNumberType(metadata.ModelType))
             {
-                case TypeCode.Int16:
-                case TypeCode.Int32:
-                case TypeCode.Int64:
-                case TypeCode.UInt16:
-                case TypeCode.UInt32:
-                case TypeCode.UInt64:
-                    ngAttributes["type"] = "number";
-                    break;
+                ngAttributes["type"] = "number";
+            }
+            else if (metadata.ModelType == typeof(DateTime))
+            {
+                if (string.Equals(metadata.DataTypeName, Enum.GetName(typeof(DataType), DataType.Date), StringComparison.OrdinalIgnoreCase))
+                {
+                    ngAttributes["type"] = "date";
+                }
+                else if (string.Equals(metadata.DataTypeName, Enum.GetName(typeof(DataType), DataType.DateTime), StringComparison.OrdinalIgnoreCase))
+                {
+                    ngAttributes["type"] = "datetime";
+                }
             }
 
+            // Add attributes for Angular validation
             var clientValidators = metadata.GetValidators(html.ViewContext.Controller.ControllerContext)
                                            .SelectMany(v => v.GetClientValidationRules());
 
@@ -70,9 +77,26 @@ namespace System.Web.Mvc.Html
                     ngAttributes["min"] = validator.ValidationParameters["min"];
                     ngAttributes["max"] = validator.ValidationParameters["max"];
                 }
+                // TODO: Regex, Compare, Phone(regex)
             }
 
+            // Render!
             return html.TextBoxFor(expression, MergeAttributes(ngAttributes, htmlAttributes));
+        }
+
+        private static bool IsNumberType(Type type)
+        {
+            switch (Type.GetTypeCode(type))
+            {
+                case TypeCode.Int16:
+                case TypeCode.Int32:
+                case TypeCode.Int64:
+                case TypeCode.UInt16:
+                case TypeCode.UInt32:
+                case TypeCode.UInt64:
+                    return true;
+            }
+            return false;
         }
 
         public static IHtmlString ngValidationMessageFor<TModel, TProperty>(this HtmlHelper<TModel> htmlHelper, Expression<Func<TModel, TProperty>> expression, string formName)
@@ -91,27 +115,38 @@ namespace System.Web.Mvc.Html
             var metadata = ModelMetadata.FromLambdaExpression(expression, html.ViewData);
             var modelName = html.ViewContext.ViewData.TemplateInfo.GetFullHtmlFieldName(expressionText);
 
-            var validators = metadata.GetValidators(html.ViewContext.Controller.ControllerContext);
-            var ngShowFormat = "({0}.submitAttempted || {0}.{1}.$dirty) && {0}.{1}.$error.{2}";
-            var tag = new TagBuilder("span");
-            
-            foreach (var validator in validators)
+            var clientValidators = metadata.GetValidators(html.ViewContext.Controller.ControllerContext)
+                                           .SelectMany(v => v.GetClientValidationRules());
+            var tags = new List<TagBuilder>();
+
+            // Get validation messages from data type
+            // TODO: How to get validation messages from model metadata? All methods/properties required seem protected internal :(
+
+            foreach (var validator in clientValidators)
             {
-                if (validator.IsRequired)
+                var tag = new TagBuilder("span");
+
+                if (string.Equals(validator.ValidationType, "required"))
                 {
-                    tag.Attributes["ng-show"] = string.Format(ngShowFormat, formName, modelName, "required");
-
-                    var validationMessage = validator.GetClientValidationRules()
-                        .Select(r => r.ErrorMessage)
-                        .FirstOrDefault();
-
-                    tag.SetInnerText(validationMessage);
+                    tag.Attributes["ng-show"] = string.Format("({0}.submitAttempted || {0}.{1}.$dirty) && {0}.{1}.$error.{2}", formName, modelName, "required");
+                    tag.SetInnerText(validator.ErrorMessage);
                 }
+                else if (string.Equals(validator.ValidationType, "length"))
+                {
+                    tag.Attributes["ng-show"] = string.Format("({0}.submitAttempted || {0}.{1}.$dirty) && ({0}.{1}.$error.minlength || {0}.{1}.$error.maxlength)",
+                        formName, modelName);
+                    tag.SetInnerText(validator.ErrorMessage);
+                }
+                else
+                {
+                    continue;
+                }
+
+                tag.MergeAttributes(htmlAttributes);
+                tags.Add(tag);
             }
 
-            tag.MergeAttributes(htmlAttributes);
-
-            return html.Raw(tag.ToString());
+            return html.Raw(String.Concat(tags.Select(t => t.ToString())));
         }
 
         public static string ngValidationClassFor<TModel, TProperty>(this HtmlHelper<TModel> html, Expression<Func<TModel, TProperty>> expression, string formName, string className)
@@ -126,9 +161,13 @@ namespace System.Web.Mvc.Html
 
         private static IDictionary<string, object> MergeAttributes(IDictionary<string, object> source, IDictionary<string, object> target)
         {
+            // Keys in target win over keys in source
             foreach (var pair in source)
             {
-                target[pair.Key] = pair.Value;
+                if (!target.ContainsKey(pair.Key))
+                {
+                    target[pair.Key] = pair.Value;
+                }
             }
 
             return target;
