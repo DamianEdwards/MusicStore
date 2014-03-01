@@ -258,6 +258,8 @@
     <TypeScriptCompile Include="Client\MusicStore.app\components\GenreApi\GenreApi.ts" />
     <TypeScriptCompile Include="Client\MusicStore.app\components\GenreApi\GenreApiService.ts" />
     <TypeScriptCompile Include="Client\MusicStore.app\components\GenreMenu\GenreMenu.ts" />
+    <TypeScriptCompile Include="Client\MusicStore.app\components\LoginLink\LoginLink.ts" />
+    <TypeScriptCompile Include="Client\MusicStore.app\components\LoginLink\LoginLinkDirective.ts" />
     <TypeScriptCompile Include="Client\MusicStore.app\components\PreventSubmit\PreventSubmit.ts" />
     <TypeScriptCompile Include="Client\MusicStore.app\components\PreventSubmit\PreventSubmitDirective.ts" />
     <TypeScriptCompile Include="Client\MusicStore.app\components\UrlResolver\UrlResolverService.ts" />

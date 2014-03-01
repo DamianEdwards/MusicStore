@@ -2,6 +2,7 @@
 
 module MusicStore.UrlResolver {
     export interface IUrlResolverService {
+        base: string;
         resolveUrl(relativeUrl: string);
     }
 
@@ -15,6 +16,10 @@ module MusicStore.UrlResolver {
             if (this._base === "" || this._base.substr(this._base.length - 1) !== "/") {
                 this._base = this._base + "/";
             }
+        }
+
+        public get base() {
+            return this._base;
         }
 
         public resolveUrl(relativeUrl: string) {

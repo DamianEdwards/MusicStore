@@ -33,6 +33,7 @@ module MusicStore {
         "MusicStore.GenreMenu",
         "MusicStore.UrlResolver",
         "MusicStore.UserDetails",
+        "MusicStore.LoginLink",
         "MusicStore.GenreApi",
         "MusicStore.AlbumApi",
         "MusicStore.Home",
