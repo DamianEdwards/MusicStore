@@ -37,8 +37,7 @@ module MusicStore {
         "MusicStore.GenreApi",
         "MusicStore.AlbumApi",
         "MusicStore.Home",
-        "MusicStore.Store",
-        "MusicStore.Login"
+        "MusicStore.Store"
     ]);
 
     _app.config([
