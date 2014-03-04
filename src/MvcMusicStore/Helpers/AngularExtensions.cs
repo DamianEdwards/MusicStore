@@ -11,17 +11,36 @@ namespace System.Web.Mvc.Html
 {
     public static class AngularExtensions
     {
-        public static IHtmlString ngTextboxFor<TModel, TProperty>(this HtmlHelper<TModel> html, Expression<Func<TModel, TProperty>> expression)
+        public static IHtmlString ngPasswordFor<TModel, TProperty>(this HtmlHelper<TModel> html, Expression<Func<TModel, TProperty>> expression)
         {
-            return html.ngTextboxFor(expression, ((IDictionary<string, object>)new RouteValueDictionary()));
+            return html.ngTextBoxFor(expression, new RouteValueDictionary { { "type", "password" } });
         }
 
-        public static IHtmlString ngTextboxFor<TModel, TProperty>(this HtmlHelper<TModel> html, Expression<Func<TModel, TProperty>> expression, object htmlAttributes)
+        public static IHtmlString ngPasswordFor<TModel, TProperty>(this HtmlHelper<TModel> html, Expression<Func<TModel, TProperty>> expression, object htmlAttributes)
         {
-            return html.ngTextboxFor(expression, HtmlHelper.AnonymousObjectToHtmlAttributes(htmlAttributes));
+            return html.ngTextBoxFor(expression, MergeAttributes(
+                new RouteValueDictionary { { "type", "password" } },
+                HtmlHelper.AnonymousObjectToHtmlAttributes(htmlAttributes)));
         }
 
-        public static IHtmlString ngTextboxFor<TModel, TProperty>(this HtmlHelper<TModel> html, Expression<Func<TModel, TProperty>> expression, IDictionary<string, object> htmlAttributes)
+        public static IHtmlString ngPasswordFor<TModel, TProperty>(this HtmlHelper<TModel> html, Expression<Func<TModel, TProperty>> expression, IDictionary<string, object> htmlAttributes)
+        {
+            return html.ngTextBoxFor(expression, MergeAttributes(
+                new RouteValueDictionary { { "type", "password" } },
+                htmlAttributes));
+        }
+
+        public static IHtmlString ngTextBoxFor<TModel, TProperty>(this HtmlHelper<TModel> html, Expression<Func<TModel, TProperty>> expression)
+        {
+            return html.ngTextBoxFor(expression, new RouteValueDictionary());
+        }
+
+        public static IHtmlString ngTextBoxFor<TModel, TProperty>(this HtmlHelper<TModel> html, Expression<Func<TModel, TProperty>> expression, object htmlAttributes)
+        {
+            return html.ngTextBoxFor(expression, HtmlHelper.AnonymousObjectToHtmlAttributes(htmlAttributes));
+        }
+
+        public static IHtmlString ngTextBoxFor<TModel, TProperty>(this HtmlHelper<TModel> html, Expression<Func<TModel, TProperty>> expression, IDictionary<string, object> htmlAttributes)
         {
             var expressionText = ExpressionHelper.GetExpressionText(expression);
             var metadata = ModelMetadata.FromLambdaExpression(expression, html.ViewData);
@@ -125,6 +144,7 @@ namespace System.Web.Mvc.Html
             foreach (var validator in clientValidators)
             {
                 var tag = new TagBuilder("span");
+                tag.Attributes["ng-cloak"] = string.Empty;
 
                 if (string.Equals(validator.ValidationType, "required"))
                 {

@@ -103,7 +103,7 @@ namespace MvcMusicStore.Controllers
                 var result = await _userManager.CreateAsync(user, model.Password);
                 if (result.Succeeded)
                 {
-                    await SignInAsync(user, false);
+                    await SignInAsync(user, isPersistent: false);
 
                     return RedirectToAction("Index", "Home");
                 }

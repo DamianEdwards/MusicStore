@@ -19,7 +19,6 @@
         <section id="loginForm">
             @using (Html.BeginForm("Login", "Account", new { ReturnUrl = ViewBag.ReturnUrl }, FormMethod.Post,
                 new { @class = "form-horizontal", role = "form", novalidate = "", name = "login",
-                      ng_cloak = "",
                       app_prevent_submit = "login.$invalid",
                       ng_submit = "login.submitAttempted=true" }))
             {
@@ -31,25 +30,26 @@
                 <div class="form-group" ng-class="@Html.ngValidationClassFor(m => m.UserName, formName: "login", className: "has-error")">
                     @Html.LabelFor(m => m.UserName, new { @class = "col-md-2 control-label" })
                     <div class="col-md-10">
-                        @Html.ngTextboxFor(m => m.UserName, new { @class = "form-control" })
+                        @Html.ngTextBoxFor(m => m.UserName, new { @class = "form-control" })
                         @Html.ngValidationMessageFor(m => m.UserName, "login", new { @class = "field-validation-error" })
                     </div>
                 </div>
 
-                @*<@div class="form-group" validation-for="UserName" validation-form-name="login" validation-class="has-error">
-                    <@label for="UserName" class="col-md-2 control-label"></@label>
-                    <div class="col-md-10">
-                        <@input for="UserName" class="form-control" />
-                        <@span validation-for="UserName" validation-form-name="login" class="field-validation-error"></@span>
-                    </div>
-                </@div>*@
+                @*  What this might look like using Tag Helpers:
+                    <@div class="form-group" validation-for="UserName" validation-form-name="login" validation-class="has-error">
+                        <@label for="UserName" class="col-md-2 control-label"></@label>
+                        <div class="col-md-10">
+                            <@input for="UserName" class="form-control" />
+                            <@span validation-for="UserName" validation-form-name="login" class="field-validation-error"></@span>
+                        </div>
+                    </@div>
+                *@
 
-                <div class="form-group" ng-class="{ 'has-error' : (login.submitAttempted || login.Password.$dirty) && login.Password.$invalid }">
+                <div class="form-group" ng-class="@Html.ngValidationClassFor(m => m.Password, formName: "login", className: "has-error")">
                     @Html.LabelFor(m => m.Password, new { @class = "col-md-2 control-label" })
                     <div class="col-md-10">
-                        <input type="password" id="Password" name="Password" class="form-control" ng-model="password" required />
-                        <span class="field-validation-error"
-                              ng-show="(login.submitAttempted || login.Password.$dirty) && login.Password.$error.required">The password field is required.</span>
+                        @Html.ngPasswordFor(m => m.Password, new { @class = "form-control" })
+                        @Html.ngValidationMessageFor(m => m.Password, "login", new { @class = "field-validation-error" })
                     </div>
                 </div>
 

@@ -242,6 +242,7 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
+    <Folder Include="Client\MusicStore.app\Account\" />
     <Folder Include="Client\MusicStore.app\Admin\" />
     <Folder Include="Views\GenresApiMvc\" />
     <Folder Include="Views\Shared\DisplayTemplates\" />
@@ -269,8 +270,6 @@
     <TypeScriptCompile Include="Client\MusicStore.app\components\Models\IAlbum.ts" />
     <TypeScriptCompile Include="Client\MusicStore.app\components\Models\IArtist.ts" />
     <TypeScriptCompile Include="Client\MusicStore.app\components\Models\IGenre.ts" />
-    <TypeScriptCompile Include="Client\MusicStore.app\Login\Login.ts" />
-    <TypeScriptCompile Include="Client\MusicStore.app\Login\LoginController.ts" />
     <TypeScriptCompile Include="Client\MusicStore.app\MusicStore.app.ts" />
     <TypeScriptCompile Include="Client\MusicStore.app\Store\AlbumDetailsController.ts" />
     <TypeScriptCompile Include="Client\MusicStore.app\Store\GenreDetailsController.ts" />
