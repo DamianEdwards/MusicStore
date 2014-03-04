@@ -1,12 +1,15 @@
 ﻿@using MvcMusicStore.Models;
 @using Microsoft.AspNet.Identity;
+
 @{
     ViewBag.Title = "Manage Account";
+    ViewBag.ngApp = "MusicStore";
 }
 
 <h2>@ViewBag.Title.</h2>
 
 <p class="text-success">@ViewBag.StatusMessage</p>
+
 <div class="row">
     <div class="col-md-12">
         @if (ViewBag.HasLocalPassword)
@@ -24,6 +27,13 @@
         </section>
     </div>
 </div>
+
 @section Scripts {
-    @Scripts.Render("~/bundles/jqueryval")
+    
+<script src="~/js/angular.js"></script>
+<script src="~/js/angular-route.js"></script>
+@* TODO: This is currently all the compiled TypeScript, non-minified. Need to explore options
+    for alternate loading schemes, e.g. AMD loader of individual modules, min vs. non-min, etc. *@
+<script src="~/js/site.js"></script>
+
 }

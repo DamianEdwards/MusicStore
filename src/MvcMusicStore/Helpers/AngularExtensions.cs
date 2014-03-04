@@ -96,7 +96,20 @@ namespace System.Web.Mvc.Html
                     ngAttributes["min"] = validator.ValidationParameters["min"];
                     ngAttributes["max"] = validator.ValidationParameters["max"];
                 }
-                // TODO: Regex, Compare, Phone(regex)
+                else if (string.Equals(validator.ValidationType, "equalto"))
+                {
+                    // CompareAttribute validator
+                    var fieldToCompare = validator.ValidationParameters["other"]; // e.g. *.NewPassword
+                    var other = validator.ValidationParameters["other"].ToString();
+                    if (other.StartsWith("*."))
+                    {
+                        // The built-in CompareAttributeAdapter prepends *. to the property name so we strip it off here
+                        other = other.Substring("*.".Length);
+                    }
+                    ngAttributes["app-equal-to"] = other;
+                    // TODO: Actually write the Angular directive to use this
+                }
+                // TODO: Regex, Phone(regex)
             }
 
             // Render!
