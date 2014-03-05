@@ -1,8 +1,20 @@
-﻿module.exports = function (grunt) {
+﻿// <reference path="node_modules/grunt/lib/grunt.js" />
 
-    var staticFilePattern = '**/*.{js,css,map,html,htm,ico,jpg,jpeg,png,gif,eot,svg,ttf,woff}';
+module.exports = function (grunt) {
+
+    grunt.loadNpmTasks('grunt-contrib-uglify');
+    grunt.loadNpmTasks('grunt-contrib-watch');
+    grunt.loadNpmTasks('grunt-contrib-copy');
+    grunt.loadNpmTasks('grunt-contrib-clean');
+    grunt.loadNpmTasks('grunt-contrib-less');
+    grunt.loadNpmTasks('grunt-typescript');
+    grunt.loadNpmTasks('grunt-tslint');
+    //grunt.loadNpmTasks('grunt-contrib-jshint');
+    //grunt.loadNpmTasks('grunt-contrib-qunit');
+    //grunt.loadNpmTasks('grunt-contrib-concat');
 
     grunt.initConfig({
+        staticFilePattern: '**/*.{js,css,map,html,htm,ico,jpg,jpeg,png,gif,eot,svg,ttf,woff}',
         pkg: grunt.file.readJSON('package.json'),
         uglify: {
             options: {
@@ -16,7 +28,7 @@
         },
         clean: {
             options: { force: true },
-            typescript: ['<%= typescript.dev.dest %>'],
+            typescript: ['<%= typescript.dev.files[0].src %>', '<%= typescript.dev.files[1].src %>'],
             bower: ['public'],
             assets: ['public']
         },
@@ -68,7 +80,7 @@
                         expand: true,
                         cwd: "Client/",
                         src: [
-                            staticFilePattern
+                            '<%= staticFilePattern %>'
                         ],
                         dest: "public/",
                         options: { force: true }
@@ -99,51 +111,46 @@
                 configuration: grunt.file.readJSON("tslint.json")
             },
             files: {
-                src: ['<%= typescript.dev.src %>']
+                src: ['Client/**/*.ts']
             }
         },
         typescript: {
+            options: {
+                module: 'amd', // or commonjs
+                target: 'es5', // or es3
+                sourcemap: false
+            },
             dev: {
-                src: ['Client/**/*.ts'],
-                dest: 'public/js/site.js',
-                options: {
-                    module: 'amd', // or commonjs
-                    target: 'es5', // or es3
-                    sourcemap: false
-                }
+                files: [
+                    // TODO: Automate the generation of this config based on convention
+                    {
+                        src: ['Client/ng-apps/components/**/*.ts', 'Client/ng-apps/MusicStore.Store/**/*.ts'],
+                        dest: 'public/js/MusicStore.Store.js'
+                    },
+                    {
+                        src: ['Client/ng-apps/components/**/*.ts', 'Client/ng-apps/MusicStore.Admin/**/*.ts'],
+                        dest: 'public/js/MusicStore.Admin.js'
+                    }
+                ]
             },
             release: {
-                src: ['Client/**/*.ts'],
-                dest: 'public/js/site.js',
                 options: {
-                    module: 'amd', // or commonjs
-                    target: 'es5', // or es3
                     sourcemap: true
-                }
+                },
+                files: '<%= typescript.dev.files %>'
             }
         },
         watch: {
             typescript: {
-                files: ['<%= typescript.dev.src %>'],
+                files: ['Client/**/*.ts'],
                 tasks: ['tslint', 'typescript:dev']
             },
             dev: {
-                files: ['bower_components/' + staticFilePattern, 'Client/' + staticFilePattern],
+                files: ['bower_components/<%= staticFilePattern %>', 'Client/<%= staticFilePattern %>'],
                 tasks: ['dev']
             }
         }
     });
-
-    grunt.loadNpmTasks('grunt-contrib-uglify');
-    grunt.loadNpmTasks('grunt-contrib-watch');
-    grunt.loadNpmTasks('grunt-contrib-copy');
-    grunt.loadNpmTasks('grunt-contrib-clean');
-    grunt.loadNpmTasks('grunt-contrib-less');
-    grunt.loadNpmTasks('grunt-typescript');
-    grunt.loadNpmTasks('grunt-tslint');
-    //grunt.loadNpmTasks('grunt-contrib-jshint');
-    //grunt.loadNpmTasks('grunt-contrib-qunit');
-    //grunt.loadNpmTasks('grunt-contrib-concat');
 
     //grunt.registerTask('test', ['jshint', 'qunit']);
     grunt.registerTask('dev', ['clean', 'copy', 'less:dev', 'tslint', 'typescript:dev']);

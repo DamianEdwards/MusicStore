@@ -1,7 +1,8 @@
-/// <reference path="AlbumApi.ts" />
+// <reference path="AlbumApi.ts" />
 
 module MusicStore.AlbumApi {
     export interface IAlbumApiService {
+        getAlbums(): ng.IPromise<Array<Models.IAlbum>>;
         getAlbumDetails(albumId: number): ng.IPromise<Models.IAlbum>;
         getMostPopularAlbums(count?: number): ng.IPromise<Array<Models.IAlbum>>;
     }
@@ -20,6 +21,17 @@ module MusicStore.AlbumApi {
             this._q = $q;
             this._http = $http;
             this._urlResolver = urlResolver;
+        }
+
+        public getAlbums() {
+            var url = this._urlResolver.resolveUrl("~/api/albums"),
+                inlineData = this._inlineData ? this._inlineData.get(url) : null;
+
+            if (inlineData) {
+                return this._q.when(inlineData);
+            } else {
+                return this._http.get(url).then(result => result.data);
+            }
         }
 
         public getAlbumDetails(albumId: number) {

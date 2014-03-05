@@ -11,10 +11,8 @@ namespace MvcMusicStore.Controllers
         private readonly MusicStoreEntities _storeContext = new MusicStoreEntities();
 
         // GET: /Home/
-        public async Task<ActionResult> Index()
+        public ActionResult Index()
         {
-            //ViewBag.MenuGenres = await new GenresApiController().GenreMenuList();
-            //ViewBag.MostPopularAlbums = await new AlbumsApiController().MostPopular();
             return View();
         }
 

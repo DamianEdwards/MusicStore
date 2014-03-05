@@ -11,19 +11,13 @@ namespace MvcMusicStore.Controllers
     {
         private readonly MusicStoreEntities _storeContext = new MusicStoreEntities();
 
-        // GET: /StoreManager/
-        public async Task<ActionResult> Index()
-        {
-            return View(await _storeContext.Albums
-                .Include(a => a.Genre)
-                .Include(a => a.Artist)
-                .OrderBy(a => a.Price).ToListAsync());
-        }
-
         // GET: /StoreManager/Details/5
         public async Task<ActionResult> Details(int id = 0)
         {
-            var album = await _storeContext.Albums.FindAsync(id);
+            var album = await _storeContext.Albums
+                .Include(a => a.Genre)
+                .Include(a => a.Artist)
+                .SingleOrDefaultAsync(a => a.AlbumId == id);
             
             if (album == null)
             {

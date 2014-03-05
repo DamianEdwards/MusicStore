@@ -10,6 +10,18 @@ namespace MvcMusicStore.Controllers
     {
         private readonly MusicStoreEntities _storeContext = new MusicStoreEntities();
 
+        [Route("api/albums")]
+        public ActionResult All()
+        {
+            return new SmartJsonResult
+            {
+                Data = _storeContext.Albums
+                    .Include(a => a.Genre)
+                    .Include(a => a.Artist)
+                    .OrderBy(a => a.Title)
+            };
+        }
+
         [Route("api/albums/mostPopular")]
         public ActionResult MostPopular(int count = 6)
         {

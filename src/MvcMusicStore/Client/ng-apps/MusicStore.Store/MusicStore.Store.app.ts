@@ -1,7 +1,6 @@
-/// <reference path="../../bower_components/dt-angular/angular-route.d.ts" />
-/// <reference path="../../bower_components/dt-angular/angular.d.ts" />
+/// <reference path="../references.ts" />
 
-module MusicStore {
+module MusicStore.Store {
     class Startup {
         private _routeProvider: ng.route.IRouteProvider;
         private _logProvider;
@@ -15,17 +14,17 @@ module MusicStore {
             this._logProvider.debugEnabled(true);
 
             this._routeProvider
-                .when("/", { templateUrl: "MusicStore.app/Home/index.html" })
-                .when("/albums/genres", { templateUrl: "MusicStore.app/Store/GenreList.html" })
-                .when("/albums/genres/:genreId", { templateUrl: "MusicStore.app/Store/GenreDetails.html" })
-                .when("/albums/:albumId", { templateUrl: "MusicStore.app/Store/AlbumDetails.html" })
+                .when("/", { templateUrl: "ng-apps/MusicStore.Store/Home/Home.html" })
+                .when("/albums/genres", { templateUrl: "ng-apps/MusicStore.Store/Catalog/GenreList.html" })
+                .when("/albums/genres/:genreId", { templateUrl: "ng-apps/MusicStore.Store/Catalog/GenreDetails.html" })
+                .when("/albums/:albumId", { templateUrl: "ng-apps/MusicStore.Store/Catalog/AlbumDetails.html" })
                 .otherwise({ redirectTo: "/" });
         }
     }
-
+    
     // TODO: Generate this!!
     // Register the application module with AngularJS
-    var _app = angular.module("MusicStore", [
+    var _app = angular.module("MusicStore.Store", [
         // Dependencies
         "ngRoute",
         "MusicStore.InlineData",
@@ -36,8 +35,8 @@ module MusicStore {
         "MusicStore.LoginLink",
         "MusicStore.GenreApi",
         "MusicStore.AlbumApi",
-        "MusicStore.Home",
-        "MusicStore.Store"
+        "MusicStore.Store.Home",
+        "MusicStore.Store.Catalog"
     ]);
 
     _app.config([

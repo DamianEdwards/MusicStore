@@ -45,9 +45,9 @@ namespace System.Web.Mvc.Html
             var expressionText = ExpressionHelper.GetExpressionText(expression);
             var metadata = ModelMetadata.FromLambdaExpression(expression, html.ViewData);
             var ngAttributes = new Dictionary<string, object>();
-
+            
             // Angular binding to client-side model (scope). This is required for Angular validation to work.
-            ngAttributes["ng-model"] = html.ViewContext.ViewData.TemplateInfo.GetFullHtmlFieldName(expressionText);
+            ngAttributes["ng-model"] = html.ViewData.TemplateInfo.GetFullHtmlFieldName(expressionText);
             
             // Set input type
             if (string.Equals(metadata.DataTypeName, Enum.GetName(typeof(DataType), DataType.EmailAddress), StringComparison.OrdinalIgnoreCase))
@@ -145,8 +145,8 @@ namespace System.Web.Mvc.Html
         {
             var expressionText = ExpressionHelper.GetExpressionText(expression);
             var metadata = ModelMetadata.FromLambdaExpression(expression, html.ViewData);
-            var modelName = html.ViewContext.ViewData.TemplateInfo.GetFullHtmlFieldName(expressionText);
-
+            var modelName = html.ViewData.TemplateInfo.GetFullHtmlFieldName(expressionText);
+            
             var clientValidators = metadata.GetValidators(html.ViewContext.Controller.ControllerContext)
                                            .SelectMany(v => v.GetClientValidationRules());
             var tags = new List<TagBuilder>();
@@ -186,7 +186,7 @@ namespace System.Web.Mvc.Html
         {
             var expressionText = ExpressionHelper.GetExpressionText(expression);
             var metadata = ModelMetadata.FromLambdaExpression(expression, html.ViewData);
-            var modelName = html.ViewContext.ViewData.TemplateInfo.GetFullHtmlFieldName(expressionText);
+            var modelName = html.ViewData.TemplateInfo.GetFullHtmlFieldName(expressionText);
             var ngClassFormat = "{{ '{0}' : ({1}.submitAttempted || {1}.{2}.$dirty) && {1}.{2}.$invalid }}";
 
             return string.Format(ngClassFormat, className, formName, modelName);

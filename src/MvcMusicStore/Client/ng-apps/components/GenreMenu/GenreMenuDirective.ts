@@ -7,7 +7,7 @@ module MusicStore.GenreMenu {
         public templateUrl;
 
         constructor(urlResolver: UrlResolver.IUrlResolverService) {
-            this.templateUrl = urlResolver.resolveUrl("~/MusicStore.app/components/GenreMenu/GenreMenu.html");
+            this.templateUrl = urlResolver.resolveUrl("~/ng-apps/components/GenreMenu/GenreMenu.html");
         }
     }
 

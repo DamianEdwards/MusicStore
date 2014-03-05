@@ -1,6 +1,6 @@
 /// <reference path="Home.ts" />
 
-module MusicStore.Home {
+module MusicStore.Store.Home {
     interface IHomeViewModel {
         albums: Array<Models.IAlbum>
     }
@@ -18,7 +18,7 @@ module MusicStore.Home {
     }
 
     // TODO: Generate this
-    _module.controller("MusicStore.Home.HomeController", [
+    _module.controller("MusicStore.Store.Home.HomeController", [
         "MusicStore.AlbumApi.IAlbumApiService",
         HomeController
     ]);

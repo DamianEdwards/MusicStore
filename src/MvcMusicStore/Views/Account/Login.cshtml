@@ -2,7 +2,7 @@
 
 @{
     ViewBag.Title = "Log in";
-    ViewBag.ngApp = "MusicStore";
+    ViewBag.ngApp = "MusicStore.Store";
 }
 
 @section NavBarItems {
@@ -64,7 +64,7 @@
                 
                 <div class="form-group">
                     <div class="col-md-offset-2 col-md-10">
-                        <input type="submit" value="Log in" class="btn btn-default" />
+                        <button type="submit" class="btn btn-default">Log in</button>
                     </div>
                 </div>
                 
@@ -87,6 +87,6 @@
     <script src="~/js/angular-route.js"></script>
     @* TODO: This is currently all the compiled TypeScript, non-minified. Need to explore options
         for alternate loading schemes, e.g. AMD loader of individual modules, min vs. non-min, etc. *@
-    <script src="~/js/site.js"></script>
+    <script src="~/js/MusicStore.Store.js"></script>
 
 }

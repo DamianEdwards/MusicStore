@@ -1,6 +1,6 @@
-/// <reference path="Store.ts" />
+/// <reference path="Catalog.ts" />
 
-module MusicStore.Store {
+module MusicStore.Store.Catalog {
     interface IGenreListViewModel {
         genres: Array<Models.IGenre>;
     }
@@ -18,7 +18,7 @@ module MusicStore.Store {
     }
 
     // TODO: Generate this
-    _module.controller("MusicStore.Store.GenreListController", [
+    _module.controller("MusicStore.Store.Catalog.GenreListController", [
         "MusicStore.GenreApi.IGenreApiService",
         GenreListController
     ]);

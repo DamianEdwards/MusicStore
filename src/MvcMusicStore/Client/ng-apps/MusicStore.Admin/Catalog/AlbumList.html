@@ -1,0 +1,35 @@
+﻿<div ng-controller="MusicStore.Admin.Catalog.AlbumListController as viewModel">
+    <h2>Index</h2>
+    <p>
+        <a href="#/admin/albums/new"></a>
+    </p>
+    <table class="table">
+        <tr>
+            <!--TODO: How to get display names from meta-model to client views-->
+            <th>Genre</th>
+            <th>Artist</th>
+            <th>Title</th>
+            <th>Price</th>
+            <th></th>
+        </tr>
+        <tr ng-repeat="album in viewModel.albums">
+            <td>
+                {{ album.Genre.Name }}
+            </td>
+            <td>
+                {{ viewModel.truncate(album.Artist.Name, 25) }}
+            </td>
+            <td>
+                {{ viewModel.truncate(album.Title, 25) }}
+            </td>
+            <td>
+                {{ album.Price | currency }}
+            </td>
+            <td>
+                <a ng-href="#/albums/{{ album.AlbumId }}/edit">Edit</a> |
+                <a ng-href="#/albums/{{ album.AlbumId }}/details">Details</a> |
+                <a ng-href="#/albums/{{ album.AlbumId }}/delete">Delete</a>
+            </td>
+        </tr>
+    </table>
+</div>
