@@ -11,6 +11,11 @@ namespace MvcMusicStore.Controllers
     {
         private readonly MusicStoreEntities _storeContext = new MusicStoreEntities();
 
+        public ActionResult Index()
+        {
+            return View();
+        }
+
         // GET: /StoreManager/Details/5
         public async Task<ActionResult> Details(int id = 0)
         {
