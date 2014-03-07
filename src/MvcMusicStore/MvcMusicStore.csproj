@@ -158,6 +158,7 @@
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\ShoppingCartController.cs" />
     <Compile Include="Controllers\StoreManagerController.cs" />
+    <Compile Include="Controllers\TemplateController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
@@ -183,13 +184,14 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Client\favicon.ico" />
-    <Content Include="Client\ng-apps\MusicStore.Admin\Catalog\AlbumList.html" />
+    <None Include="Client\ng-apps\MusicStore.Admin\Catalog\AlbumList.cshtml" />
     <Content Include="Client\ng-apps\MusicStore.Store\Home\Home.html" />
     <Content Include="Client\ng-apps\MusicStore.Store\Catalog\AlbumDetails.html" />
     <Content Include="Client\ng-apps\MusicStore.Store\Catalog\GenreDetails.html" />
     <Content Include="Client\ng-apps\MusicStore.Store\Catalog\GenreList.html" />
     <Content Include="Client\ng-apps\components\GenreMenu\GenreMenu.html" />
     <Content Include="Global.asax" />
+    <Content Include="Client\ng-apps\Web.config" />
     <None Include="Client\Site.less" />
     <Content Include="Gruntfile.js" />
     <Content Include="Client\images\home-showcase.png" />
@@ -236,6 +238,7 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
+    <Folder Include="Views\Template\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="packages.config" />

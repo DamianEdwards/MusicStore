@@ -17,7 +17,7 @@ module MusicStore.Admin {
                 .when("/albums/:albumId/edit", { templateUrl: "ng-apps/MusicStore.Admin/Catalog/AlbumEdit.html" })
                 .when("/albums/:albumId/details", { templateUrl: "ng-apps/MusicStore.Admin/Catalog/AlbumDetails.html" })
                 .when("/albums/:albumId/delete", { templateUrl: "ng-apps/MusicStore.Admin/Catalog/AlbumDelete.html" })
-                .when("/albums", { templateUrl: "ng-apps/MusicStore.Admin/Catalog/AlbumList.html" })
+                .when("/albums", { templateUrl: "ng-apps/MusicStore.Admin/Catalog/AlbumList.cshtml" })
                 .otherwise({ redirectTo: "/albums" });
         }
     }
