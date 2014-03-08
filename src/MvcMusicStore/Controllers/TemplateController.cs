@@ -14,11 +14,6 @@ namespace MvcMusicStore.Controllers
         [Route("ng-apps/{*path}")]
         public ActionResult Index(string path)
         {
-            if (string.IsNullOrWhiteSpace(path))
-            {
-                return HttpNotFound();
-            }
-
             if (!IsValidPath(path))
             {
                 return HttpNotFound();
@@ -29,6 +24,11 @@ namespace MvcMusicStore.Controllers
 
         private static bool IsValidPath(string path)
         {
+            if (string.IsNullOrWhiteSpace(path))
+            {
+                return false;
+            }
+
             var last = '\0';
             for (var i = 0; i < path.Length; i++)
             {

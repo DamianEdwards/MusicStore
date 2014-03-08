@@ -16,22 +16,6 @@ namespace MvcMusicStore.Controllers
             return View();
         }
 
-        // GET: /StoreManager/Details/5
-        public async Task<ActionResult> Details(int id = 0)
-        {
-            var album = await _storeContext.Albums
-                .Include(a => a.Genre)
-                .Include(a => a.Artist)
-                .SingleOrDefaultAsync(a => a.AlbumId == id);
-            
-            if (album == null)
-            {
-                return HttpNotFound();
-            }
-
-            return View(album);
-        }
-
         // GET: /StoreManager/Create
         public async Task<ActionResult> Create()
         {

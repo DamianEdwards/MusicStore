@@ -5,14 +5,16 @@
     ViewBag.ngApp = "MusicStore.Admin";
 }
 
+<h1>Store Manager</h1>
+
 <ng-view></ng-view>
 
 @section Scripts {
 
-    <script src="~/js/angular.js"></script>
-    <script src="~/js/angular-route.js"></script>
-    @* TODO: This is currently all the compiled TypeScript, non-minified. Need to explore options
-        for alternate loading schemes, e.g. AMD loader of individual modules, min vs. non-min, etc. *@
-    <script src="~/js/@(ViewBag.ngApp).js"></script>
+<script src="~/js/angular.js"></script>
+<script src="~/js/angular-route.js"></script>
+@* TODO: This is currently all the compiled TypeScript, non-minified. Need to explore options
+    for alternate loading schemes, e.g. AMD loader of individual modules, min vs. non-min, etc. *@
+<script src="~/js/@(ViewBag.ngApp).js"></script>
 
 }

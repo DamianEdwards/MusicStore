@@ -1,0 +1,53 @@
+﻿@model MvcMusicStore.Models.Album
+
+<div ng-controller="MusicStore.Admin.Catalog.AlbumDetailsController as viewModel">
+    <h2>Album Details</h2>
+	<hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.Artist)
+        </dt>
+        <dd>
+            {{ viewModel.album.Artist.Name }}
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Genre)
+        </dt>
+        <dd>
+            {{ viewModel.album.Genre.Name }}
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Title)
+        </dt>
+        <dd>
+            {{ viewModel.album.Title }}
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Price)
+        </dt>
+        <dd>
+            {{ viewModel.album.Price | currency }}
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.AlbumArtUrl)
+        </dt>
+        <dd>
+            {{ viewModel.album.AlbumArtUrl }}
+        </dd>
+
+        <dt ng-show="viewModel.album.AlbumArtUrl">
+            Album Art
+        </dt>
+        <dd ng-show="viewModel.album.AlbumArtUrl">
+            <img ng-src="{{ viewModel.album.AlbumArtUrl }}" alt="Album Art" />
+        </dd>
+    </dl>
+</div>
+<p>
+    <a ng-href="#/albums/{{ viewModel.album.AlbumId }}/edit">Edit</a> |
+    <a ng-href="#/albums">Back to List</a>
+</p>

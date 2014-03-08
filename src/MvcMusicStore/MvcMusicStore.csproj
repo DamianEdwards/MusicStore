@@ -192,6 +192,8 @@
     <Content Include="Client\ng-apps\components\GenreMenu\GenreMenu.html" />
     <Content Include="Global.asax" />
     <Content Include="Client\ng-apps\Web.config" />
+    <Content Include="Client\ng-apps\MusicStore.Admin\Catalog\AlbumDetails.cshtml" />
+    <Content Include="Client\ng-apps\MusicStore.Admin\Catalog\AlbumEdit.cshtml" />
     <None Include="Client\Site.less" />
     <Content Include="Gruntfile.js" />
     <Content Include="Client\images\home-showcase.png" />
@@ -227,7 +229,6 @@
     <Content Include="Views\Shared\_LoginPartial.cshtml" />
     <Content Include="Views\StoreManager\Create.cshtml" />
     <Content Include="Views\StoreManager\Delete.cshtml" />
-    <Content Include="Views\StoreManager\Details.cshtml" />
     <Content Include="Views\StoreManager\Edit.cshtml" />
     <Content Include="Views\StoreManager\Index.cshtml" />
     <Content Include="Views\ShoppingCart\CartSummary.cshtml" />
@@ -238,12 +239,12 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
-    <Folder Include="Views\Template\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
+    <TypeScriptCompile Include="Client\ng-apps\MusicStore.Admin\Catalog\AlbumDetailsController.ts" />
     <TypeScriptCompile Include="Client\ng-apps\MusicStore.Admin\Catalog\Catalog.ts" />
     <TypeScriptCompile Include="Client\ng-apps\MusicStore.Admin\Catalog\AlbumListController.ts" />
     <TypeScriptCompile Include="Client\ng-apps\components\AlbumApi\AlbumApi.ts" />
@@ -260,6 +261,7 @@
     <TypeScriptCompile Include="Client\ng-apps\components\UrlResolver\UrlResolverService.ts" />
     <TypeScriptCompile Include="Client\ng-apps\components\UrlResolver\UrlResolver.ts" />
     <TypeScriptCompile Include="Client\ng-apps\MusicStore.Admin\MusicStore.Admin.app.ts" />
+    <TypeScriptCompile Include="Client\ng-apps\MusicStore.Admin\Catalog\AlbumEditController.ts" />
     <TypeScriptCompile Include="Client\ng-apps\MusicStore.Store\Home\HomeController.ts" />
     <TypeScriptCompile Include="Client\ng-apps\MusicStore.Store\Home\Home.ts" />
     <TypeScriptCompile Include="Client\ng-apps\components\Models\IAlbum.ts" />

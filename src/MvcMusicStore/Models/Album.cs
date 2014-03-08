@@ -19,7 +19,6 @@ namespace MvcMusicStore.Models
 
         [Required]
         [Range(0.01, 100.00)]
-
         [DataType(DataType.Currency)]
         public decimal Price { get; set; }
 

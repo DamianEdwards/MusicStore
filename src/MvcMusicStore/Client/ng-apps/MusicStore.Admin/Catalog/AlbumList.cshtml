@@ -1,15 +1,16 @@
-﻿<div ng-controller="MusicStore.Admin.Catalog.AlbumListController as viewModel">
-    <h2>Index</h2>
+﻿@model MvcMusicStore.Models.Album
+
+<div ng-controller="MusicStore.Admin.Catalog.AlbumListController as viewModel">
+    <h2>Albums</h2>
     <p>
         <a href="#/admin/albums/new"></a>
     </p>
     <table class="table">
         <tr>
-            <!--TODO: How to get display names from meta-model to client views-->
-            <th>Genre</th>
-            <th>Artist</th>
-            <th>Title</th>
-            <th>Price</th>
+            <th>@Html.DisplayNameFor(m => m.Genre)</th>
+            <th>@Html.DisplayNameFor(m => m.Artist)</th>
+            <th>@Html.DisplayNameFor(m => m.Title)</th>
+            <th>@Html.DisplayNameFor(m => m.Price)</th>
             <th></th>
         </tr>
         <tr ng-repeat="album in viewModel.albums">

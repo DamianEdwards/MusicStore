@@ -84,8 +84,14 @@ namespace System.Web.Mvc.Html
             {
                 if (string.Equals(validator.ValidationType, "length"))
                 {
-                    ngAttributes["ng-minlength"] = validator.ValidationParameters["min"];
-                    ngAttributes["ng-maxlength"] = validator.ValidationParameters["max"];
+                    if (validator.ValidationParameters.ContainsKey("min"))
+                    {
+                        ngAttributes["ng-minlength"] = validator.ValidationParameters["min"];
+                    }
+                    if (validator.ValidationParameters.ContainsKey("max"))
+                    {
+                        ngAttributes["ng-maxlength"] = validator.ValidationParameters["max"];
+                    }
                 }
                 else if (string.Equals(validator.ValidationType, "required"))
                 {
@@ -93,8 +99,14 @@ namespace System.Web.Mvc.Html
                 }
                 else if (string.Equals(validator.ValidationType, "range"))
                 {
-                    ngAttributes["min"] = validator.ValidationParameters["min"];
-                    ngAttributes["max"] = validator.ValidationParameters["max"];
+                    if (validator.ValidationParameters.ContainsKey("min"))
+                    {
+                        ngAttributes["min"] = validator.ValidationParameters["min"];
+                    }
+                    if (validator.ValidationParameters.ContainsKey("max"))
+                    {
+                        ngAttributes["max"] = validator.ValidationParameters["max"];
+                    }
                 }
                 else if (string.Equals(validator.ValidationType, "equalto"))
                 {
