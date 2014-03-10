@@ -56,7 +56,7 @@ module MusicStore.AlbumApi {
         }
 
         public updateAlbum(album: Models.IAlbum) {
-
+            return true;
         }
     }
 
