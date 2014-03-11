@@ -14,12 +14,14 @@ module MusicStore.Admin.Catalog {
 
     class AlbumEditController implements IAlbumDetailsViewModel {
         private _albumApi: AlbumApi.IAlbumApiService;
+        private _timeout: ng.ITimeoutService;
 
-        constructor($routeParams: IAlbumDetailsRouteParams, albumApi: AlbumApi.IAlbumApiService) {
+        constructor($routeParams: IAlbumDetailsRouteParams, albumApi: AlbumApi.IAlbumApiService, $timeout: ng.ITimeoutService) {
             var viewModel = this,
                 albumId = $routeParams.albumId;
 
             this._albumApi = albumApi;
+            this._timeout = $timeout;
             this.alerts = [];
 
             albumApi.getAlbumDetails(albumId).then(album => {
@@ -34,7 +36,9 @@ module MusicStore.Admin.Catalog {
         public save() {
             this._albumApi.updateAlbum(this.album).then(result => {
                 if (!result.ModelErrors) {
-                    this.alerts.push({ type: Models.AlertType.success, message: result.Message });
+                    var alert = { type: Models.AlertType.success, message: result.Message };
+                    this.alerts.push(alert);
+                    this._timeout(() => this.alerts.forEach((value, index) => value !== alert || this.closeAlert(index)), 3000);
                 } else {
                     // TODO: Map errors back to client validators or summary
 
@@ -51,6 +55,7 @@ module MusicStore.Admin.Catalog {
     _module.controller("MusicStore.Admin.Catalog.AlbumEditController", [
         "$routeParams",
         "MusicStore.AlbumApi.IAlbumApiService",
+        "$timeout",
         AlbumEditController
     ]);
 } 
