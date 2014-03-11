@@ -147,14 +147,14 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Controllers\AlbumsApiController.cs" />
+    <Compile Include="Apis\AlbumsApiController.cs" />
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="App_Start\Startup.App.cs" />
     <Compile Include="App_Start\Startup.Auth.cs" />
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\CheckoutController.cs" />
-    <Compile Include="Controllers\GenresApiController.cs" />
+    <Compile Include="Apis\GenresApiController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\ShoppingCartController.cs" />
     <Compile Include="Controllers\StoreManagerController.cs" />
@@ -165,6 +165,7 @@
     <Compile Include="Helpers\AngularExtensions.cs" />
     <Compile Include="Helpers\GeneralExtensions.cs" />
     <Compile Include="Helpers\JsonExtensions.cs" />
+    <Compile Include="Infrastructure\ApiResult.cs" />
     <Compile Include="Infrastructure\SmartJsonResult.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Models\Album.cs" />
@@ -244,6 +245,7 @@
     <Content Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
+    <TypeScriptCompile Include="Client\ng-apps\components\Models\IApiResult.ts" />
     <TypeScriptCompile Include="Client\ng-apps\MusicStore.Admin\Catalog\AlbumDetailsController.ts" />
     <TypeScriptCompile Include="Client\ng-apps\MusicStore.Admin\Catalog\Catalog.ts" />
     <TypeScriptCompile Include="Client\ng-apps\MusicStore.Admin\Catalog\AlbumListController.ts" />

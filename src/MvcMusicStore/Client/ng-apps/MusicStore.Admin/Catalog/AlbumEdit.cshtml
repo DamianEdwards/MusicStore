@@ -4,23 +4,25 @@
     <h2>Edit Album: {{ viewModel.album.AlbumId }}</h2>
     <hr />
 
+    <div class="alert alert-success alert-dismissable" ng-class="" ng-show="viewModel.statusMessage" ng-cloak>
+        {{ viewModel.statusMessage }}
+    </div>
+
     <form name="editAlbum" ng-submit="viewModel.save()">
         <div class="form-horizontal">
-            <input type="hidden" value="{{ viewModel.album.AlbumId }}" />
-            
-            <div class="form-group" ng-class="@Html.ngValidationClassFor(m => m.GenreId, formName: "editAlbum", className: "has-error")">
-                @Html.LabelFor(m => m.Genre, new { @class = "col-md-2 control-label" })
-                <div class="col-md-10">
-                    @*@Html.ngDropDownListFor(m => m.GenreId, new { @class = "form-control" })*@
-                    @Html.ngValidationMessageFor(m => m.GenreId, "editAlbum", new { @class = "field-validation-error" })
-                </div>
-            </div>
-
             <div class="form-group" ng-class="@Html.ngValidationClassFor(m => m.ArtistId, formName: "editAlbum", className: "has-error")">
                 @Html.LabelFor(m => m.Artist, new { @class = "col-md-2 control-label" })
                 <div class="col-md-10">
                     @*@Html.ngDropDownListFor(m => m.ArtistId, new { @class = "form-control" })*@
                     @Html.ngValidationMessageFor(m => m.ArtistId, "editAlbum", new { @class = "field-validation-error" })
+                </div>
+            </div>
+
+            <div class="form-group" ng-class="@Html.ngValidationClassFor(m => m.GenreId, formName: "editAlbum", className: "has-error")">
+                @Html.LabelFor(m => m.Genre, new { @class = "col-md-2 control-label" })
+                <div class="col-md-10">
+                    @*@Html.ngDropDownListFor(m => m.GenreId, new { @class = "form-control" })*@
+                    @Html.ngValidationMessageFor(m => m.GenreId, "editAlbum", new { @class = "field-validation-error" })
                 </div>
             </div>
 
@@ -56,7 +58,7 @@
 
             <div class="form-group">
                 <div class="col-md-offset-2 col-md-10">
-                    <button type="submit" class="btn btn-primary">Save</button>
+                    <button type="submit" class="btn btn-primary" ng-disabled="!viewModel.album">Save</button>
                 </div>
             </div>
         </div>

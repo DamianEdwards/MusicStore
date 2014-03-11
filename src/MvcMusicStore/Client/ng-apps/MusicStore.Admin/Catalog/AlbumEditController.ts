@@ -7,6 +7,7 @@ module MusicStore.Admin.Catalog {
 
     interface IAlbumDetailsViewModel {
         album: Models.IAlbum;
+        statusMessage: string;
         save();
     }
 
@@ -26,8 +27,17 @@ module MusicStore.Admin.Catalog {
 
         public album: Models.IAlbum;
 
+        public statusMessage: string;
+
         public save() {
-            //this._albumApi.updateAlbum(this.album);
+            this._albumApi.updateAlbum(this.album).then(result => {
+                this.statusMessage = result.Message;
+
+                if (result.ModelErrors) {
+                    // TODO: Map errors back to client validators or summary
+                    
+                }
+            });
         }
     }
 

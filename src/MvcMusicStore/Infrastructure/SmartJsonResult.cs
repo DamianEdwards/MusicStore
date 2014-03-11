@@ -2,7 +2,7 @@
 using System.Web.Mvc;
 using Newtonsoft.Json;
 
-namespace MvcMusicStore.Infrastructure
+namespace System.Web.Mvc
 {
     public class SmartJsonResult : ActionResult
     {
@@ -15,10 +15,16 @@ namespace MvcMusicStore.Infrastructure
 
         public object Data { get; set; }
 
+        public int? StatusCode { get; set; }
+
         public override void ExecuteResult(ControllerContext context)
         {
             if (!context.IsChildAction)
             {
+                if (StatusCode.HasValue)
+                {
+                    context.HttpContext.Response.StatusCode = StatusCode.Value;
+                }
                 context.HttpContext.Response.ContentType = "application/json";
                 context.HttpContext.Response.ContentEncoding = Encoding.UTF8;
             }

@@ -2,11 +2,11 @@
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 
-namespace MvcMusicStore.Models 
+namespace MvcMusicStore.Models
 {
-    public class Album {
+    public class Album
+    {
         [ScaffoldColumn(false)]
-
         public int AlbumId { get; set; }
 
         public int GenreId { get; set; }
@@ -29,7 +29,7 @@ namespace MvcMusicStore.Models
         public virtual Genre Genre { get; set; }
 
         public virtual Artist Artist { get; set; }
-        
+
         public virtual List<OrderDetail> OrderDetails { get; set; }
     }
 }

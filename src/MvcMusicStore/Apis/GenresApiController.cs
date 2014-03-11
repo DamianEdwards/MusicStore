@@ -1,10 +1,9 @@
 ﻿using System.Data.Entity;
 using System.Linq;
 using System.Web.Mvc;
-using MvcMusicStore.Infrastructure;
 using MvcMusicStore.Models;
 
-namespace MvcMusicStore.Controllers
+namespace MvcMusicStore.Apis
 {
     public class GenresApiController : Controller
     {
