@@ -186,6 +186,9 @@
   <ItemGroup>
     <Content Include="Client\favicon.ico" />
     <None Include="Client\ng-apps\MusicStore.Admin\Catalog\AlbumList.cshtml" />
+    <Content Include="Client\ng-apps\components\GenreMenu\GenreMenu.min.html">
+      <DependentUpon>GenreMenu.html</DependentUpon>
+    </Content>
     <Content Include="Client\ng-apps\MusicStore.Store\Home\Home.html" />
     <Content Include="Client\ng-apps\MusicStore.Store\Catalog\AlbumDetails.html" />
     <Content Include="Client\ng-apps\MusicStore.Store\Catalog\GenreDetails.html" />
@@ -245,6 +248,7 @@
     <Content Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
+    <TypeScriptCompile Include="Client\ng-apps\components\Models\IAlert.ts" />
     <TypeScriptCompile Include="Client\ng-apps\components\Models\IApiResult.ts" />
     <TypeScriptCompile Include="Client\ng-apps\MusicStore.Admin\Catalog\AlbumDetailsController.ts" />
     <TypeScriptCompile Include="Client\ng-apps\MusicStore.Admin\Catalog\Catalog.ts" />

@@ -47,7 +47,8 @@ module.exports = function (grunt) {
                             "bootstrap/dist/**/*.js",
                             "respond/dest/**/*.js",
                             "angular/*.{js,.js.map}",
-                            "angular-route/*.{js,.js.map}"
+                            "angular-route/*.{js,.js.map}",
+                            "angular-bootstrap/ui-bootstrap*"
                         ],
                         dest: "public/js/",
                         options: { force: true }

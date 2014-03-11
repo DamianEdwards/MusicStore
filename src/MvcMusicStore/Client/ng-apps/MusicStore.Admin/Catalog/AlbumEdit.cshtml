@@ -4,11 +4,14 @@
     <h2>Edit Album: {{ viewModel.album.AlbumId }}</h2>
     <hr />
 
+    <alert ng-repeat="alert in viewModel.alerts" type="alert.type" close="viewModel.closeAlert($index)">{{ alert.message }}</alert>
+
     <div class="alert alert-success alert-dismissable" ng-class="" ng-show="viewModel.statusMessage" ng-cloak>
+        <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
         {{ viewModel.statusMessage }}
     </div>
 
-    <form name="editAlbum" ng-submit="viewModel.save()">
+    <form name="editAlbum" ng-submit="viewModel.save()" novalidate>
         <div class="form-horizontal">
             <div class="form-group" ng-class="@Html.ngValidationClassFor(m => m.ArtistId, formName: "editAlbum", className: "has-error")">
                 @Html.LabelFor(m => m.Artist, new { @class = "col-md-2 control-label" })
@@ -29,24 +32,39 @@
             <div class="form-group" ng-class="@Html.ngValidationClassFor(m => m.Title, formName: "editAlbum", className: "has-error")">
                 @Html.LabelFor(m => m.Title, new { @class = "control-label col-md-2" })
                 <div class="col-md-10">
-                    @Html.ngTextBoxFor(m => m.Title, new { @class = "form-control", ng_model = "viewModel.album.Title" })
-                    @Html.ngValidationMessageFor(model => model.Title, "editAlbum", new { @class = "field-validation-error" })
+                    <div class="row col-md-6">
+                        @Html.ngTextBoxFor(m => m.Title, new { @class = "form-control", ng_model = "viewModel.album.Title" })
+                    </div>
+                    <div class="row col-md-10">
+                        @Html.ngValidationMessageFor(model => model.Title, "editAlbum", new { @class = "help-block field-validation-error" })
+                    </div>
                 </div>
             </div>
 
             <div class="form-group" ng-class="@Html.ngValidationClassFor(m => m.Price, formName: "editAlbum", className: "has-error")">
                 @Html.LabelFor(m => m.Price, new { @class = "control-label col-md-2" })
                 <div class="col-md-10">
-                    @Html.ngTextBoxFor(m => m.Price, new { @class = "form-control", ng_model = "viewModel.album.Price" })
-                    @Html.ngValidationMessageFor(model => model.Price, "editAlbum", new { @class = "field-validation-error" })
+                    <div class="row col-md-8">
+                        <div class="input-group">
+                            <span class="input-group-addon">$</span>
+                            @Html.ngTextBoxFor(m => m.Price, new { @class = "form-control", ng_model = "viewModel.album.Price", style = "width:16%" })
+                        </div>
+                    </div>
+                    <div class="row col-md-10">
+                        @Html.ngValidationMessageFor(model => model.Price, "editAlbum", new { @class = "help-block field-validation-error" })
+                    </div>
                 </div>
             </div>
 
             <div class="form-group" ng-class="@Html.ngValidationClassFor(m => m.AlbumArtUrl, formName: "editAlbum", className: "has-error")">
                 @Html.LabelFor(m => m.AlbumArtUrl, new { @class = "control-label col-md-2" })
                 <div class="col-md-10">
-                    @Html.ngTextBoxFor(m => m.AlbumArtUrl, new { @class = "form-control", ng_model = "viewModel.album.AlbumArtUrl" })
-                    @Html.ngValidationMessageFor(model => model.AlbumArtUrl, "editAlbum", new { @class = "field-validation-error" })
+                    <div class="row col-md-10">
+                        @Html.ngTextBoxFor(m => m.AlbumArtUrl, new { @class = "form-control", ng_model = "viewModel.album.AlbumArtUrl" })
+                    </div>
+                    <div class="row col-md-10">
+                        @Html.ngValidationMessageFor(model => model.AlbumArtUrl, "editAlbum", new { @class = "field-validation-error" })
+                    </div>
                 </div>
             </div>
 
@@ -58,7 +76,10 @@
 
             <div class="form-group">
                 <div class="col-md-offset-2 col-md-10">
-                    <button type="submit" class="btn btn-primary" ng-disabled="!viewModel.album">Save</button>
+                    <button type="submit" class="btn btn-primary"
+                            ng-disabled="!viewModel.album || editAlbum.$invalid">
+                        Save
+                    </button>
                 </div>
             </div>
         </div>

@@ -7,8 +7,9 @@ module MusicStore.Admin.Catalog {
 
     interface IAlbumDetailsViewModel {
         album: Models.IAlbum;
-        statusMessage: string;
+        alerts: Array<Models.IAlert>;
         save();
+        closeAlert(index: number);
     }
 
     class AlbumEditController implements IAlbumDetailsViewModel {
@@ -19,6 +20,7 @@ module MusicStore.Admin.Catalog {
                 albumId = $routeParams.albumId;
 
             this._albumApi = albumApi;
+            this.alerts = [];
 
             albumApi.getAlbumDetails(albumId).then(album => {
                 viewModel.album = album;
@@ -27,17 +29,21 @@ module MusicStore.Admin.Catalog {
 
         public album: Models.IAlbum;
 
-        public statusMessage: string;
+        public alerts: Array<Models.IAlert>;
 
         public save() {
             this._albumApi.updateAlbum(this.album).then(result => {
-                this.statusMessage = result.Message;
-
-                if (result.ModelErrors) {
+                if (!result.ModelErrors) {
+                    this.alerts.push({ type: Models.AlertType.success, message: result.Message });
+                } else {
                     // TODO: Map errors back to client validators or summary
-                    
+
                 }
             });
+        }
+
+        public closeAlert(index: number) {
+            this.alerts.splice(index, 1);
         }
     }
 

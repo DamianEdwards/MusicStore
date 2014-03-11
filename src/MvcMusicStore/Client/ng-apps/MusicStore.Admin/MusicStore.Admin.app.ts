@@ -27,6 +27,7 @@ module MusicStore.Admin {
     var _app = angular.module("MusicStore.Admin", [
         // Dependencies
         "ngRoute",
+        "ui.bootstrap",
         "MusicStore.InlineData",
         "MusicStore.GenreMenu",
         "MusicStore.UrlResolver",
