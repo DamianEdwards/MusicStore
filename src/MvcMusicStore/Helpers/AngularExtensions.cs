@@ -169,6 +169,11 @@ namespace System.Web.Mvc.Html
             return false;
         }
 
+        public static IHtmlString ngDropDownListFor<TModel, TProperty>(this HtmlHelper<TModel> htmlHelper, Expression<Func<TModel, TProperty>> expression, string formName, IDictionary<string, object> htmlAttributes)
+        {
+            return htmlHelper.Raw("");
+        }
+
         public static IHtmlString ngValidationMessageFor<TModel, TProperty>(this HtmlHelper<TModel> htmlHelper, Expression<Func<TModel, TProperty>> expression, string formName)
         {
             return ngValidationMessageFor(htmlHelper, expression, formName, ((IDictionary<string, object>)new RouteValueDictionary()));
@@ -214,6 +219,7 @@ namespace System.Web.Mvc.Html
                         formName, modelName);
                     tag.SetInnerText(validator.ErrorMessage);
                 }
+                // TODO: Regex, equalto, remote
                 else
                 {
                     continue;

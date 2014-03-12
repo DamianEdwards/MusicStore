@@ -10,81 +10,96 @@
             <li ng-repeat="modelError in viewModel.alert.modelErrors">{{ modelError.ErrorMessage }}</li>
         </ul>
     </alert>
-
-    <form name="editAlbum" ng-submit="viewModel.save()" novalidate>
-        <div class="form-horizontal">
-            <div class="form-group" ng-class="@Html.ngValidationClassFor(m => m.ArtistId, formName: "editAlbum", className: "has-error")">
-                @Html.LabelFor(m => m.Artist, new { @class = "col-md-2 control-label" })
-                <div class="col-md-10">
-                    @*@Html.ngDropDownListFor(m => m.ArtistId, new { @class = "form-control" })*@
-                    @Html.ngValidationMessageFor(m => m.ArtistId, "editAlbum", new { @class = "field-validation-error" })
+    
+    <form name="editAlbum" class="form-horizontal" ng-submit="viewModel.save()" novalidate>
+        <div class="form-group" ng-class="@Html.ngValidationClassFor(m => m.ArtistId, formName: "editAlbum", className: "has-error")">
+            @Html.LabelFor(m => m.Artist, new { @class = "col-md-2 control-label" })
+            <div class="col-md-10">
+                <div class="row">
+                    <div class="col-md-6">
+                        @*@Html.ngDropDownListFor(m => m.ArtistId, "ArtistsApiController", "ArtistOptions", new { @class = "form-control" })*@
+                        <select id="ArtistId" name="ArtistId" class="form-control"
+                                ng-model="viewModel.album.ArtistId"
+                                ng-options="a.ArtistId as a.Name for a in viewModel.artists" required>
+                            <option value="">-- choose Artist --</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-6">
+                        @Html.ngValidationMessageFor(m => m.ArtistId, "editAlbum", new { @class = "help-block field-validation-error" })
+                    </div>
                 </div>
             </div>
+        </div>
 
-            <div class="form-group" ng-class="@Html.ngValidationClassFor(m => m.GenreId, formName: "editAlbum", className: "has-error")">
-                @Html.LabelFor(m => m.Genre, new { @class = "col-md-2 control-label" })
-                <div class="col-md-10">
-                    @*@Html.ngDropDownListFor(m => m.GenreId, new { @class = "form-control" })*@
-                    @Html.ngValidationMessageFor(m => m.GenreId, "editAlbum", new { @class = "field-validation-error" })
-                </div>
+        <div class="form-group" ng-class="@Html.ngValidationClassFor(m => m.GenreId, formName: "editAlbum", className: "has-error")">
+            @Html.LabelFor(m => m.Genre, new { @class = "col-md-2 control-label" })
+            <div class="col-md-10">
+                @*@Html.ngDropDownListFor(m => m.GenreId, new { @class = "form-control" })*@
+                @Html.ngValidationMessageFor(m => m.GenreId, "editAlbum", new { @class = "help-block field-validation-error" })
             </div>
+        </div>
 
-            <div class="form-group" ng-class="@Html.ngValidationClassFor(m => m.Title, formName: "editAlbum", className: "has-error")">
-                @Html.LabelFor(m => m.Title, new { @class = "control-label col-md-2" })
-                <div class="col-md-10">
-                    <div class="row col-md-6">
+        <div class="form-group" ng-class="@Html.ngValidationClassFor(m => m.Title, formName: "editAlbum", className: "has-error")">
+            @Html.LabelFor(m => m.Title, new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                <div class="row">
+                    <div class="col-md-6">
                         @Html.ngTextBoxFor(m => m.Title, new { @class = "form-control", ng_model = "viewModel.album.Title", ng_disabled = "viewModel.disabled" })
                     </div>
-                    <div class="row col-md-10">
+                </div>
+                <div class="row">
+                    <div class="col-md-10">
                         @Html.ngValidationMessageFor(model => model.Title, "editAlbum", new { @class = "help-block field-validation-error" })
                     </div>
                 </div>
             </div>
+        </div>
 
-            <div class="form-group" ng-class="@Html.ngValidationClassFor(m => m.Price, formName: "editAlbum", className: "has-error")">
-                @Html.LabelFor(m => m.Price, new { @class = "control-label col-md-2" })
-                <div class="col-md-10">
-                    <div class="row">
-                        <div class="col-md-2">
-                            <div class="input-group">
-                                <span class="input-group-addon">$</span>
-                                @Html.ngTextBoxFor(m => m.Price, new { @class = "form-control", ng_model = "viewModel.album.Price", ng_disabled = "viewModel.disabled" })
-                            </div>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-md-10">
-                            @Html.ngValidationMessageFor(model => model.Price, "editAlbum", new { @class = "help-block field-validation-error" })
+        <div class="form-group" ng-class="@Html.ngValidationClassFor(m => m.Price, formName: "editAlbum", className: "has-error")">
+            @Html.LabelFor(m => m.Price, new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                <div class="row">
+                    <div class="col-md-2">
+                        <div class="input-group">
+                            <span class="input-group-addon">$</span>
+                            @Html.ngTextBoxFor(m => m.Price, new { @class = "form-control", ng_model = "viewModel.album.Price", ng_disabled = "viewModel.disabled" })
                         </div>
                     </div>
                 </div>
-            </div>
-
-            <div class="form-group" ng-class="@Html.ngValidationClassFor(m => m.AlbumArtUrl, formName: "editAlbum", className: "has-error")">
-                @Html.LabelFor(m => m.AlbumArtUrl, new { @class = "control-label col-md-2" })
-                <div class="col-md-10">
-                    <div class="row col-md-10">
-                        @Html.ngTextBoxFor(m => m.AlbumArtUrl, new { @class = "form-control", ng_model = "viewModel.album.AlbumArtUrl", ng_disabled = "viewModel.disabled" })
-                    </div>
-                    <div class="row col-md-10">
-                        @Html.ngValidationMessageFor(model => model.AlbumArtUrl, "editAlbum", new { @class = "field-validation-error" })
+                <div class="row">
+                    <div class="col-md-10">
+                        @Html.ngValidationMessageFor(model => model.Price, "editAlbum", new { @class = "help-block field-validation-error" })
                     </div>
                 </div>
             </div>
+        </div>
 
-            <div class="form-group" ng-show="viewModel.album.AlbumArtUrl && !editAlbum.AlbumArtUrl.$invalid">
-                <div class="col-md-offset-2 col-md-10">
-                    <img ng-src="{{ viewModel.album.AlbumArtUrl }}" alt="Album Art" />
+        <div class="form-group" ng-class="@Html.ngValidationClassFor(m => m.AlbumArtUrl, formName: "editAlbum", className: "has-error")">
+            @Html.LabelFor(m => m.AlbumArtUrl, new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                <div class="row col-md-10">
+                    @Html.ngTextBoxFor(m => m.AlbumArtUrl, new { @class = "form-control", ng_model = "viewModel.album.AlbumArtUrl", ng_disabled = "viewModel.disabled" })
+                </div>
+                <div class="row col-md-10">
+                    @Html.ngValidationMessageFor(model => model.AlbumArtUrl, "editAlbum", new { @class = "field-validation-error" })
                 </div>
             </div>
+        </div>
 
-            <div class="form-group">
-                <div class="col-md-offset-2 col-md-10">
-                    <button type="submit" class="btn btn-primary"
-                            ng-disabled="viewModel.disabled || !viewModel.album || editAlbum.$invalid">
-                        Save
-                    </button>
-                </div>
+        <div class="form-group" ng-show="viewModel.album.AlbumArtUrl && !editAlbum.AlbumArtUrl.$invalid">
+            <div class="col-md-offset-2 col-md-10">
+                <img ng-src="{{ viewModel.album.AlbumArtUrl }}" alt="Album Art" />
+            </div>
+        </div>
+
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <button type="submit" class="btn btn-primary"
+                        ng-disabled="viewModel.disabled || !viewModel.album || editAlbum.$invalid">
+                    Save
+                </button>
             </div>
         </div>
     </form>

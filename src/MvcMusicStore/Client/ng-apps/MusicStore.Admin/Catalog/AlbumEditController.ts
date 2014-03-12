@@ -9,6 +9,7 @@ module MusicStore.Admin.Catalog {
         disabled: boolean;
         album: Models.IAlbum;
         alert: Models.IAlert;
+        artists: Array<Models.IArtist>;
         save();
         clearAlert();
     }
@@ -28,6 +29,9 @@ module MusicStore.Admin.Catalog {
             this._timeout = $timeout;
             this._log = $log;
 
+            // TODO: Get all the artists properly
+            this.artists = [{ ArtistId: 2, Name: "Metallica" }];
+
             albumApi.getAlbumDetails($routeParams.albumId).then(album => {
                 this.album = album;
                 this.disabled = false;
@@ -39,6 +43,8 @@ module MusicStore.Admin.Catalog {
         public album: Models.IAlbum;
 
         public alert: Models.IAlert;
+
+        public artists: Array<Models.IArtist>;
 
         public save() {
             this.disabled = true;
@@ -61,6 +67,7 @@ module MusicStore.Admin.Catalog {
                 },
                 // Error
                 response => {
+                    // TODO: Make this common logic, e.g. base controller class, injected helper service, etc.
                     if (response.status === 400) {
                         // We made a bad request
                         if (response.data && response.data.ModelErrors) {
@@ -80,7 +87,7 @@ module MusicStore.Admin.Catalog {
                             };
                         }
                     } else if (response.status === 404) {
-                        // The album wasn't found, probably deleted
+                        // The album wasn't found, probably deleted. Leave the form disabled and show error message.
                         this.alert = {
                             type: Models.AlertType.danger,
                             message: response.data.Message

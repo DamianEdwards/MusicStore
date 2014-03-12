@@ -1,6 +1,6 @@
 module MusicStore.Models {
     export interface IArtist {
-        artistId: number;
-        name: string;
+        ArtistId: number;
+        Name: string;
     }
 } 
