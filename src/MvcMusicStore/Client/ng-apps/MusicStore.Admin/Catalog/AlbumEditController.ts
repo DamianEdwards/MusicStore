@@ -8,9 +8,9 @@ module MusicStore.Admin.Catalog {
     interface IAlbumDetailsViewModel {
         disabled: boolean;
         album: Models.IAlbum;
-        alerts: Array<Models.IAlert>;
+        alert: Models.IAlert;
         save();
-        closeAlert(index: number);
+        clearAlert();
     }
 
     class AlbumEditController implements IAlbumDetailsViewModel {
@@ -28,8 +28,6 @@ module MusicStore.Admin.Catalog {
             this._timeout = $timeout;
             this._log = $log;
 
-            this.alerts = [];
-
             albumApi.getAlbumDetails($routeParams.albumId).then(album => {
                 this.album = album;
                 this.disabled = false;
@@ -40,25 +38,26 @@ module MusicStore.Admin.Catalog {
 
         public album: Models.IAlbum;
 
-        public alerts: Array<Models.IAlert>;
+        public alert: Models.IAlert;
 
         public save() {
             this.disabled = true;
             this._albumApi.updateAlbum(this.album).then(
                 // Success
                 response => {
-                    this._log.info("Updated album " + this.album + " successfully!");
+                    this._log.info("Updated album " + this.album.AlbumId + " successfully!");
 
                     this.disabled = false;
 
-                    var alert: Models.IAlert = {
+                    var alert = {
                         type: Models.AlertType.success,
                         message: response.data.Message
                     };
-                    this.alerts.splice(0);
-                    this.alerts.push(alert);
+
+                    this.alert = alert;
+
                     // TODO: Do we need to destroy this timeout on controller unload?
-                    this._timeout(() => this.alerts.forEach((value, index) => value !== alert || this.closeAlert(index)), 3000);
+                    this._timeout(() => this.alert !== alert || this.clearAlert(), 3000);
                 },
                 // Error
                 response => {
@@ -67,44 +66,44 @@ module MusicStore.Admin.Catalog {
                         if (response.data && response.data.ModelErrors) {
                             // The server says the update failed validation
                             // TODO: Map errors back to client validators and/or summary
-                            this.alerts.push({
+                            this.alert = {
                                 type: Models.AlertType.danger,
                                 message: response.data.Message,
                                 modelErrors: response.data.ModelErrors
-                            });
+                            };
                             this.disabled = false;
                         } else {
                             // Some other bad request, just show the message
-                            this.alerts.push({
+                            this.alert = {
                                 type: Models.AlertType.danger,
                                 message: response.data.Message
-                            });
+                            };
                         }
                     } else if (response.status === 404) {
                         // The album wasn't found, probably deleted
-                        this.alerts.push({
+                        this.alert = {
                             type: Models.AlertType.danger,
                             message: response.data.Message
-                        });
+                        };
                     } else if (response.status === 401) {
                         // We need to authenticate again
                         // TODO: Should we just redirect to login page, show a message with a link, or something else
-                        this.alerts.push({
+                        this.alert = {
                             type: Models.AlertType.danger,
                             message: "Your session has timed out. Please log in and try again."
-                        });
+                        };
                     } else if (!response.status) {
                         // Request timed out or no response from server or worse
                         this._log.error("Error updating album " + this.album.AlbumId);
                         this._log.error(response);
-                        this.alerts.push({ type: Models.AlertType.danger, message: "An unexpected error occurred. Please try again." });
+                        this.alert = { type: Models.AlertType.danger, message: "An unexpected error occurred. Please try again." };
                         this.disabled = false;
                     }
                 });
         }
 
-        public closeAlert(index: number) {
-            this.alerts.splice(index, 1);
+        public clearAlert() {
+            this.alert = null;
         }
     }
 

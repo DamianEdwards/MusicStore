@@ -4,10 +4,10 @@
     <h2>Edit Album: {{ viewModel.album.AlbumId }}</h2>
     <hr />
 
-    <alert ng-repeat="alert in viewModel.alerts" type="alert.type" close="viewModel.closeAlert($index)">
-        {{ alert.message }}
-        <ul ng-show="alert.modelErrors">
-            <li ng-repeat="modelError in alert.modelErrors">{{ modelError.ErrorMessage }}</li>
+    <alert ng-show="viewModel.alert" type="viewModel.alert.type" close="viewModel.clearAlert()">
+        {{ viewModel.alert.message }}
+        <ul ng-show="viewModel.alert.modelErrors">
+            <li ng-repeat="modelError in viewModel.alert.modelErrors">{{ modelError.ErrorMessage }}</li>
         </ul>
     </alert>
 

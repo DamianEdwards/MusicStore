@@ -154,6 +154,7 @@ module.exports = function (grunt) {
     });
 
     //grunt.registerTask('test', ['jshint', 'qunit']);
+    grunt.registerTask('ts', ['tslint', 'typescript:dev']);
     grunt.registerTask('dev', ['clean', 'copy', 'less:dev', 'tslint', 'typescript:dev']);
     grunt.registerTask('release', ['clean', 'copy', 'uglify', 'less:release', 'typescript:release']);
     grunt.registerTask('default', ['dev']);
