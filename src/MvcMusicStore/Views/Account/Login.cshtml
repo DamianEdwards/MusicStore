@@ -30,8 +30,12 @@
                 <div class="form-group" ng-class="@Html.ngValidationClassFor(m => m.UserName, formName: "login", className: "has-error")">
                     @Html.LabelFor(m => m.UserName, new { @class = "col-md-2 control-label" })
                     <div class="col-md-10">
-                        @Html.ngTextBoxFor(m => m.UserName, new { @class = "form-control" })
-                        @Html.ngValidationMessageFor(m => m.UserName, "login", new { @class = "field-validation-error" })
+                        <div class="row">
+                            <div class="col-md-4">
+                                @Html.ngTextBoxFor(m => m.UserName, new { @class = "form-control" })
+                            </div>
+                        </div>
+                        @Html.ngValidationMessageFor(m => m.UserName, "login", new { @class = "help-block field-validation-error" })
                     </div>
                 </div>
 
@@ -48,8 +52,12 @@
                 <div class="form-group" ng-class="@Html.ngValidationClassFor(m => m.Password, formName: "login", className: "has-error")">
                     @Html.LabelFor(m => m.Password, new { @class = "col-md-2 control-label" })
                     <div class="col-md-10">
-                        @Html.ngPasswordFor(m => m.Password, new { @class = "form-control" })
-                        @Html.ngValidationMessageFor(m => m.Password, "login", new { @class = "field-validation-error" })
+                        <div class="row">
+                            <div class="col-md-4">
+                                @Html.ngPasswordFor(m => m.Password, new { @class = "form-control" })
+                            </div>
+                        </div>
+                        @Html.ngValidationMessageFor(m => m.Password, "login", new { @class = "help-block field-validation-error" })
                     </div>
                 </div>
 
