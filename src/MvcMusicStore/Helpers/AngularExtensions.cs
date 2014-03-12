@@ -63,6 +63,14 @@ namespace System.Web.Mvc.Html
             else if (IsNumberType(metadata.ModelType))
             {
                 ngAttributes["type"] = "number";
+                if (IsIntegerType(metadata.ModelType))
+                {
+                    ngAttributes["step"] = "1";
+                }
+                else
+                {
+                    ngAttributes["step"] = "any";
+                }
             }
             else if (metadata.ModelType == typeof(DateTime))
             {
@@ -141,6 +149,21 @@ namespace System.Web.Mvc.Html
                 case TypeCode.Decimal:
                 case TypeCode.Double:
                 case TypeCode.Single:
+                    return true;
+            }
+            return false;
+        }
+
+        private static bool IsIntegerType(Type type)
+        {
+            switch (Type.GetTypeCode(type))
+            {
+                case TypeCode.Int16:
+                case TypeCode.Int32:
+                case TypeCode.Int64:
+                case TypeCode.UInt16:
+                case TypeCode.UInt32:
+                case TypeCode.UInt64:
                     return true;
             }
             return false;
