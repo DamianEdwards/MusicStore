@@ -7,7 +7,7 @@
     <alert ng-repeat="alert in viewModel.alerts" type="alert.type" close="viewModel.closeAlert($index)">
         {{ alert.message }}
         <ul ng-show="alert.modelErrors">
-            <li ng-repeat="modelError in alert.modelErrors"><strong>{{ modelError.FieldName }}:</strong> {{ modelError.ErrorMessage }}</li>
+            <li ng-repeat="modelError in alert.modelErrors">{{ modelError.ErrorMessage }}</li>
         </ul>
     </alert>
 
