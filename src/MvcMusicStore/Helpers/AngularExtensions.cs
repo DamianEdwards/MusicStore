@@ -138,6 +138,9 @@ namespace System.Web.Mvc.Html
                 case TypeCode.UInt16:
                 case TypeCode.UInt32:
                 case TypeCode.UInt64:
+                case TypeCode.Decimal:
+                case TypeCode.Double:
+                case TypeCode.Single:
                     return true;
             }
             return false;
@@ -179,6 +182,12 @@ namespace System.Web.Mvc.Html
                 else if (string.Equals(validator.ValidationType, "length"))
                 {
                     tag.Attributes["ng-show"] = string.Format("({0}.submitAttempted || {0}.{1}.$dirty) && ({0}.{1}.$error.minlength || {0}.{1}.$error.maxlength)",
+                        formName, modelName);
+                    tag.SetInnerText(validator.ErrorMessage);
+                }
+                else if (string.Equals(validator.ValidationType, "range"))
+                {
+                    tag.Attributes["ng-show"] = string.Format("({0}.submitAttempted || {0}.{1}.$dirty) && ({0}.{1}.$error.min || {0}.{1}.$error.max)",
                         formName, modelName);
                     tag.SetInnerText(validator.ErrorMessage);
                 }

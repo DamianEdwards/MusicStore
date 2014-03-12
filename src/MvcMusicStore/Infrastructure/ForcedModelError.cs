@@ -24,7 +24,7 @@ namespace System.ComponentModel.DataAnnotations
         public override bool IsValid(object value)
         {
 #if DEBUG
-            return value != FailValue;
+            return !value.Equals(FailValue);
 #else
             return true;
 #endif

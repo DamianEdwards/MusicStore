@@ -44,14 +44,18 @@
             <div class="form-group" ng-class="@Html.ngValidationClassFor(m => m.Price, formName: "editAlbum", className: "has-error")">
                 @Html.LabelFor(m => m.Price, new { @class = "control-label col-md-2" })
                 <div class="col-md-10">
-                    <div class="row col-md-2">
-                        <div class="input-group">
-                            <span class="input-group-addon">$</span>
-                            @Html.ngTextBoxFor(m => m.Price, new { @class = "form-control", ng_model = "viewModel.album.Price", ng_disabled = "viewModel.disabled" })
+                    <div class="row">
+                        <div class="col-md-2">
+                            <div class="input-group">
+                                <span class="input-group-addon">$</span>
+                                @Html.ngTextBoxFor(m => m.Price, new { @class = "form-control", ng_model = "viewModel.album.Price", ng_disabled = "viewModel.disabled" })
+                            </div>
                         </div>
                     </div>
-                    <div class="row col-md-10">
-                        @Html.ngValidationMessageFor(model => model.Price, "editAlbum", new { @class = "help-block field-validation-error" })
+                    <div class="row">
+                        <div class="col-md-10">
+                            @Html.ngValidationMessageFor(model => model.Price, "editAlbum", new { @class = "help-block field-validation-error" })
+                        </div>
                     </div>
                 </div>
             </div>
