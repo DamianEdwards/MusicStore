@@ -4,9 +4,4 @@
         Data?: any;
         ModelErrors?: Array<IModelError>;
     }
-
-    export interface IModelError {
-        FieldName: string;
-        ErrorMessage: string;
-    }
 }  

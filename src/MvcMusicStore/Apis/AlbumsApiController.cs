@@ -48,10 +48,11 @@ namespace MvcMusicStore.Apis
 
         [Route("api/albums/{albumId:int}/update")]
         [HttpPost]
+        [Authorize(Roles = "Administrator")]
         public ActionResult UpdateAlbum(int albumId)
         {
             var album = _storeContext.Albums.SingleOrDefault(a => a.AlbumId == albumId);
-            
+
             if (album == null)
             {
                 return new ApiResult
@@ -61,23 +62,21 @@ namespace MvcMusicStore.Apis
                 };
             }
 
-            if (TryUpdateModel(album, prefix: null, includeProperties: null, excludeProperties: new[] { "OrderDetails" }))
-            {
-                // Save the changes to the DB
-                _storeContext.SaveChanges();
-
-                // TODO: Handle missing record, key violations, concurrency issues, etc.
-                
-                return new ApiResult
-                {
-                    Message = "Album updated successfully."
-                };
-            }
-            else
+            if (!TryUpdateModel(album, prefix: null, includeProperties: null, excludeProperties: new[] { "Genre", "Artist", "OrderDetails" }))
             {
                 // Return the model errors
                 return new ApiResult(ModelState);
             }
+
+            // Save the changes to the DB
+            _storeContext.SaveChanges();
+
+            // TODO: Handle missing record, key violations, concurrency issues, etc.
+
+            return new ApiResult
+            {
+                Message = "Album updated successfully."
+            };
         }
 
         protected override void Dispose(bool disposing)

@@ -171,6 +171,7 @@
     <Compile Include="Models\Album.cs" />
     <Compile Include="Models\Artist.cs" />
     <Compile Include="Models\Cart.cs" />
+    <Compile Include="Infrastructure\ForcedModelError.cs" />
     <Compile Include="Models\Genre.cs" />
     <Compile Include="Models\IdentityModels.cs" />
     <Compile Include="Models\MusicStoreEntities.cs" />
@@ -250,6 +251,7 @@
   <ItemGroup>
     <TypeScriptCompile Include="Client\ng-apps\components\Models\IAlert.ts" />
     <TypeScriptCompile Include="Client\ng-apps\components\Models\IApiResult.ts" />
+    <TypeScriptCompile Include="Client\ng-apps\components\Models\IModelError.ts" />
     <TypeScriptCompile Include="Client\ng-apps\MusicStore.Admin\Catalog\AlbumDetailsController.ts" />
     <TypeScriptCompile Include="Client\ng-apps\MusicStore.Admin\Catalog\Catalog.ts" />
     <TypeScriptCompile Include="Client\ng-apps\MusicStore.Admin\Catalog\AlbumListController.ts" />

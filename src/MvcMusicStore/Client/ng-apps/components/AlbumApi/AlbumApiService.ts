@@ -5,7 +5,7 @@ module MusicStore.AlbumApi {
         getAlbums(): ng.IPromise<Array<Models.IAlbum>>;
         getAlbumDetails(albumId: number): ng.IPromise<Models.IAlbum>;
         getMostPopularAlbums(count?: number): ng.IPromise<Array<Models.IAlbum>>;
-        updateAlbum(album: Models.IAlbum): ng.IPromise<Models.IApiResult>;
+        updateAlbum(album: Models.IAlbum): ng.IHttpPromise<Models.IApiResult>;
     }
 
     class AlbumApiService implements IAlbumApiService {
@@ -55,9 +55,9 @@ module MusicStore.AlbumApi {
             }
         }
 
-        public updateAlbum(album: Models.IAlbum) {
+        public updateAlbum(album: Models.IAlbum, config?: ng.IRequestConfig) {
             var url = this._urlResolver.resolveUrl("api/albums/" + album.AlbumId + "/update");
-            return this._http.post(url, album).then(result => result.data);
+            return this._http.post(url, album, config || { timeout: 10000 });
         }
     }
 

@@ -11,6 +11,8 @@ module MusicStore.Store {
         }
 
         public configuration() {
+            // TODO: Enable debug logging based on server config
+            // TODO: Capture all logged errors and send back to server
             this._logProvider.debugEnabled(true);
 
             this._routeProvider

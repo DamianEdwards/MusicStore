@@ -15,7 +15,7 @@ namespace System.Web.Mvc
             if (modelState.Any(m => m.Value.Errors.Count > 0))
             {
                 StatusCode = 400;
-                Message = "The model sumitted was invalid.";
+                Message = "The model submitted was invalid. Please correct the specified errors and try again.";
                 ModelErrors = modelState.SelectMany(m => m.Value.Errors.Select(me => new ModelError { FieldName = m.Key, ErrorMessage = me.ErrorMessage }));
             }
         }

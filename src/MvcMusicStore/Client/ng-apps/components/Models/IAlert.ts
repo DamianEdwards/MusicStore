@@ -4,6 +4,10 @@
         message: string;
     }
 
+    export interface IModelErrorAlert extends IAlert {
+        modelErrors: Array<IModelError>;
+    }
+
     export class AlertType {
         constructor(public value: string) {
         }
