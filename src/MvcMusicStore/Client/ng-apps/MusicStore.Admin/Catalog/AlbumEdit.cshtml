@@ -25,11 +25,7 @@
                         </select>
                     </div>
                 </div>
-                <div class="row">
-                    <div class="col-md-6">
-                        @Html.ngValidationMessageFor(m => m.ArtistId, "editAlbum", new { @class = "help-block field-validation-error" })
-                    </div>
-                </div>
+                @Html.ngValidationMessageFor(m => m.ArtistId, "editAlbum", new { @class = "help-block field-validation-error" })
             </div>
         </div>
 
@@ -49,11 +45,7 @@
                         @Html.ngTextBoxFor(m => m.Title, new { @class = "form-control", ng_model = "viewModel.album.Title", ng_disabled = "viewModel.disabled" })
                     </div>
                 </div>
-                <div class="row">
-                    <div class="col-md-10">
-                        @Html.ngValidationMessageFor(model => model.Title, "editAlbum", new { @class = "help-block field-validation-error" })
-                    </div>
-                </div>
+                @Html.ngValidationMessageFor(model => model.Title, "editAlbum", new { @class = "help-block field-validation-error" })
             </div>
         </div>
 
@@ -68,23 +60,19 @@
                         </div>
                     </div>
                 </div>
-                <div class="row">
-                    <div class="col-md-10">
-                        @Html.ngValidationMessageFor(model => model.Price, "editAlbum", new { @class = "help-block field-validation-error" })
-                    </div>
-                </div>
+                @Html.ngValidationMessageFor(model => model.Price, "editAlbum", new { @class = "help-block field-validation-error" })
             </div>
         </div>
 
         <div class="form-group" ng-class="@Html.ngValidationClassFor(m => m.AlbumArtUrl, formName: "editAlbum", className: "has-error")">
             @Html.LabelFor(m => m.AlbumArtUrl, new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                <div class="row col-md-10">
-                    @Html.ngTextBoxFor(m => m.AlbumArtUrl, new { @class = "form-control", ng_model = "viewModel.album.AlbumArtUrl", ng_disabled = "viewModel.disabled" })
+                <div class="row">
+                    <div class="col-md-10">
+                        @Html.ngTextBoxFor(m => m.AlbumArtUrl, new { @class = "form-control", ng_model = "viewModel.album.AlbumArtUrl", ng_disabled = "viewModel.disabled" })
+                    </div>
                 </div>
-                <div class="row col-md-10">
-                    @Html.ngValidationMessageFor(model => model.AlbumArtUrl, "editAlbum", new { @class = "field-validation-error" })
-                </div>
+                @Html.ngValidationMessageFor(model => model.AlbumArtUrl, "editAlbum", new { @class = "field-validation-error" })
             </div>
         </div>
 

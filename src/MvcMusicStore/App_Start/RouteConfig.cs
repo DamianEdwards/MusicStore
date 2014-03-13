@@ -15,7 +15,7 @@ namespace MvcMusicStore
 
             routes.RouteExistingFiles = true;
 
-             routes.MapMvcAttributeRoutes();
+            routes.MapMvcAttributeRoutes();
             
             routes.MapRoute(
                 name: "Default",
