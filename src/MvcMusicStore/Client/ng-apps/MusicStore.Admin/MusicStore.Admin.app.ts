@@ -37,6 +37,7 @@ module MusicStore.Admin {
         "MusicStore.LoginLink",
         "MusicStore.GenreApi",
         "MusicStore.AlbumApi",
+        "MusicStore.ArtistApi",
         "MusicStore.Admin.Catalog"
     ]);
 

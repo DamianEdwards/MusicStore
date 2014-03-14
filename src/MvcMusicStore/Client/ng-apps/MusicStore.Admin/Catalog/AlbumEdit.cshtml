@@ -17,12 +17,8 @@
             <div class="col-md-10">
                 <div class="row">
                     <div class="col-md-6">
-                        @*@Html.ngDropDownListFor(m => m.ArtistId, "ArtistsApiController", "ArtistOptions", new { @class = "form-control" })*@
-                        <select id="ArtistId" name="ArtistId" class="form-control"
-                                ng-model="viewModel.album.ArtistId"
-                                ng-options="a.ArtistId as a.Name for a in viewModel.artists" required>
-                            <option value="">-- choose Artist --</option>
-                        </select>
+                        @Html.ngDropDownListFor(m => m.ArtistId, m => m.Artist.Name, source: "viewModel.artists", nullOption: "-- choose Artist --",
+                            htmlAttributes: new { @class = "form-control", ng_model = "viewModel.album.ArtistId", ng_disabled = "viewModel.artists.length < 2" })
                     </div>
                 </div>
                 @Html.ngValidationMessageFor(m => m.ArtistId, "editAlbum", new { @class = "help-block field-validation-error" })
@@ -32,7 +28,12 @@
         <div class="form-group" ng-class="@Html.ngValidationClassFor(m => m.GenreId, formName: "editAlbum", className: "has-error")">
             @Html.LabelFor(m => m.Genre, new { @class = "col-md-2 control-label" })
             <div class="col-md-10">
-                @*@Html.ngDropDownListFor(m => m.GenreId, new { @class = "form-control" })*@
+                <div class="row">
+                    <div class="col-md-6">
+                        @Html.ngDropDownListFor(m => m.GenreId, m => m.Genre.Name, source: "viewModel.genres", nullOption: "-- choose Genre --",
+                            htmlAttributes: new { @class = "form-control", ng_model = "viewModel.album.GenreId", ng_disabled = "viewModel.genres.length < 2" })
+                    </div>
+                </div>
                 @Html.ngValidationMessageFor(m => m.GenreId, "editAlbum", new { @class = "help-block field-validation-error" })
             </div>
         </div>

@@ -148,6 +148,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Apis\AlbumsApiController.cs" />
+    <Compile Include="Apis\ArtistsApiController.cs" />
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="App_Start\Startup.App.cs" />
@@ -234,7 +235,6 @@
     <Content Include="Views\Shared\_LoginPartial.cshtml" />
     <Content Include="Views\StoreManager\Create.cshtml" />
     <Content Include="Views\StoreManager\Delete.cshtml" />
-    <Content Include="Views\StoreManager\Edit.cshtml" />
     <Content Include="Views\StoreManager\Index.cshtml" />
     <Content Include="Views\ShoppingCart\CartSummary.cshtml" />
     <Content Include="Views\ShoppingCart\Index.cshtml" />
@@ -244,13 +244,17 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
+    <Folder Include="Views\ArtistsApi\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
+    <TypeScriptCompile Include="Client\ng-apps\components\ArtistApi\ArtistApi.ts" />
+    <TypeScriptCompile Include="Client\ng-apps\components\ArtistApi\ArtistApiService.ts" />
     <TypeScriptCompile Include="Client\ng-apps\components\Models\IAlert.ts" />
     <TypeScriptCompile Include="Client\ng-apps\components\Models\IApiResult.ts" />
+    <TypeScriptCompile Include="Client\ng-apps\components\Models\IGenreLookup.ts" />
     <TypeScriptCompile Include="Client\ng-apps\components\Models\IModelError.ts" />
     <TypeScriptCompile Include="Client\ng-apps\MusicStore.Admin\Catalog\AlbumDetailsController.ts" />
     <TypeScriptCompile Include="Client\ng-apps\MusicStore.Admin\Catalog\Catalog.ts" />

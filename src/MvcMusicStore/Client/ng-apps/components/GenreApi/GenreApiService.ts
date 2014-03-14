@@ -2,6 +2,7 @@
 
 module MusicStore.GenreApi {
     export interface IGenreApiService {
+        getGenresLookup(): ng.IPromise<Array<Models.IGenreLookup>>;
         getGenresMenu(): ng.IPromise<Array<Models.IGenre>>;
         getGenresList(): ng.IHttpPromise<Array<Models.IGenre>>;
         getGenreAlbums(genreId: number): ng.IHttpPromise<Array<Models.IAlbum>>;
@@ -21,6 +22,17 @@ module MusicStore.GenreApi {
             this._q = $q;
             this._http = $http;
             this._urlResolver = urlResolver;
+        }
+
+        public getGenresLookup() {
+            var url = this._urlResolver.resolveUrl("~/api/genres/lookup"),
+                inlineData = this._inlineData ? this._inlineData.get(url) : null;
+
+            if (inlineData) {
+                return this._q.when(inlineData);
+            } else {
+                return this._http.get(url).then(result => result.data);
+            }
         }
 
         public getGenresMenu() {

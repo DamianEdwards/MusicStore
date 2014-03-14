@@ -10,30 +10,43 @@ module MusicStore.Admin.Catalog {
         album: Models.IAlbum;
         alert: Models.IAlert;
         artists: Array<Models.IArtist>;
+        genres: Array<Models.IGenreLookup>;
         save();
         clearAlert();
     }
 
     class AlbumEditController implements IAlbumDetailsViewModel {
         private _albumApi: AlbumApi.IAlbumApiService;
+        private _artistApi: ArtistApi.IArtistApiService;
+        private _genreApi: GenreApi.IGenreApiService;
         private _timeout: ng.ITimeoutService;
         private _log: ng.ILogService;
 
         constructor(
             $routeParams: IAlbumDetailsRouteParams,
             albumApi: AlbumApi.IAlbumApiService,
+            artistApi: ArtistApi.IArtistApiService,
+            genreApi: GenreApi.IGenreApiService,
             $timeout: ng.ITimeoutService,
+            $q: ng.IQService,
             $log: ng.ILogService) {
 
             this._albumApi = albumApi;
+            this._artistApi = artistApi;
+            this._genreApi = genreApi;
             this._timeout = $timeout;
             this._log = $log;
 
-            // TODO: Get all the artists properly
-            this.artists = [{ ArtistId: 2, Name: "Metallica" }];
-
             albumApi.getAlbumDetails($routeParams.albumId).then(album => {
                 this.album = album;
+
+                // Preload the lookup arrays with the current values then kick-off the look up values get
+                this.genres = [album.Genre];
+                this.artists = [album.Artist];
+
+                artistApi.getArtistsLookup().then(artists => this.artists = artists);
+                genreApi.getGenresLookup().then(genres => this.genres = genres);
+
                 this.disabled = false;
             });
         }
@@ -45,6 +58,8 @@ module MusicStore.Admin.Catalog {
         public alert: Models.IAlert;
 
         public artists: Array<Models.IArtist>;
+
+        public genres: Array<Models.IGenreLookup>;
 
         public save() {
             this.disabled = true;
@@ -118,7 +133,10 @@ module MusicStore.Admin.Catalog {
     _module.controller("MusicStore.Admin.Catalog.AlbumEditController", [
         "$routeParams",
         "MusicStore.AlbumApi.IAlbumApiService",
+        "MusicStore.ArtistApi.IArtistApiService",
+        "MusicStore.GenreApi.IGenreApiService",
         "$timeout",
+        "$q",
         "$log",
         AlbumEditController
     ]);

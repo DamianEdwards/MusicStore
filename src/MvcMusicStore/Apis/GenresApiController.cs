@@ -9,6 +9,15 @@ namespace MvcMusicStore.Apis
     {
         private readonly MusicStoreEntities _storeContext = new MusicStoreEntities();
 
+        [Route("api/genres/lookup")]
+        public ActionResult Lookup()
+        {
+            return new SmartJsonResult
+            {
+                Data = _storeContext.Genres.Select(g => new { g.GenreId, g.Name })
+            };
+        }
+
         [Route("api/genres/menu")]
         public ActionResult GenreMenuList(int count = 9)
         {

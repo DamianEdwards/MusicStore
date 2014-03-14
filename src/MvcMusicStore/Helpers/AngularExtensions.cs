@@ -169,9 +169,47 @@ namespace System.Web.Mvc.Html
             return false;
         }
 
-        public static IHtmlString ngDropDownListFor<TModel, TProperty>(this HtmlHelper<TModel> htmlHelper, Expression<Func<TModel, TProperty>> expression, string formName, IDictionary<string, object> htmlAttributes)
+        public static IHtmlString ngDropDownListFor<TModel, TProperty, TDisplayProperty>(this HtmlHelper<TModel> html, Expression<Func<TModel, TProperty>> propertyExpression, Expression<Func<TModel, TDisplayProperty>> displayExpression, string source, string nullOption, object htmlAttributes)
         {
-            return htmlHelper.Raw("");
+            return ngDropDownListFor(html, propertyExpression, displayExpression, source, nullOption, HtmlHelper.AnonymousObjectToHtmlAttributes(htmlAttributes));
+        }
+
+        public static IHtmlString ngDropDownListFor<TModel, TProperty, TDisplayProperty>(this HtmlHelper<TModel> html, Expression<Func<TModel, TProperty>> propertyExpression, Expression<Func<TModel, TDisplayProperty>> displayExpression, string source, string nullOption, IDictionary<string, object> htmlAttributes)
+        {
+            var propertyExpressionText = ExpressionHelper.GetExpressionText(propertyExpression);
+            var displayExpressionText = ExpressionHelper.GetExpressionText(displayExpression);
+            var metadata = ModelMetadata.FromLambdaExpression(propertyExpression, html.ViewData);
+            var tag = new TagBuilder("select");
+
+            var valueFieldName = html.ViewData.TemplateInfo.GetFullHtmlFieldName(propertyExpressionText);
+            var displayFieldName = html.ViewData.TemplateInfo.GetFullHtmlFieldName(displayExpressionText);
+
+            displayFieldName = displayFieldName.Substring(displayFieldName.LastIndexOf('.') + 1);
+
+            tag.Attributes["id"] = html.ViewData.TemplateInfo.GetFullHtmlFieldId(propertyExpressionText);
+            tag.Attributes["name"] = valueFieldName;
+            tag.Attributes["ng-model"] = valueFieldName;
+
+            var ngOptionsFormat = "a.{0} as a.{1} for a in {2}";
+            var ngOptions = string.Format(ngOptionsFormat, valueFieldName, displayFieldName, source);
+            tag.Attributes["ng-options"] = ngOptions;
+
+            if (nullOption != null)
+            {
+                var nullOptionTag = new TagBuilder("option");
+                nullOptionTag.Attributes["value"] = string.Empty;
+                nullOptionTag.SetInnerText(nullOption);
+                tag.InnerHtml = nullOptionTag.ToString();
+            }
+
+            if (metadata.IsRequired)
+            {
+                tag.Attributes["required"] = string.Empty;
+            }
+
+            tag.MergeAttributes(htmlAttributes, replaceExisting: true);
+
+            return html.Raw(tag.ToString());
         }
 
         public static IHtmlString ngValidationMessageFor<TModel, TProperty>(this HtmlHelper<TModel> htmlHelper, Expression<Func<TModel, TProperty>> expression, string formName)
