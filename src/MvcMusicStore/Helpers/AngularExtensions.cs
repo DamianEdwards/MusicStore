@@ -184,7 +184,8 @@ namespace System.Web.Mvc.Html
             var valueFieldName = html.ViewData.TemplateInfo.GetFullHtmlFieldName(propertyExpressionText);
             var displayFieldName = html.ViewData.TemplateInfo.GetFullHtmlFieldName(displayExpressionText);
 
-            displayFieldName = displayFieldName.Substring(displayFieldName.LastIndexOf('.') + 1);
+            var displayFieldNameParts = displayFieldName.Split('.');
+            displayFieldName = displayFieldNameParts[displayFieldNameParts.Length - 1];
 
             tag.Attributes["id"] = html.ViewData.TemplateInfo.GetFullHtmlFieldId(propertyExpressionText);
             tag.Attributes["name"] = valueFieldName;

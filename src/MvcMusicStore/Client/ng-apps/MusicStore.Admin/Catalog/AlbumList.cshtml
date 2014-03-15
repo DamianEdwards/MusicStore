@@ -6,31 +6,37 @@
         <a href="#/admin/albums/new"></a>
     </p>
     <table class="table">
-        <tr>
-            <th>@Html.DisplayNameFor(m => m.Genre)</th>
-            <th>@Html.DisplayNameFor(m => m.Artist)</th>
-            <th>@Html.DisplayNameFor(m => m.Title)</th>
-            <th>@Html.DisplayNameFor(m => m.Price)</th>
-            <th></th>
-        </tr>
-        <tr ng-repeat="album in viewModel.albums">
-            <td>
-                {{ album.Genre.Name }}
-            </td>
-            <td>
-                {{ viewModel.truncate(album.Artist.Name, 25) }}
-            </td>
-            <td>
-                {{ viewModel.truncate(album.Title, 25) }}
-            </td>
-            <td>
-                {{ album.Price | currency }}
-            </td>
-            <td>
-                <a ng-href="#/albums/{{ album.AlbumId }}/edit">Edit</a> |
-                <a ng-href="#/albums/{{ album.AlbumId }}/details">Details</a> |
-                <a ng-href="#/albums/{{ album.AlbumId }}/delete">Delete</a>
-            </td>
-        </tr>
+        <thead>
+            <tr>
+                <th>@Html.DisplayNameFor(m => m.Genre)</th>
+                <th>@Html.DisplayNameFor(m => m.Artist)</th>
+                <th>@Html.DisplayNameFor(m => m.Title)</th>
+                <th>@Html.DisplayNameFor(m => m.Price)</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr ng-repeat="album in viewModel.albums">
+                <td>
+                    {{ album.Genre.Name }}
+                </td>
+                <td>
+                    {{ viewModel.truncate(album.Artist.Name, 25) }}
+                </td>
+                <td>
+                    {{ viewModel.truncate(album.Title, 25) }}
+                </td>
+                <td>
+                    {{ album.Price | currency }}
+                </td>
+                <td>
+                    <div class="btn-group btn-group-xs">
+                        <a ng-href="#/albums/{{ album.AlbumId }}/details" class="btn btn-default">Details</a>
+                        <a ng-href="#/albums/{{ album.AlbumId }}/edit" class="btn btn-default">Edit</a>
+                        <a ng-href="#/albums/{{ album.AlbumId }}/delete" class="btn btn-default">Delete</a>
+                    </div>
+                </td>
+            </tr>
+        </tbody>
     </table>
 </div>
