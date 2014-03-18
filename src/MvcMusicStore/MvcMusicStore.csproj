@@ -169,6 +169,7 @@
     <Compile Include="Infrastructure\ApiResult.cs" />
     <Compile Include="Infrastructure\PagedList.cs" />
     <Compile Include="Infrastructure\SmartJsonResult.cs" />
+    <Compile Include="Infrastructure\SortExpression.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Models\Album.cs" />
     <Compile Include="Models\Artist.cs" />
