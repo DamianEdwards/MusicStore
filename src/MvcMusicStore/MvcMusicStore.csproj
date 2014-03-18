@@ -167,6 +167,7 @@
     <Compile Include="Helpers\GeneralExtensions.cs" />
     <Compile Include="Helpers\JsonExtensions.cs" />
     <Compile Include="Infrastructure\ApiResult.cs" />
+    <Compile Include="Infrastructure\PagedList.cs" />
     <Compile Include="Infrastructure\SmartJsonResult.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Models\Album.cs" />
@@ -256,6 +257,7 @@
     <TypeScriptCompile Include="Client\ng-apps\components\Models\IApiResult.ts" />
     <TypeScriptCompile Include="Client\ng-apps\components\Models\IGenreLookup.ts" />
     <TypeScriptCompile Include="Client\ng-apps\components\Models\IModelError.ts" />
+    <TypeScriptCompile Include="Client\ng-apps\components\Models\IPagedList%27T.ts" />
     <TypeScriptCompile Include="Client\ng-apps\MusicStore.Admin\Catalog\AlbumDetailsController.ts" />
     <TypeScriptCompile Include="Client\ng-apps\MusicStore.Admin\Catalog\Catalog.ts" />
     <TypeScriptCompile Include="Client\ng-apps\MusicStore.Admin\Catalog\AlbumListController.ts" />

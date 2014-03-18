@@ -2,7 +2,7 @@
 
 module MusicStore.AlbumApi {
     export interface IAlbumApiService {
-        getAlbums(): ng.IPromise<Array<Models.IAlbum>>;
+        getAlbums(page?: Number, pageSize?: Number): ng.IPromise<Models.IPagedList<Models.IAlbum>>;
         getAlbumDetails(albumId: number): ng.IPromise<Models.IAlbum>;
         getMostPopularAlbums(count?: number): ng.IPromise<Array<Models.IAlbum>>;
         updateAlbum(album: Models.IAlbum): ng.IHttpPromise<Models.IApiResult>;
@@ -15,18 +15,39 @@ module MusicStore.AlbumApi {
         private _urlResolver: UrlResolver.IUrlResolverService;
 
         constructor($cacheFactory: ng.ICacheFactoryService,
-                    $q: ng.IQService,
-                    $http: ng.IHttpService,
-                    urlResolver: UrlResolver.IUrlResolverService) {
+            $q: ng.IQService,
+            $http: ng.IHttpService,
+            urlResolver: UrlResolver.IUrlResolverService) {
             this._inlineData = $cacheFactory.get("inlineData");
             this._q = $q;
             this._http = $http;
             this._urlResolver = urlResolver;
         }
 
-        public getAlbums() {
+        public getAlbums(page?: Number, pageSize?: Number) {
             var url = this._urlResolver.resolveUrl("~/api/albums"),
-                inlineData = this._inlineData ? this._inlineData.get(url) : null;
+                query: any = {},
+                querySeparator = "?",
+                inlineData;
+
+            if (page) {
+                query.page = page;
+            }
+
+            if (pageSize) {
+                query.pageSize = pageSize;
+            }
+
+            for (var key in query) {
+                if (query.hasOwnProperty(key)) {
+                    url += querySeparator + key + "=" + encodeURIComponent(query[key]);
+                    if (querySeparator === "?") {
+                        querySeparator = "&";
+                    }
+                }
+            }
+
+            inlineData = this._inlineData ? this._inlineData.get(url) : null;
 
             if (inlineData) {
                 return this._q.when(inlineData);

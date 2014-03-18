@@ -3,17 +3,38 @@
 module MusicStore.Admin.Catalog {
     interface IAlbumListViewModel {
         albums: Array<Models.IAlbum>;
+        totalCount: number;
+        currentPage: number;
+        pageSize: number;
+        loadPage(page: number);
         truncate(input: string, length: number): string;
     }
 
     class AlbumListController implements IAlbumListViewModel {
-        constructor(albumApi: AlbumApi.IAlbumApiService) {
-            var viewModel = this;
+        private _albumApi: AlbumApi.IAlbumApiService;
 
-            albumApi.getAlbums().then(albums => viewModel.albums = albums);
+        constructor(albumApi: AlbumApi.IAlbumApiService) {
+            this._albumApi = albumApi;
+            this.currentPage = 1;
+            this.pageSize = 50;
+            this.loadPage(1);
         }
 
         public albums: Array<Models.IAlbum>;
+
+        public totalCount: number;
+
+        public currentPage: number;
+
+        public pageSize: number;
+
+        public loadPage(page: number) {
+            this._albumApi.getAlbums(page, this.pageSize).then(result => {
+                this.albums = result.Data;
+                this.currentPage = result.Page;
+                this.totalCount = result.TotalCount;
+            });
+        }
 
         public truncate(input: string, length: number) {
             if (input.length <= length) {

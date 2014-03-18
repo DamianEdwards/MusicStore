@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
+using Newtonsoft.Json;
 
 namespace MvcMusicStore.Models
 {
@@ -33,6 +34,7 @@ namespace MvcMusicStore.Models
 
         public virtual Artist Artist { get; set; }
 
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
         public virtual List<OrderDetail> OrderDetails { get; set; }
     }
 }

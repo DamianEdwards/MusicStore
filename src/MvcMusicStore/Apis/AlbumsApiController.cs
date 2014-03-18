@@ -1,6 +1,7 @@
 ﻿using System.Data.Entity;
 using System.Linq;
 using System.Web.Mvc;
+using MvcMusicStore.Infrastructure;
 using MvcMusicStore.Models;
 
 namespace MvcMusicStore.Apis
@@ -10,6 +11,21 @@ namespace MvcMusicStore.Apis
         private readonly MusicStoreEntities _storeContext = new MusicStoreEntities();
 
         [Route("api/albums")]
+        public ActionResult Paged(int page = 1, int pageSize = 50)
+        {
+            var pagedAlbums = _storeContext.Albums
+                .Include(a => a.Genre)
+                .Include(a => a.Artist)
+                .OrderBy(a => a.Title)
+                .ToPagedList(page, pageSize);
+
+            return new SmartJsonResult
+            {
+                Data = pagedAlbums
+            };
+        }
+
+        [Route("api/albums/all")]
         public ActionResult All()
         {
             return new SmartJsonResult

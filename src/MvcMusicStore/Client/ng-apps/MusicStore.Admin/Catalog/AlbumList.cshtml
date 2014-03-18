@@ -3,7 +3,7 @@
 <div ng-controller="MusicStore.Admin.Catalog.AlbumListController as viewModel">
     <h2>Albums</h2>
     <p>
-        <a href="#/admin/albums/new"></a>
+        <a class="btn btn-default" href="#/admin/albums/new">Create new</a>
     </p>
     <table class="table">
         <thead>
@@ -39,4 +39,11 @@
             </tr>
         </tbody>
     </table>
+    <pagination class="pagination-sm" on-select-page="viewModel.loadPage(page)"
+                page="viewModel.currentPage" items-per-page="viewModel.pageSize"
+                total-items="viewModel.totalCount" max-size="15"
+                rotate="false" boundary-links="true"></pagination>
+    <p>
+        {{ viewModel.totalCount }} total albums
+    </p>
 </div>
