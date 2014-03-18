@@ -48,6 +48,7 @@ module MusicStore.Admin.Catalog {
                 this.sortDescending = !this.sortDescending;
             } else {
                 this.sortColumn = column;
+                this.sortDescending = false;
             }
 
             this.loadPage(this.currentPage);
