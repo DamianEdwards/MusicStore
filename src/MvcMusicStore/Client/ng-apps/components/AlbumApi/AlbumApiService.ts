@@ -2,7 +2,7 @@
 
 module MusicStore.AlbumApi {
     export interface IAlbumApiService {
-        getAlbums(page?: Number, pageSize?: Number): ng.IPromise<Models.IPagedList<Models.IAlbum>>;
+        getAlbums(page?: number, pageSize?: number, sortBy?: string): ng.IPromise<Models.IPagedList<Models.IAlbum>>;
         getAlbumDetails(albumId: number): ng.IPromise<Models.IAlbum>;
         getMostPopularAlbums(count?: number): ng.IPromise<Array<Models.IAlbum>>;
         updateAlbum(album: Models.IAlbum): ng.IHttpPromise<Models.IApiResult>;
@@ -24,7 +24,7 @@ module MusicStore.AlbumApi {
             this._urlResolver = urlResolver;
         }
 
-        public getAlbums(page?: Number, pageSize?: Number) {
+        public getAlbums(page?: number, pageSize?: number, sortBy?: string) {
             var url = this._urlResolver.resolveUrl("~/api/albums"),
                 query: any = {},
                 querySeparator = "?",
@@ -36,6 +36,10 @@ module MusicStore.AlbumApi {
 
             if (pageSize) {
                 query.pageSize = pageSize;
+            }
+
+            if (sortBy) {
+                query.sortBy = sortBy;
             }
 
             for (var key in query) {

@@ -18,6 +18,7 @@ module MusicStore.Admin.Catalog {
             this.currentPage = 1;
             this.pageSize = 50;
             this.loadPage(1);
+            this.sortColumn = "Title";
         }
 
         public albums: Array<Models.IAlbum>;
@@ -28,12 +29,28 @@ module MusicStore.Admin.Catalog {
 
         public pageSize: number;
 
+        public sortColumn: string;
+
+        public sortDescending: boolean;
+
         public loadPage(page: number) {
-            this._albumApi.getAlbums(page, this.pageSize).then(result => {
+            var sortByExpression = this.getSortByExpression();
+            this._albumApi.getAlbums(page, this.pageSize, sortByExpression).then(result => {
                 this.albums = result.Data;
                 this.currentPage = result.Page;
                 this.totalCount = result.TotalCount;
             });
+        }
+
+        public sortBy(column: string) {
+            if (this.sortColumn === column) {
+                // Just flip the direction
+                this.sortDescending = !this.sortDescending;
+            } else {
+                this.sortColumn = column;
+            }
+
+            this.loadPage(this.currentPage);
         }
 
         public truncate(input: string, length: number) {
@@ -42,6 +59,13 @@ module MusicStore.Admin.Catalog {
             } else {
                 return input.substr(0, length).trim() + "…";
             }
+        }
+
+        private getSortByExpression() {
+            if (this.sortDescending) {
+                return this.sortColumn + " DESC";
+            }
+            return this.sortColumn;
         }
     }
     

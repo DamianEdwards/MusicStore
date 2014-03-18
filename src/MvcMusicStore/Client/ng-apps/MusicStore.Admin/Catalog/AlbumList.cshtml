@@ -8,10 +8,30 @@
     <table class="table">
         <thead>
             <tr>
-                <th>@Html.DisplayNameFor(m => m.Genre)</th>
-                <th>@Html.DisplayNameFor(m => m.Artist)</th>
-                <th>@Html.DisplayNameFor(m => m.Title)</th>
-                <th>@Html.DisplayNameFor(m => m.Price)</th>
+                <th>
+                    @Html.DisplayNameFor(m => m.Genre)
+                    <button class="btn btn-xs pull-right" ng-click="viewModel.sortBy('@Html.NameFor(m => m.Genre.Name)')">
+                        <span class="glyphicon glyphicon-sort"></span>
+                    </button>
+                </th>
+                <th>
+                    @Html.DisplayNameFor(m => m.Artist)
+                    <button class="btn btn-xs pull-right" ng-click="viewModel.sortBy('@Html.NameFor(m => m.Artist.Name)')">
+                        <span class="glyphicon glyphicon-sort"></span>
+                    </button>
+                </th>
+                <th>
+                    @Html.DisplayNameFor(m => m.Title)
+                    <button class="btn btn-xs pull-right" ng-click="viewModel.sortBy('@Html.NameFor(m => m.Title)')">
+                        <span class="glyphicon glyphicon-sort"></span>
+                    </button>
+                </th>
+                <th>
+                    @Html.DisplayNameFor(m => m.Price)
+                    <button class="btn btn-xs pull-right" ng-click="viewModel.sortBy('@Html.NameFor(m => m.Price)')">
+                        <span class="glyphicon glyphicon-sort"></span>
+                    </button>
+                </th>
                 <th></th>
             </tr>
         </thead>
@@ -41,7 +61,7 @@
     </table>
     <pagination class="pagination-sm" on-select-page="viewModel.loadPage(page)"
                 page="viewModel.currentPage" items-per-page="viewModel.pageSize"
-                total-items="viewModel.totalCount" max-size="15"
+                total-items="viewModel.totalCount" max-size="10"
                 rotate="false" boundary-links="true"></pagination>
     <p>
         {{ viewModel.totalCount }} total albums

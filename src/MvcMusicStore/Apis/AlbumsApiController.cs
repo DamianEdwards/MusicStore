@@ -12,12 +12,12 @@ namespace MvcMusicStore.Apis
         private readonly MusicStoreEntities _storeContext = new MusicStoreEntities();
 
         [Route("api/albums")]
-        public ActionResult Paged(int page = 1, int pageSize = 50, string sortExpression = null)
+        public ActionResult Paged(int page = 1, int pageSize = 50, string sortBy = null)
         {
             var pagedAlbums = _storeContext.Albums
                 .Include(a => a.Genre)
                 .Include(a => a.Artist)
-                .SortBy(sortExpression, a => a.Title)
+                .SortBy(sortBy, a => a.Title)
                 .ToPagedList(page, pageSize);
 
             return new SmartJsonResult
