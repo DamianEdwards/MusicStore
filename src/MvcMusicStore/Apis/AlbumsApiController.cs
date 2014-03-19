@@ -96,6 +96,29 @@ namespace MvcMusicStore.Apis
             };
         }
 
+        [Route("api/albums/{albumId:int}")]
+        [HttpDelete]
+        [Authorize(Roles = "Administrator")]
+        public ActionResult DeleteAlbum(int albumId)
+        {
+            var album = _storeContext.Albums.SingleOrDefault(a => a.AlbumId == albumId);
+
+            if (album != null)
+            {
+                _storeContext.Albums.Remove(album);
+
+                // Save the changes to the DB
+                _storeContext.SaveChanges();
+
+                // TODO: Handle missing record, key violations, concurrency issues, etc.
+            }
+
+            return new ApiResult
+            {
+                Message = "Album deleted successfully."
+            };
+        }
+
         protected override void Dispose(bool disposing)
         {
             if (disposing)

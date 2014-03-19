@@ -189,6 +189,7 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Client\favicon.ico" />
+    <Content Include="Client\ng-apps\MusicStore.Admin\Catalog\AlbumDeleteModal.cshtml" />
     <None Include="Client\ng-apps\MusicStore.Admin\Catalog\AlbumList.cshtml" />
     <Content Include="Client\ng-apps\components\GenreMenu\GenreMenu.min.html">
       <DependentUpon>GenreMenu.html</DependentUpon>
@@ -259,6 +260,7 @@
     <TypeScriptCompile Include="Client\ng-apps\components\Models\IGenreLookup.ts" />
     <TypeScriptCompile Include="Client\ng-apps\components\Models\IModelError.ts" />
     <TypeScriptCompile Include="Client\ng-apps\components\Models\IPagedList%27T.ts" />
+    <TypeScriptCompile Include="Client\ng-apps\MusicStore.Admin\Catalog\AlbumDeleteModalController.ts" />
     <TypeScriptCompile Include="Client\ng-apps\MusicStore.Admin\Catalog\AlbumDetailsController.ts" />
     <TypeScriptCompile Include="Client\ng-apps\MusicStore.Admin\Catalog\Catalog.ts" />
     <TypeScriptCompile Include="Client\ng-apps\MusicStore.Admin\Catalog\AlbumListController.ts" />

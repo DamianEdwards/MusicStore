@@ -1,7 +1,7 @@
 ﻿@model MvcMusicStore.Models.Album
 
 <div ng-controller="MusicStore.Admin.Catalog.AlbumEditController as viewModel">
-    <h2>Edit Album: {{ viewModel.album.AlbumId }}</h2>
+    <h2>Album <small>Edit</small></h2>
     <hr />
 
     <alert ng-show="viewModel.alert" type="viewModel.alert.type" close="viewModel.clearAlert()">

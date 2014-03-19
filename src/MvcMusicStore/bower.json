@@ -11,6 +11,7 @@
     "dt-angular": "~1.2.0",
     "angular": "~1.2.15",
     "angular-route": "~1.2.15",
-    "angular-bootstrap": "~0.10.0"
+    "angular-bootstrap": "~0.10.0",
+    "dt-angular-ui-bootstrap": "*"
   }
 }

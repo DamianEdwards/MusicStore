@@ -5,6 +5,14 @@
     <p>
         <a class="btn btn-default" href="#/admin/albums/new">Create new</a>
     </p>
+
+    <alert ng-show="viewModel.alert" type="viewModel.alert.type" close="viewModel.clearAlert()">
+        {{ viewModel.alert.message }}
+        <ul ng-show="viewModel.alert.modelErrors">
+            <li ng-repeat="modelError in viewModel.alert.modelErrors">{{ modelError.ErrorMessage }}</li>
+        </ul>
+    </alert>
+
     <table class="table">
         <thead>
             <tr>
@@ -53,7 +61,7 @@
                     <div class="btn-group btn-group-xs">
                         <a ng-href="#/albums/{{ album.AlbumId }}/details" class="btn btn-default">Details</a>
                         <a ng-href="#/albums/{{ album.AlbumId }}/edit" class="btn btn-default">Edit</a>
-                        <a ng-href="#/albums/{{ album.AlbumId }}/delete" class="btn btn-default">Delete</a>
+                        <a ng-click="viewModel.deleteAlbum(album)" class="btn btn-default">Delete</a>
                     </div>
                 </td>
             </tr>
