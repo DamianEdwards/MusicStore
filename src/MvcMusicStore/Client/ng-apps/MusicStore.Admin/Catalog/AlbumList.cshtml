@@ -9,28 +9,28 @@
         <thead>
             <tr>
                 <th>
-                    @Html.DisplayNameFor(m => m.Genre)
-                    <button class="btn btn-link btn-xs pull-right" ng-click="viewModel.sortBy('@Html.NameFor(m => m.Genre.Name)')">
-                        <span class="glyphicon glyphicon-sort"></span>
-                    </button>
+                    <a title="Sort by this column" href="#/albums" ng-click="viewModel.sortBy('@Html.NameFor(m => m.Genre.Name)')">@Html.DisplayNameFor(m => m.Genre)</a>
+                    
+                    <span class="glyphicon glyphicon-sort-by-alphabet" title="Sorted ascending" ng-show="viewModel.sortColumn == '@Html.NameFor(m => m.Genre.Name)' && !viewModel.sortDescending"></span>
+                    <span class="glyphicon glyphicon-sort-by-alphabet-alt" title="Sorted descending" ng-show="viewModel.sortColumn == '@Html.NameFor(m => m.Genre.Name)' && viewModel.sortDescending"></span>
                 </th>
                 <th>
-                    @Html.DisplayNameFor(m => m.Artist)
-                    <button class="btn btn-link btn-xs pull-right" ng-click="viewModel.sortBy('@Html.NameFor(m => m.Artist.Name)')">
-                        <span class="glyphicon glyphicon-sort"></span>
-                    </button>
+                    <a title="Sort by this column" href="#/albums" ng-click="viewModel.sortBy('@Html.NameFor(m => m.Artist.Name)')">@Html.DisplayNameFor(m => m.Artist)</a>
+
+                    <span class="glyphicon glyphicon-sort-by-alphabet" title="Sorted ascending" ng-show="viewModel.sortColumn == '@Html.NameFor(m => m.Artist.Name)' && !viewModel.sortDescending"></span>
+                    <span class="glyphicon glyphicon-sort-by-alphabet-alt" title="Sorted descending" ng-show="viewModel.sortColumn == '@Html.NameFor(m => m.Artist.Name)' && viewModel.sortDescending"></span>
                 </th>
                 <th>
-                    @Html.DisplayNameFor(m => m.Title)
-                    <button class="btn btn-link btn-xs pull-right" ng-click="viewModel.sortBy('@Html.NameFor(m => m.Title)')">
-                        <span class="glyphicon glyphicon-sort"></span>
-                    </button>
+                    <a title="Sort by this column" href="#/albums" ng-click="viewModel.sortBy('@Html.NameFor(m => m.Title)')">@Html.DisplayNameFor(m => m.Title)</a>
+
+                    <span class="glyphicon glyphicon-sort-by-alphabet" title="Sorted ascending" ng-show="viewModel.sortColumn == '@Html.NameFor(m => m.Title)' && !viewModel.sortDescending"></span>
+                    <span class="glyphicon glyphicon-sort-by-alphabet-alt" title="Sorted descending" ng-show="viewModel.sortColumn == '@Html.NameFor(m => m.Title)' && viewModel.sortDescending"></span>
                 </th>
                 <th>
-                    @Html.DisplayNameFor(m => m.Price)
-                    <button class="btn btn-link btn-xs pull-right" ng-click="viewModel.sortBy('@Html.NameFor(m => m.Price)')">
-                        <span class="glyphicon glyphicon-sort"></span>
-                    </button>
+                    <a title="Sort by this column" href="#/albums" ng-click="viewModel.sortBy('@Html.NameFor(m => m.Price)')">@Html.DisplayNameFor(m => m.Price)</a>
+
+                    <span class="glyphicon glyphicon-sort-by-alphabet" title="Sorted ascending" ng-show="viewModel.sortColumn == '@Html.NameFor(m => m.Price)' && !viewModel.sortDescending"></span>
+                    <span class="glyphicon glyphicon-sort-by-alphabet-alt" title="Sorted descending" ng-show="viewModel.sortColumn == '@Html.NameFor(m => m.Price)' && viewModel.sortDescending"></span>
                 </th>
                 <th></th>
             </tr>
@@ -61,7 +61,7 @@
     </table>
     <pagination class="pagination-sm" on-select-page="viewModel.loadPage(page)"
                 page="viewModel.currentPage" items-per-page="viewModel.pageSize"
-                total-items="viewModel.totalCount" max-size="10"
+                total-items="viewModel.totalCount" max-size="6"
                 rotate="false" boundary-links="true"></pagination>
     <p>
         {{ viewModel.totalCount }} total albums
