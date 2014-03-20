@@ -19,6 +19,7 @@ module MusicStore.Admin.Catalog {
         private _log: ng.ILogService;
 
         constructor(albumApi: AlbumApi.IAlbumApiService,
+                    viewAlert: ViewAlert.IViewAlertService,
                     $modal: ng.ui.bootstrap.IModalService,
                     $timeout: ng.ITimeoutService,
                     $log: ng.ILogService) {
@@ -32,6 +33,9 @@ module MusicStore.Admin.Catalog {
             this.pageSize = 50;
             this.loadPage(1);
             this.sortColumn = "Title";
+
+            this.showAlert(viewAlert.alert, 3000);
+            viewAlert.alert = null;
         }
 
         public alert: Models.IAlert;
@@ -79,23 +83,18 @@ module MusicStore.Admin.Catalog {
                 }
             });
 
-            deleteModal.result.then(result => {
-                if (!result) {
+            deleteModal.result.then(shouldDelete => {
+                if (!shouldDelete) {
                     return;
                 }
 
                 this._albumApi.deleteAlbum(album.AlbumId).then(result => {
                     this.loadPage();
 
-                    var alert = {
+                    this.showAlert({
                         type: Models.AlertType.success,
                         message: result.data.Message
-                    };
-
-                    this.alert = alert;
-
-                    // TODO: Do we need to destroy this timeout on controller unload?
-                    this._timeout(() => this.alert !== alert || this.clearAlert(), 3000);
+                    }, 3000);
                 });
             });
         }
@@ -112,6 +111,19 @@ module MusicStore.Admin.Catalog {
             }
         }
 
+        private showAlert(alert: Models.IAlert, closeAfter?: number) {
+            if (!alert) {
+                return;
+            }
+
+            this.alert = alert;
+
+            // TODO: Do we need to destroy this timeout on controller unload?
+            if (closeAfter) {
+                this._timeout(() => this.alert !== alert || this.clearAlert(), closeAfter);
+            }
+        }
+
         private getSortByExpression() {
             if (this.sortDescending) {
                 return this.sortColumn + " DESC";
@@ -123,6 +135,7 @@ module MusicStore.Admin.Catalog {
     // TODO: Generate this
     _module.controller("MusicStore.Admin.Catalog.AlbumListController", [
         "MusicStore.AlbumApi.IAlbumApiService",
+        "MusicStore.ViewAlert.IViewAlertService",
         "$modal",
         "$timeout",
         "$log",

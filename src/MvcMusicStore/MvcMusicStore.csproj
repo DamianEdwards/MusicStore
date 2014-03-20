@@ -260,6 +260,8 @@
     <TypeScriptCompile Include="Client\ng-apps\components\Models\IGenreLookup.ts" />
     <TypeScriptCompile Include="Client\ng-apps\components\Models\IModelError.ts" />
     <TypeScriptCompile Include="Client\ng-apps\components\Models\IPagedList%27T.ts" />
+    <TypeScriptCompile Include="Client\ng-apps\components\ViewMessage\ViewAlert.ts" />
+    <TypeScriptCompile Include="Client\ng-apps\components\ViewMessage\ViewAlertService.ts" />
     <TypeScriptCompile Include="Client\ng-apps\MusicStore.Admin\Catalog\AlbumDeleteModalController.ts" />
     <TypeScriptCompile Include="Client\ng-apps\MusicStore.Admin\Catalog\AlbumDetailsController.ts" />
     <TypeScriptCompile Include="Client\ng-apps\MusicStore.Admin\Catalog\Catalog.ts" />

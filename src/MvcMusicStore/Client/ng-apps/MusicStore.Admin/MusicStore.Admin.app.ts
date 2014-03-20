@@ -37,6 +37,7 @@ module MusicStore.Admin {
         "MusicStore.GenreApi",
         "MusicStore.AlbumApi",
         "MusicStore.ArtistApi",
+        "MusicStore.ViewAlert",
         "MusicStore.Admin.Catalog"
     ]);
 

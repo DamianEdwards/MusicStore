@@ -19,6 +19,7 @@ module MusicStore.Admin.Catalog {
         private _albumApi: AlbumApi.IAlbumApiService;
         private _artistApi: ArtistApi.IArtistApiService;
         private _genreApi: GenreApi.IGenreApiService;
+        private _viewAlert: ViewAlert.IViewAlertService;
         private _modal: ng.ui.bootstrap.IModalService;
         private _location: ng.ILocationService;
         private _timeout: ng.ITimeoutService;
@@ -29,6 +30,7 @@ module MusicStore.Admin.Catalog {
             albumApi: AlbumApi.IAlbumApiService,
             artistApi: ArtistApi.IArtistApiService,
             genreApi: GenreApi.IGenreApiService,
+            viewAlert: ViewAlert.IViewAlertService,
             $modal: ng.ui.bootstrap.IModalService,
             $location: ng.ILocationService,
             $timeout: ng.ITimeoutService,
@@ -38,6 +40,7 @@ module MusicStore.Admin.Catalog {
             this._albumApi = albumApi;
             this._artistApi = artistApi;
             this._genreApi = genreApi;
+            this._viewAlert = viewAlert;
             this._modal = $modal;
             this._location = $location;
             this._timeout = $timeout;
@@ -139,15 +142,17 @@ module MusicStore.Admin.Catalog {
                 }
             });
 
-            deleteModal.result.then(result => {
-                if (!result) {
+            deleteModal.result.then(shouldDelete => {
+                if (!shouldDelete) {
                     return;
                 }
 
                 this._albumApi.deleteAlbum(this.album.AlbumId).then(result => {
                     // Navigate back to the list
-                    // TODO: How do we pass a message to show?
-
+                    this._viewAlert.alert = {
+                        type: Models.AlertType.success,
+                        message: result.data.Message
+                    };
                     this._location.path("/albums").replace();
                 });
             });
@@ -164,6 +169,7 @@ module MusicStore.Admin.Catalog {
         "MusicStore.AlbumApi.IAlbumApiService",
         "MusicStore.ArtistApi.IArtistApiService",
         "MusicStore.GenreApi.IGenreApiService",
+        "MusicStore.ViewAlert.IViewAlertService",
         "$modal",
         "$location",
         "$timeout",

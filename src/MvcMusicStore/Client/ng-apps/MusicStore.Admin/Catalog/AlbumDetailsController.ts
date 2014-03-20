@@ -14,15 +14,18 @@ module MusicStore.Admin.Catalog {
         private _modal: ng.ui.bootstrap.IModalService;
         private _location: ng.ILocationService;
         private _albumApi: AlbumApi.IAlbumApiService;
+        private _viewAlert: ViewAlert.IViewAlertService;
         
         constructor($routeParams: IAlbumDetailsRouteParams,
                     $modal: ng.ui.bootstrap.IModalService,
                     $location: ng.ILocationService,
-                    albumApi: AlbumApi.IAlbumApiService) {
+                    albumApi: AlbumApi.IAlbumApiService,
+                    viewAlert: ViewAlert.IViewAlertService) {
 
             this._modal = $modal;
             this._location = $location;
             this._albumApi = albumApi;
+            this._viewAlert = viewAlert;
 
             albumApi.getAlbumDetails($routeParams.albumId).then(album => this.album = album);
         }
@@ -38,27 +41,29 @@ module MusicStore.Admin.Catalog {
                 }
             });
 
-            deleteModal.result.then(result => {
-                if (!result) {
+            deleteModal.result.then(shouldDelete => {
+                if (!shouldDelete) {
                     return;
                 }
 
                 this._albumApi.deleteAlbum(this.album.AlbumId).then(result => {
                     // Navigate back to the list
-                    // TODO: How do we pass a message to show?
-
+                    this._viewAlert.alert = {
+                        type: Models.AlertType.success,
+                        message: result.data.Message
+                    };
                     this._location.path("/albums").replace();
                 });
             });
         }
     }
     
-    // TODO: Generate this
     _module.controller("MusicStore.Admin.Catalog.AlbumDetailsController", [
         "$routeParams",
         "$modal",
         "$location",
         "MusicStore.AlbumApi.IAlbumApiService",
+        "MusicStore.ViewAlert.IViewAlertService",
         AlbumDetailsController
     ]);
 }
