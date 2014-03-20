@@ -19,6 +19,8 @@ module MusicStore.Admin.Catalog {
         private _albumApi: AlbumApi.IAlbumApiService;
         private _artistApi: ArtistApi.IArtistApiService;
         private _genreApi: GenreApi.IGenreApiService;
+        private _modal: ng.ui.bootstrap.IModalService;
+        private _location: ng.ILocationService;
         private _timeout: ng.ITimeoutService;
         private _log: ng.ILogService;
 
@@ -27,6 +29,8 @@ module MusicStore.Admin.Catalog {
             albumApi: AlbumApi.IAlbumApiService,
             artistApi: ArtistApi.IArtistApiService,
             genreApi: GenreApi.IGenreApiService,
+            $modal: ng.ui.bootstrap.IModalService,
+            $location: ng.ILocationService,
             $timeout: ng.ITimeoutService,
             $q: ng.IQService,
             $log: ng.ILogService) {
@@ -34,6 +38,8 @@ module MusicStore.Admin.Catalog {
             this._albumApi = albumApi;
             this._artistApi = artistApi;
             this._genreApi = genreApi;
+            this._modal = $modal;
+            this._location = $location;
             this._timeout = $timeout;
             this._log = $log;
 
@@ -124,6 +130,29 @@ module MusicStore.Admin.Catalog {
                 });
         }
 
+        public deleteAlbum() {
+            var deleteModal = this._modal.open({
+                templateUrl: "ng-apps/MusicStore.Admin/Catalog/AlbumDeleteModal.cshtml",
+                controller: "MusicStore.Admin.Catalog.AlbumDeleteModalController as viewModel",
+                resolve: {
+                    album: () => this.album
+                }
+            });
+
+            deleteModal.result.then(result => {
+                if (!result) {
+                    return;
+                }
+
+                this._albumApi.deleteAlbum(this.album.AlbumId).then(result => {
+                    // Navigate back to the list
+                    // TODO: How do we pass a message to show?
+
+                    this._location.path("/albums").replace();
+                });
+            });
+        }
+
         public clearAlert() {
             this.alert = null;
         }
@@ -135,6 +164,8 @@ module MusicStore.Admin.Catalog {
         "MusicStore.AlbumApi.IAlbumApiService",
         "MusicStore.ArtistApi.IArtistApiService",
         "MusicStore.GenreApi.IGenreApiService",
+        "$modal",
+        "$location",
         "$timeout",
         "$q",
         "$log",
