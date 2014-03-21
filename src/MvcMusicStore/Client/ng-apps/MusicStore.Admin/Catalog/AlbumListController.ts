@@ -9,7 +9,6 @@ module MusicStore.Admin.Catalog {
         loadPage(page?: number);
         deleteAlbum(album: Models.IAlbum);
         clearAlert();
-        truncate(input: string, length: number): string;
     }
 
     class AlbumListController implements IAlbumListViewModel {
@@ -101,14 +100,6 @@ module MusicStore.Admin.Catalog {
 
         public clearAlert() {
             this.alert = null;
-        }
-
-        public truncate(input: string, length: number) {
-            if (input.length <= length) {
-                return input;
-            } else {
-                return input.substr(0, length).trim() + "…";
-            }
         }
 
         private showAlert(alert: Models.IAlert, closeAfter?: number) {

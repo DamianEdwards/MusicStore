@@ -243,18 +243,18 @@ namespace System.Web.Mvc.Html
 
                 if (string.Equals(validator.ValidationType, "required"))
                 {
-                    tag.Attributes["ng-show"] = string.Format("({0}.submitAttempted || {0}.{1}.$dirty) && {0}.{1}.$error.{2}", formName, modelName, "required");
+                    tag.Attributes["ng-show"] = string.Format("({0}.submitAttempted || {0}.{1}.$dirty || {0}.{1}.visited) && {0}.{1}.$error.{2}", formName, modelName, "required");
                     tag.SetInnerText(validator.ErrorMessage);
                 }
                 else if (string.Equals(validator.ValidationType, "length"))
                 {
-                    tag.Attributes["ng-show"] = string.Format("({0}.submitAttempted || {0}.{1}.$dirty) && ({0}.{1}.$error.minlength || {0}.{1}.$error.maxlength)",
+                    tag.Attributes["ng-show"] = string.Format("({0}.submitAttempted || {0}.{1}.$dirty || {0}.{1}.visited) && ({0}.{1}.$error.minlength || {0}.{1}.$error.maxlength)",
                         formName, modelName);
                     tag.SetInnerText(validator.ErrorMessage);
                 }
                 else if (string.Equals(validator.ValidationType, "range"))
                 {
-                    tag.Attributes["ng-show"] = string.Format("({0}.submitAttempted || {0}.{1}.$dirty) && ({0}.{1}.$error.min || {0}.{1}.$error.max)",
+                    tag.Attributes["ng-show"] = string.Format("({0}.submitAttempted || {0}.{1}.$dirty || {0}.{1}.visited) && ({0}.{1}.$error.min || {0}.{1}.$error.max)",
                         formName, modelName);
                     tag.SetInnerText(validator.ErrorMessage);
                 }
@@ -276,7 +276,7 @@ namespace System.Web.Mvc.Html
             var expressionText = ExpressionHelper.GetExpressionText(expression);
             var metadata = ModelMetadata.FromLambdaExpression(expression, html.ViewData);
             var modelName = html.ViewData.TemplateInfo.GetFullHtmlFieldName(expressionText);
-            var ngClassFormat = "{{ '{0}' : ({1}.submitAttempted || {1}.{2}.$dirty) && {1}.{2}.$invalid }}";
+            var ngClassFormat = "{{ '{0}' : ({1}.submitAttempted || {1}.{2}.$dirty || {1}.{2}.visited) && {1}.{2}.$invalid }}";
 
             return string.Format(ngClassFormat, className, formName, modelName);
         }

@@ -49,10 +49,10 @@
                     {{ album.Genre.Name }}
                 </td>
                 <td>
-                    {{ viewModel.truncate(album.Artist.Name, 25) }}
+                    {{ album.Artist.Name | truncate:25 }}
                 </td>
                 <td>
-                    {{ viewModel.truncate(album.Title, 25) }}
+                    {{ album.Title | truncate:25 }}
                 </td>
                 <td>
                     {{ album.Price | currency }}
