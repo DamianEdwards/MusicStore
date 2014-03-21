@@ -63,6 +63,32 @@ namespace MvcMusicStore.Apis
             };
         }
 
+        [Route("api/albums")]
+        [HttpPut]
+        [Authorize(Roles = "Administrator")]
+        public ActionResult CreateAlbum()
+        {
+            var album = new Album();
+
+            if (!TryUpdateModel(album, prefix: null, includeProperties: null, excludeProperties: new[] { "Genre", "Artist", "OrderDetails" }))
+            {
+                // Return the model errors
+                return new ApiResult(ModelState);
+            }
+
+            // Save the changes to the DB
+            _storeContext.Albums.Add(album);
+            _storeContext.SaveChanges();
+
+            // TODO: Handle missing record, key violations, concurrency issues, etc.
+
+            return new ApiResult
+            {
+                Data = album.AlbumId,
+                Message = "Album created successfully."
+            };
+        }
+
         [Route("api/albums/{albumId:int}/update")]
         [HttpPost]
         [Authorize(Roles = "Administrator")]

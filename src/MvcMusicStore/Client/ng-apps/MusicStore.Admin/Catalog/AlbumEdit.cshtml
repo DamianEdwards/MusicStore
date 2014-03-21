@@ -1,7 +1,7 @@
 ﻿@model MvcMusicStore.Models.Album
 
 <div ng-controller="MusicStore.Admin.Catalog.AlbumEditController as viewModel">
-    <h2>Album <small>Edit</small></h2>
+    <h2>Album <small>{{ viewModel.mode }}</small></h2>
     <hr />
 
     <alert ng-show="viewModel.alert" type="viewModel.alert.type" close="viewModel.clearAlert()">
@@ -18,7 +18,7 @@
                 <div class="row">
                     <div class="col-md-6">
                         @Html.ngDropDownListFor(m => m.ArtistId, m => m.Artist.Name, source: "viewModel.artists", nullOption: "-- choose Artist --",
-                            htmlAttributes: new { @class = "form-control", ng_model = "viewModel.album.ArtistId", ng_disabled = "viewModel.artists.length < 2" })
+                            htmlAttributes: new { @class = "form-control", ng_model = "viewModel.album.ArtistId", ng_disabled = "viewModel.disabled || viewModel.artists.length < 2" })
                     </div>
                 </div>
                 @Html.ngValidationMessageFor(m => m.ArtistId, "editAlbum", new { @class = "help-block field-validation-error" })
@@ -31,7 +31,7 @@
                 <div class="row">
                     <div class="col-md-6">
                         @Html.ngDropDownListFor(m => m.GenreId, m => m.Genre.Name, source: "viewModel.genres", nullOption: "-- choose Genre --",
-                            htmlAttributes: new { @class = "form-control", ng_model = "viewModel.album.GenreId", ng_disabled = "viewModel.genres.length < 2" })
+                            htmlAttributes: new { @class = "form-control", ng_model = "viewModel.album.GenreId", ng_disabled = "viewModel.disabled || viewModel.genres.length < 2" })
                     </div>
                 </div>
                 @Html.ngValidationMessageFor(m => m.GenreId, "editAlbum", new { @class = "help-block field-validation-error" })
@@ -89,7 +89,9 @@
                         ng-disabled="viewModel.disabled || !viewModel.album || editAlbum.$invalid">
                     Save
                 </button>
-                <button type="button" class="btn btn-danger" ng-click="viewModel.deleteAlbum()">Delete</button>
+                <button type="button" class="btn btn-danger"
+                        ng-click="viewModel.deleteAlbum()"
+                        ng-show="viewModel.mode === 'edit'">Delete</button>
                 <a class="btn btn-default" ng-href="#/albums">Back to List</a>
             </div>
         </div>

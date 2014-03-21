@@ -5,6 +5,7 @@ module MusicStore.AlbumApi {
         getAlbums(page?: number, pageSize?: number, sortBy?: string): ng.IPromise<Models.IPagedList<Models.IAlbum>>;
         getAlbumDetails(albumId: number): ng.IPromise<Models.IAlbum>;
         getMostPopularAlbums(count?: number): ng.IPromise<Array<Models.IAlbum>>;
+        createAlbum(album: Models.IAlbum, config?: ng.IRequestConfig): ng.IHttpPromise<Models.IApiResult>;
         updateAlbum(album: Models.IAlbum, config?: ng.IRequestConfig): ng.IHttpPromise<Models.IApiResult>;
         deleteAlbum(albumId: number, config?: ng.IRequestConfig): ng.IHttpPromise<Models.IApiResult>;
     }
@@ -79,6 +80,11 @@ module MusicStore.AlbumApi {
 
                 return this._http.get(url).then(result => result.data);
             }
+        }
+
+        public createAlbum(album: Models.IAlbum, config?: ng.IRequestConfig) {
+            var url = this._urlResolver.resolveUrl("api/albums");
+            return this._http.put(url, album, config || { timeout: 10000 });
         }
 
         public updateAlbum(album: Models.IAlbum, config?: ng.IRequestConfig) {

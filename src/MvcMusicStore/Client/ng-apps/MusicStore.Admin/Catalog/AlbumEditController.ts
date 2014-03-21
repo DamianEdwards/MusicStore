@@ -2,10 +2,12 @@
 
 module MusicStore.Admin.Catalog {
     interface IAlbumDetailsRouteParams extends ng.route.IRouteParamsService {
+        mode: string;
         albumId: number;
     }
 
     interface IAlbumDetailsViewModel {
+        mode: string; // edit or new
         disabled: boolean;
         album: Models.IAlbum;
         alert: Models.IAlert;
@@ -25,17 +27,16 @@ module MusicStore.Admin.Catalog {
         private _timeout: ng.ITimeoutService;
         private _log: ng.ILogService;
 
-        constructor(
-            $routeParams: IAlbumDetailsRouteParams,
-            albumApi: AlbumApi.IAlbumApiService,
-            artistApi: ArtistApi.IArtistApiService,
-            genreApi: GenreApi.IGenreApiService,
-            viewAlert: ViewAlert.IViewAlertService,
-            $modal: ng.ui.bootstrap.IModalService,
-            $location: ng.ILocationService,
-            $timeout: ng.ITimeoutService,
-            $q: ng.IQService,
-            $log: ng.ILogService) {
+        constructor($routeParams: IAlbumDetailsRouteParams,
+                    albumApi: AlbumApi.IAlbumApiService,
+                    artistApi: ArtistApi.IArtistApiService,
+                    genreApi: GenreApi.IGenreApiService,
+                    viewAlert: ViewAlert.IViewAlertService,
+                    $modal: ng.ui.bootstrap.IModalService,
+                    $location: ng.ILocationService,
+                    $timeout: ng.ITimeoutService,
+                    $q: ng.IQService,
+                    $log: ng.ILogService) {
 
             this._albumApi = albumApi;
             this._artistApi = artistApi;
@@ -46,19 +47,30 @@ module MusicStore.Admin.Catalog {
             this._timeout = $timeout;
             this._log = $log;
 
-            albumApi.getAlbumDetails($routeParams.albumId).then(album => {
-                this.album = album;
+            this.mode = $routeParams.mode;
 
-                // Preload the lookup arrays with the current values then kick-off the look up values get
-                this.genres = [album.Genre];
-                this.artists = [album.Artist];
+            this.alert = viewAlert.alert;
 
-                artistApi.getArtistsLookup().then(artists => this.artists = artists);
-                genreApi.getGenresLookup().then(genres => this.genres = genres);
+            artistApi.getArtistsLookup().then(artists => this.artists = artists);
+            genreApi.getGenresLookup().then(genres => this.genres = genres);
 
+            if (this.mode.toLowerCase() === "edit") {
+                // TODO: Handle album load failure
+                albumApi.getAlbumDetails($routeParams.albumId).then(album => {
+                    this.album = album;
+
+                    // Pre-load the lookup arrays with the current values if not set yet
+                    this.genres = this.genres || [album.Genre];
+                    this.artists = this.artists || [album.Artist];
+
+                    this.disabled = false;
+                });
+            } else {
                 this.disabled = false;
-            });
+            }
         }
+
+        public mode: string;
 
         public disabled = true;
 
@@ -72,22 +84,35 @@ module MusicStore.Admin.Catalog {
 
         public save() {
             this.disabled = true;
-            this._albumApi.updateAlbum(this.album).then(
+
+            var apiMethod = this.mode.toLowerCase() === "edit" ? this._albumApi.updateAlbum : this._albumApi.createAlbum;
+            apiMethod = apiMethod.bind(this._albumApi);
+
+            apiMethod(this.album).then(
                 // Success
                 response => {
-                    this._log.info("Updated album " + this.album.AlbumId + " successfully!");
-
-                    this.disabled = false;
-
                     var alert = {
                         type: Models.AlertType.success,
                         message: response.data.Message
                     };
 
-                    this.alert = alert;
-
                     // TODO: Do we need to destroy this timeout on controller unload?
                     this._timeout(() => this.alert !== alert || this.clearAlert(), 3000);
+
+                    if (this.mode.toLowerCase() === "new") {
+                        this._log.info("Created album successfully!");
+
+                        var albumId: number = response.data.Data;
+
+                        this._viewAlert.alert = alert;
+
+                        // Reload the view with the new album ID
+                        this._location.path("/albums/" + albumId + "/edit").replace();
+                    } else {
+                        this.alert = alert;
+                        this.disabled = false;
+                        this._log.info("Updated album " + this.album.AlbumId + " successfully!");
+                    }
                 },
                 // Error
                 response => {
