@@ -64,7 +64,7 @@ namespace MvcMusicStore.Apis
         }
 
         [Route("api/albums")]
-        [HttpPut]
+        [HttpPost]
         [Authorize(Roles = "Administrator")]
         public ActionResult CreateAlbum()
         {
@@ -90,7 +90,7 @@ namespace MvcMusicStore.Apis
         }
 
         [Route("api/albums/{albumId:int}/update")]
-        [HttpPost]
+        [HttpPut]
         [Authorize(Roles = "Administrator")]
         public ActionResult UpdateAlbum(int albumId)
         {

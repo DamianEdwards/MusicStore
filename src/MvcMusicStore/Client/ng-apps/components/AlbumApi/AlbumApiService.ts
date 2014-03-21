@@ -84,12 +84,12 @@ module MusicStore.AlbumApi {
 
         public createAlbum(album: Models.IAlbum, config?: ng.IRequestConfig) {
             var url = this._urlResolver.resolveUrl("api/albums");
-            return this._http.put(url, album, config || { timeout: 10000 });
+            return this._http.post(url, album, config || { timeout: 10000 });
         }
 
         public updateAlbum(album: Models.IAlbum, config?: ng.IRequestConfig) {
             var url = this._urlResolver.resolveUrl("api/albums/" + album.AlbumId + "/update");
-            return this._http.post(url, album, config || { timeout: 10000 });
+            return this._http.put(url, album, config || { timeout: 10000 });
         }
 
         public deleteAlbum(albumId: number, config?: ng.IRequestConfig) {
