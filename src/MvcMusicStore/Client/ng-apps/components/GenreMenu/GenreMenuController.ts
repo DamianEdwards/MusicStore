@@ -22,10 +22,10 @@ module MusicStore.GenreMenu {
         public urlBase: string;
     }
 
-    // TODO: Generate this
-    _module.controller("MusicStore.GenreMenu.GenreMenuController", [
-        "MusicStore.GenreApi.IGenreApiService",
-        "MusicStore.UrlResolver.IUrlResolverService",
-        GenreMenuController
-    ]);
+    angular.module("MusicStore.GenreMenu")
+        .controller("MusicStore.GenreMenu.GenreMenuController", [
+            "MusicStore.GenreApi.IGenreApiService",
+            "MusicStore.UrlResolver.IUrlResolverService",
+            GenreMenuController
+        ]);
 }

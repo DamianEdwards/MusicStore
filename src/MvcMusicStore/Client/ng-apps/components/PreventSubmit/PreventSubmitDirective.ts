@@ -16,6 +16,8 @@ module MusicStore.PreventSubmit {
         public restrict = "A";
 
         public link(scope: any, element: ng.IAugmentedJQuery, attrs: IPreventSubmitAttributes) {
+            // TODO: Just make this directive apply to all <form> tags and no-op if no action attr
+
             element.submit(e => {
                 if (scope.$eval(attrs.appPreventSubmit)) {
                     e.preventDefault();
@@ -25,10 +27,10 @@ module MusicStore.PreventSubmit {
         }
     }
 
-    // TODO: Generate this
-    _module.directive("appPreventSubmit", [
-        function () {
-            return new PreventSubmitDirective();
-        }
-    ]);
+    angular.module("MusicStore.PreventSubmit")
+        .directive("appPreventSubmit", [
+            function () {
+                return new PreventSubmitDirective();
+            }
+        ]);
 }  

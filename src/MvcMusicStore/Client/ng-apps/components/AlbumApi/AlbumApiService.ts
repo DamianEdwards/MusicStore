@@ -98,12 +98,12 @@ module MusicStore.AlbumApi {
         }
     }
 
-    // TODO: Generate this
-    _module.service("MusicStore.AlbumApi.IAlbumApiService", [
-        "$cacheFactory",
-        "$q",
-        "$http",
-        "MusicStore.UrlResolver.IUrlResolverService",
-        AlbumApiService
-    ]);
+    angular.module("MusicStore.AlbumApi")
+        .service("MusicStore.AlbumApi.IAlbumApiService", [
+            "$cacheFactory",
+            "$q",
+            "$http",
+            "MusicStore.UrlResolver.IUrlResolverService",
+            AlbumApiService
+        ]);
 } 

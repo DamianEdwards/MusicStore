@@ -262,6 +262,8 @@
     <TypeScriptCompile Include="Client\ng-apps\components\Models\IPagedList%27T.ts" />
     <TypeScriptCompile Include="Client\ng-apps\components\TitleCase\TitleCase.ts" />
     <TypeScriptCompile Include="Client\ng-apps\components\TitleCase\TitleCaseFilter.ts" />
+    <TypeScriptCompile Include="Client\ng-apps\components\Truncate\Truncate.ts" />
+    <TypeScriptCompile Include="Client\ng-apps\components\Truncate\TruncateFilter.ts" />
     <TypeScriptCompile Include="Client\ng-apps\components\ViewMessage\ViewAlert.ts" />
     <TypeScriptCompile Include="Client\ng-apps\components\ViewMessage\ViewAlertService.ts" />
     <TypeScriptCompile Include="Client\ng-apps\components\Visited\Visited.ts" />

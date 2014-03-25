@@ -1,3 +1,3 @@
 module MusicStore.InlineData {
-    export var _module = angular.module("MusicStore.InlineData", []);
+    angular.module("MusicStore.InlineData", []);
 } 

@@ -1,3 +1,3 @@
 ﻿module MusicStore.Visited {
-    export var _module = angular.module("MusicStore.Visited", []);
+    angular.module("MusicStore.Visited", []);
 } 

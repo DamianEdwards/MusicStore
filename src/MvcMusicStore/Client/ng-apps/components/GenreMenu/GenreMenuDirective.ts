@@ -11,11 +11,11 @@ module MusicStore.GenreMenu {
         }
     }
 
-    // TODO: Generate this
-    _module.directive("appGenreMenu", [
-        "MusicStore.UrlResolver.IUrlResolverService",
-        function (urlResolver) {
-            return new GenreMenuDirective(urlResolver);
-        }
-    ]);
+    angular.module("MusicStore.GenreMenu")
+        .directive("appGenreMenu", [
+            "MusicStore.UrlResolver.IUrlResolverService",
+            function (urlResolver) {
+                return new GenreMenuDirective(urlResolver);
+            }
+        ]);
 }

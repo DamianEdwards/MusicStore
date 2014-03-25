@@ -18,5 +18,6 @@ module MusicStore.TitleCase {
         return out;
     }
 
-    _module.filter("titlecase", () => titleCase);
+    angular.module("MusicStore.TitleCase")
+        .filter("titlecase", () => titleCase);
 }

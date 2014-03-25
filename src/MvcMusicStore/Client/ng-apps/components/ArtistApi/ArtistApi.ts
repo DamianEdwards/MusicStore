@@ -1,3 +1,3 @@
 module MusicStore.ArtistApi {
-    export var _module = angular.module("MusicStore.ArtistApi", []);
+    angular.module("MusicStore.ArtistApi", []);
 } 

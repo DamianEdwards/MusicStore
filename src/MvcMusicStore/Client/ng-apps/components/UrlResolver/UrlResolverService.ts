@@ -39,9 +39,9 @@ module MusicStore.UrlResolver {
         }
     }
 
-    // TODO: Generate this
-    _module.service("MusicStore.UrlResolver.IUrlResolverService", [
-        "$rootElement",
-        UrlResolverService
-    ]);
+    angular.module("MusicStore.UrlResolver")
+        .service("MusicStore.UrlResolver.IUrlResolverService", [
+            "$rootElement",
+            UrlResolverService
+        ]);
 }

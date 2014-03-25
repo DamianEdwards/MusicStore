@@ -123,13 +123,13 @@ module MusicStore.Admin.Catalog {
         }
     }
 
-    // TODO: Generate this
-    _module.controller("MusicStore.Admin.Catalog.AlbumListController", [
-        "MusicStore.AlbumApi.IAlbumApiService",
-        "MusicStore.ViewAlert.IViewAlertService",
-        "$modal",
-        "$timeout",
-        "$log",
-        AlbumListController
-    ]);
+    angular.module("MusicStore.Admin.Catalog")
+        .controller("MusicStore.Admin.Catalog.AlbumListController", [
+            "MusicStore.AlbumApi.IAlbumApiService",
+            "MusicStore.ViewAlert.IViewAlertService",
+            "$modal",
+            "$timeout",
+            "$log",
+            AlbumListController
+        ]);
 }

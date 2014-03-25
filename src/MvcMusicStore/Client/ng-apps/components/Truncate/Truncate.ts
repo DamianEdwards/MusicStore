@@ -1,3 +1,3 @@
 ﻿module MusicStore.Truncate {
-    export var _module = angular.module("MusicStore.Truncate", []);
+    angular.module("MusicStore.Truncate", []);
 }

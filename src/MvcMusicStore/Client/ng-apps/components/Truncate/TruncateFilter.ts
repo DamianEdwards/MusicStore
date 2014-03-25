@@ -15,5 +15,6 @@ module MusicStore.Truncate {
         }
     }
 
-    _module.filter("truncate", () => truncate);
+    angular.module("MusicStore.Truncate")
+        .filter("truncate", () => truncate);
 } 

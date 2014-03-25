@@ -17,9 +17,9 @@ module MusicStore.Store.Catalog {
         }
     }
 
-    // TODO: Generate this
-    _module.controller("MusicStore.Store.Catalog.GenreListController", [
-        "MusicStore.GenreApi.IGenreApiService",
-        GenreListController
-    ]);
+    angular.module("MusicStore.Store.Catalog")
+        .controller("MusicStore.Store.Catalog.GenreListController", [
+            "MusicStore.GenreApi.IGenreApiService",
+            GenreListController
+        ]);
 } 

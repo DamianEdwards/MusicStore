@@ -188,18 +188,18 @@ module MusicStore.Admin.Catalog {
         }
     }
 
-    // TODO: Generate this
-    _module.controller("MusicStore.Admin.Catalog.AlbumEditController", [
-        "$routeParams",
-        "MusicStore.AlbumApi.IAlbumApiService",
-        "MusicStore.ArtistApi.IArtistApiService",
-        "MusicStore.GenreApi.IGenreApiService",
-        "MusicStore.ViewAlert.IViewAlertService",
-        "$modal",
-        "$location",
-        "$timeout",
-        "$q",
-        "$log",
-        AlbumEditController
-    ]);
+    angular.module("MusicStore.Admin.Catalog")
+        .controller("MusicStore.Admin.Catalog.AlbumEditController", [
+            "$routeParams",
+            "MusicStore.AlbumApi.IAlbumApiService",
+            "MusicStore.ArtistApi.IArtistApiService",
+            "MusicStore.GenreApi.IGenreApiService",
+            "MusicStore.ViewAlert.IViewAlertService",
+            "$modal",
+            "$location",
+            "$timeout",
+            "$q",
+            "$log",
+            AlbumEditController
+        ]);
 } 

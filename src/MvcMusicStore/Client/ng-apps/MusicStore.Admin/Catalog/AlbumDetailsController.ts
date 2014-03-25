@@ -58,12 +58,13 @@ module MusicStore.Admin.Catalog {
         }
     }
     
-    _module.controller("MusicStore.Admin.Catalog.AlbumDetailsController", [
-        "$routeParams",
-        "$modal",
-        "$location",
-        "MusicStore.AlbumApi.IAlbumApiService",
-        "MusicStore.ViewAlert.IViewAlertService",
-        AlbumDetailsController
-    ]);
+    angular.module("MusicStore.Admin.Catalog")
+        .controller("MusicStore.Admin.Catalog.AlbumDetailsController", [
+            "$routeParams",
+            "$modal",
+            "$location",
+            "MusicStore.AlbumApi.IAlbumApiService",
+            "MusicStore.ViewAlert.IViewAlertService",
+            AlbumDetailsController
+        ]);
 }

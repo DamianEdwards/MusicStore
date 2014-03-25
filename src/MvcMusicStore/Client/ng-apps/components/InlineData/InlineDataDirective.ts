@@ -32,12 +32,12 @@ module MusicStore.InlineData {
         }
     }
 
-    // TODO: Generate this
-    _module.directive("appInlineData", [
-        "$cacheFactory",
-        "$log",
-        function ($cacheFactory, $log) {
-            return new InlineDataDirective($cacheFactory, $log);
-        }
-    ]);
+    angular.module("MusicStore.InlineData")
+        .directive("appInlineData", [
+            "$cacheFactory",
+            "$log",
+            function ($cacheFactory, $log) {
+                return new InlineDataDirective($cacheFactory, $log);
+            }
+        ]);
 } 

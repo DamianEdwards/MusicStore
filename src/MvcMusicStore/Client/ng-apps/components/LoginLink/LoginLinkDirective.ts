@@ -34,12 +34,12 @@ module MusicStore.LoginLink {
         }
     }
 
-    // TODO: Generate this
-    _module.directive("appLoginLink", [
-        "MusicStore.UrlResolver.IUrlResolverService",
-        "$window",
-        function (urlResolver, $window) {
-            return new LoginLinkDirective(urlResolver, $window);
-        }
-    ]);
+    angular.module("MusicStore.LoginLink")
+        .directive("appLoginLink", [
+            "MusicStore.UrlResolver.IUrlResolverService",
+            "$window",
+            function (urlResolver, $window) {
+                return new LoginLinkDirective(urlResolver, $window);
+            }
+        ]);
 }

@@ -51,13 +51,15 @@ module MusicStore.Visited {
         }
     }
 
-    _module.directive("input", [
-        "$window",
-        $window => new VisitedDirective($window)
-    ]);
+    angular.module("MusicStore.Visited")
+        .directive("input", [
+            "$window",
+            $window => new VisitedDirective($window)
+        ]);
 
-    _module.directive("select", [
-        "$window",
-        $window => new VisitedDirective($window)
-    ]);
+    angular.module("MusicStore.Visited")
+        .directive("select", [
+            "$window",
+            $window => new VisitedDirective($window)
+        ]);
 }

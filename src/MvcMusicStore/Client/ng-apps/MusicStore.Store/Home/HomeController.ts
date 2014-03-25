@@ -17,9 +17,9 @@ module MusicStore.Store.Home {
         }
     }
 
-    // TODO: Generate this
-    _module.controller("MusicStore.Store.Home.HomeController", [
-        "MusicStore.AlbumApi.IAlbumApiService",
-        HomeController
-    ]);
+    angular.module("MusicStore.Store.Home")
+        .controller("MusicStore.Store.Home.HomeController", [
+            "MusicStore.AlbumApi.IAlbumApiService",
+            HomeController
+        ]);
 } 

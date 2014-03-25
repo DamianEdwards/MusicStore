@@ -9,7 +9,8 @@ module MusicStore.ViewAlert {
         public alert: Models.IAlert;
     }
 
-    _module.service("MusicStore.ViewAlert.IViewAlertService", [
-        ViewAlertService
-    ]);
+    angular.module("MusicStore.ViewAlert")
+        .service("MusicStore.ViewAlert.IViewAlertService", [
+            ViewAlertService
+        ]);
 } 

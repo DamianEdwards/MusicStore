@@ -33,12 +33,12 @@ module MusicStore.ArtistApi {
         }
     }
 
-    // TODO: Generate this
-    _module.service("MusicStore.ArtistApi.IArtistApiService", [
-        "$cacheFactory",
-        "$q",
-        "$http",
-        "MusicStore.UrlResolver.IUrlResolverService",
-        ArtistsApiService
-    ]);
+    angular.module("MusicStore.ArtistApi")
+        .service("MusicStore.ArtistApi.IArtistApiService", [
+            "$cacheFactory",
+            "$q",
+            "$http",
+            "MusicStore.UrlResolver.IUrlResolverService",
+            ArtistsApiService
+        ]);
 }

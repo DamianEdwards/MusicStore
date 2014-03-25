@@ -22,10 +22,10 @@ module MusicStore.Store.Catalog {
         }
     }
 
-    // TODO: Generate this
-    _module.controller("MusicStore.Store.Catalog.AlbumDetailsController", [
-        "$routeParams",
-        "MusicStore.AlbumApi.IAlbumApiService",
-        AlbumDetailsController
-    ]);
+    angular.module("MusicStore.Store.Catalog")
+        .controller("MusicStore.Store.Catalog.AlbumDetailsController", [
+            "$routeParams",
+            "MusicStore.AlbumApi.IAlbumApiService",
+            AlbumDetailsController
+        ]);
 } 

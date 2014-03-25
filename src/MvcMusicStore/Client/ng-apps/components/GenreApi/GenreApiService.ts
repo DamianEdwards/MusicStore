@@ -57,12 +57,12 @@ module MusicStore.GenreApi {
         }
     }
 
-    // TODO: Generate this
-    _module.service("MusicStore.GenreApi.IGenreApiService", [
-        "$cacheFactory",
-        "$q",
-        "$http",
-        "MusicStore.UrlResolver.IUrlResolverService",
-        GenreApiService
-    ]);
+    angular.module("MusicStore.GenreApi")
+        .service("MusicStore.GenreApi.IGenreApiService", [
+            "$cacheFactory",
+            "$q",
+            "$http",
+            "MusicStore.UrlResolver.IUrlResolverService",
+            GenreApiService
+        ]);
 }

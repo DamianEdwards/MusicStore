@@ -32,9 +32,9 @@ module MusicStore.UserDetails {
         }
     }
 
-    // TODO: Generate this!
-    _module.service("MusicStore.UserDetails.IUserDetailsService", [
-        "$document",
-        UserDetailsService
-    ]);
+    angular.module("MusicStore.UserDetails")
+        .service("MusicStore.UserDetails.IUserDetailsService", [
+            "$document",
+            UserDetailsService
+        ]);
 } 

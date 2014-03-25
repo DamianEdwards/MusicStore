@@ -1,3 +1,3 @@
 module MusicStore.GenreMenu {
-    export var _module = angular.module("MusicStore.GenreMenu", []);
+    angular.module("MusicStore.GenreMenu", []);
 } 
