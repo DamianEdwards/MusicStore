@@ -1,6 +1,4 @@
-﻿/// <reference path="Truncate.ts" />
-
-module MusicStore.Truncate {
+﻿module MusicStore.Truncate {
 
     //@NgFilter
     function truncate(input: string, length: number) {
@@ -14,7 +12,4 @@ module MusicStore.Truncate {
             return input.substr(0, length).trim() + "…";
         }
     }
-
-    angular.module("MusicStore.Truncate")
-        .filter("truncate", () => truncate);
 } 

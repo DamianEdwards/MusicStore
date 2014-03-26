@@ -1,10 +1,9 @@
-﻿/// <reference path="LoginLink.ts" />
-
-module MusicStore.LoginLink {
+﻿module MusicStore.LoginLink {
     interface LoginLinkAttributes extends ng.IAttributes {
         href: string;
     }
 
+    //@NgDirective('appLoginLink')
     class LoginLinkDirective implements ng.IDirective {
         private _window: ng.IWindowService;
 
@@ -33,13 +32,4 @@ module MusicStore.LoginLink {
             });
         }
     }
-
-    angular.module("MusicStore.LoginLink")
-        .directive("appLoginLink", [
-            "MusicStore.UrlResolver.IUrlResolverService",
-            "$window",
-            function (urlResolver, $window) {
-                return new LoginLinkDirective(urlResolver, $window);
-            }
-        ]);
 }

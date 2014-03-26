@@ -1,11 +1,10 @@
-/// <reference path="InlineData.ts" />
-
 module MusicStore.InlineData {
     interface InlineDataAttributes extends ng.IAttributes {
         type: string;
         for: string;
     }
 
+    //@NgDirective('appInlineData')
     class InlineDataDirective implements ng.IDirective {
         private _cache: ng.ICacheObject;
         private _log: ng.ILogService;
@@ -31,13 +30,4 @@ module MusicStore.InlineData {
             //element.remove();
         }
     }
-
-    angular.module("MusicStore.InlineData")
-        .directive("appInlineData", [
-            "$cacheFactory",
-            "$log",
-            function ($cacheFactory, $log) {
-                return new InlineDataDirective($cacheFactory, $log);
-            }
-        ]);
 } 

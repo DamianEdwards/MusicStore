@@ -1,8 +1,6 @@
-﻿/// <reference path="titlecase.ts" />
-
-module MusicStore.TitleCase {
-
-    //@NgFilter(titlecase)
+﻿module MusicStore.TitleCase {
+    
+    //@NgFilter('titlecase')
     function titleCase(input: string) {
         var out = "",
             lastChar = "";
@@ -17,7 +15,4 @@ module MusicStore.TitleCase {
 
         return out;
     }
-
-    angular.module("MusicStore.TitleCase")
-        .filter("titlecase", () => titleCase);
 }

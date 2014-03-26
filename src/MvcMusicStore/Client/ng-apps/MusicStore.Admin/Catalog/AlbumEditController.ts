@@ -1,5 +1,3 @@
-/// <reference path="Catalog.ts" />
-
 module MusicStore.Admin.Catalog {
     interface IAlbumDetailsRouteParams extends ng.route.IRouteParamsService {
         mode: string;
@@ -187,19 +185,4 @@ module MusicStore.Admin.Catalog {
             this.alert = null;
         }
     }
-
-    angular.module("MusicStore.Admin.Catalog")
-        .controller("MusicStore.Admin.Catalog.AlbumEditController", [
-            "$routeParams",
-            "MusicStore.AlbumApi.IAlbumApiService",
-            "MusicStore.ArtistApi.IArtistApiService",
-            "MusicStore.GenreApi.IGenreApiService",
-            "MusicStore.ViewAlert.IViewAlertService",
-            "$modal",
-            "$location",
-            "$timeout",
-            "$q",
-            "$log",
-            AlbumEditController
-        ]);
 } 

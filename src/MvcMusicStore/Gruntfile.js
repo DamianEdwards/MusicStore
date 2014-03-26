@@ -1,7 +1,10 @@
-﻿// <reference path="node_modules/grunt/lib/grunt.js" />
+﻿/// <reference path="node_modules/grunt/lib/grunt.js" />
+
+// node-debug (Resolve-Path ~\AppData\Roaming\npm\node_modules\grunt-cli\bin\grunt) task:target
 
 module.exports = function (grunt) {
-
+    /// <param name="grunt" type="grunt" />
+    
     grunt.loadNpmTasks('grunt-contrib-uglify');
     grunt.loadNpmTasks('grunt-contrib-watch');
     grunt.loadNpmTasks('grunt-contrib-copy');
@@ -12,6 +15,8 @@ module.exports = function (grunt) {
     //grunt.loadNpmTasks('grunt-contrib-jshint');
     //grunt.loadNpmTasks('grunt-contrib-qunit');
     //grunt.loadNpmTasks('grunt-contrib-concat');
+
+    grunt.loadTasks('Grunt');
 
     grunt.initConfig({
         staticFilePattern: '**/*.{js,css,map,html,htm,ico,jpg,jpeg,png,gif,eot,svg,ttf,woff}',
@@ -107,12 +112,29 @@ module.exports = function (grunt) {
                 }
             }
         },
+        tsng: {
+            options: {
+                extension: ".ng.ts",
+                cwd: "Client/ng-apps" // Any module files that need to be created will go here
+            },
+            dev: {
+                files: [
+                    // TODO: Automate the generation of this config based on convention
+                    {
+                        src: ['Client/ng-apps/components/**/*.ts', 'Client/ng-apps/MusicStore.Store/**/*.ts', "!**/*.ng.ts"]
+                    },
+                    {
+                        src: ['Client/ng-apps/components/**/*.ts', 'Client/ng-apps/MusicStore.Admin/**/*.ts', "!**/*.ng.ts"]
+                    }
+                ]
+            }
+        },
         tslint: {
             options: {
                 configuration: grunt.file.readJSON("tslint.json")
             },
             files: {
-                src: ['Client/**/*.ts']
+                src: ['Client/**/*.ts', '!**/*.ng.ts']
             }
         },
         typescript: {
@@ -125,11 +147,11 @@ module.exports = function (grunt) {
                 files: [
                     // TODO: Automate the generation of this config based on convention
                     {
-                        src: ['Client/ng-apps/components/**/*.ts', 'Client/ng-apps/MusicStore.Store/**/*.ts'],
+                        src: ['Client/ng-apps/components/**/*.ng.ts', 'Client/ng-apps/MusicStore.Store/**/*.ng.ts'],
                         dest: 'public/js/MusicStore.Store.js'
                     },
                     {
-                        src: ['Client/ng-apps/components/**/*.ts', 'Client/ng-apps/MusicStore.Admin/**/*.ts'],
+                        src: ['Client/ng-apps/components/**/*.ng.ts', 'Client/ng-apps/MusicStore.Admin/**/*.ng.ts'],
                         dest: 'public/js/MusicStore.Admin.js'
                     }
                 ]
@@ -143,8 +165,8 @@ module.exports = function (grunt) {
         },
         watch: {
             typescript: {
-                files: ['Client/**/*.ts'],
-                tasks: ['tslint', 'typescript:dev']
+                files: ['Client/**/*.ts', "!**/*.ng.ts"],
+                tasks: ['ts']
             },
             dev: {
                 files: ['bower_components/<%= staticFilePattern %>', 'Client/<%= staticFilePattern %>'],
@@ -154,8 +176,8 @@ module.exports = function (grunt) {
     });
 
     //grunt.registerTask('test', ['jshint', 'qunit']);
-    grunt.registerTask('ts', ['tslint', 'typescript:dev']);
-    grunt.registerTask('dev', ['clean', 'copy', 'less:dev', 'tslint', 'typescript:dev']);
+    grunt.registerTask('ts', ['tslint', 'tsng', 'typescript:dev']);
+    grunt.registerTask('dev', ['clean', 'copy', 'less:dev', 'ts']);
     grunt.registerTask('release', ['clean', 'copy', 'uglify', 'less:release', 'typescript:release']);
     grunt.registerTask('default', ['dev']);
 };

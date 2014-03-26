@@ -1,5 +1,3 @@
-/// <reference path="ArtistApi.ts" />
-
 module MusicStore.ArtistApi {
     export interface IArtistApiService {
         getArtistsLookup(): ng.IPromise<Array<Models.IArtist>>;
@@ -32,13 +30,4 @@ module MusicStore.ArtistApi {
             }
         }
     }
-
-    angular.module("MusicStore.ArtistApi")
-        .service("MusicStore.ArtistApi.IArtistApiService", [
-            "$cacheFactory",
-            "$q",
-            "$http",
-            "MusicStore.UrlResolver.IUrlResolverService",
-            ArtistsApiService
-        ]);
 }

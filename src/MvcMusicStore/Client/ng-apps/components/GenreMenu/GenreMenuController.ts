@@ -1,5 +1,3 @@
-/// <reference path="GenreMenu.ts" />
-
 module MusicStore.GenreMenu {
     interface IGenreMenuViewModel {
         genres: Array<Models.IGenre>;
@@ -21,11 +19,4 @@ module MusicStore.GenreMenu {
 
         public urlBase: string;
     }
-
-    angular.module("MusicStore.GenreMenu")
-        .controller("MusicStore.GenreMenu.GenreMenuController", [
-            "MusicStore.GenreApi.IGenreApiService",
-            "MusicStore.UrlResolver.IUrlResolverService",
-            GenreMenuController
-        ]);
 }

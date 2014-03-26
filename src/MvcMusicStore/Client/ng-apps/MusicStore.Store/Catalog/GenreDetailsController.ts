@@ -1,5 +1,3 @@
-/// <reference path="Catalog.ts" />
-
 module MusicStore.Store.Catalog {
     interface IGenreDetailsViewModel {
         albums: Array<Models.IAlbum>;
@@ -20,11 +18,4 @@ module MusicStore.Store.Catalog {
             });
         }
     }
-
-    angular.module("MusicStore.Store.Catalog")
-        .controller("MusicStore.Store.Catalog.GenreDetailsController", [
-            "$routeParams",
-            "MusicStore.GenreApi.IGenreApiService",
-            GenreDetailsController
-        ]);
 }

@@ -1,5 +1,3 @@
-/// <reference path="GenreApi.ts" />
-
 module MusicStore.GenreApi {
     export interface IGenreApiService {
         getGenresLookup(): ng.IPromise<Array<Models.IGenreLookup>>;
@@ -56,13 +54,4 @@ module MusicStore.GenreApi {
             return this._http.get(url);
         }
     }
-
-    angular.module("MusicStore.GenreApi")
-        .service("MusicStore.GenreApi.IGenreApiService", [
-            "$cacheFactory",
-            "$q",
-            "$http",
-            "MusicStore.UrlResolver.IUrlResolverService",
-            GenreApiService
-        ]);
 }

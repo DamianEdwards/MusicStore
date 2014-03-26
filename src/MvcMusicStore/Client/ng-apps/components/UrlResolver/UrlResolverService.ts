@@ -1,5 +1,3 @@
-/// <reference path="UrlResolver.ts" />
-
 module MusicStore.UrlResolver {
     export interface IUrlResolverService {
         base: string;
@@ -38,10 +36,4 @@ module MusicStore.UrlResolver {
             return this._base + relativeUrl;
         }
     }
-
-    angular.module("MusicStore.UrlResolver")
-        .service("MusicStore.UrlResolver.IUrlResolverService", [
-            "$rootElement",
-            UrlResolverService
-        ]);
 }

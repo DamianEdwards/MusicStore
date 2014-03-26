@@ -33,3 +33,4 @@ App_Data/
 bower_components/
 node_modules/
 public/
+*.ng.ts

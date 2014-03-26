@@ -1,16 +1,14 @@
-﻿/// <reference path="visited.ts" />
-
-module MusicStore.Visited {
+﻿module MusicStore.Visited {
     interface IVisitedFormController extends ng.IFormController {
         focus?: boolean;
         visited?: boolean;
     }
 
+    //@NgDirective('input')
+    //@NgDirective('select')
     class VisitedDirective implements ng.IDirective {
         private _window: ng.IWindowService;
         
-        //@NgDirective(input)
-        //@NgDirective(select)
         constructor($window: ng.IWindowService) {
             this._window = $window;
 
@@ -50,16 +48,4 @@ module MusicStore.Visited {
             });
         }
     }
-
-    angular.module("MusicStore.Visited")
-        .directive("input", [
-            "$window",
-            $window => new VisitedDirective($window)
-        ]);
-
-    angular.module("MusicStore.Visited")
-        .directive("select", [
-            "$window",
-            $window => new VisitedDirective($window)
-        ]);
 }

@@ -1,12 +1,14 @@
-﻿/// <reference path="Catalog.ts" />
-
-module MusicStore.Admin.Catalog {
+﻿module MusicStore.Admin.Catalog {
     export interface IAlbumDeleteModalViewModel {
         album: Models.IAlbum;
         ok();
         cancel();
     }
 
+    // We don't register this controller with Angular's DI system because the $modal service
+    // will create and resolve its dependencies directly
+
+    //@NgController(skip=true)
     export class AlbumDeleteModalController implements IAlbumDeleteModalViewModel {
         private _modalInstance: ng.ui.bootstrap.IModalServiceInstance;
 
@@ -25,7 +27,4 @@ module MusicStore.Admin.Catalog {
             this._modalInstance.dismiss("cancel");
         }
     }
-
-    // We don't register this controller with Angular's DI system because the $modal service
-    // will create and resolve its dependencies directly
 }
