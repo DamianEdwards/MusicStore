@@ -1,9 +1,8 @@
 /// <reference path="../references.ts" />
 
-//@NgApp
+//@NgModule
 module MusicStore.Admin {
 
-    //@NgModuleDependencies
     var dependencies = [
         "ngRoute",
         "ui.bootstrap",
@@ -29,6 +28,7 @@ module MusicStore.Admin {
         // TODO: Capture all logged errors and send back to server
         $logProvider.debugEnabled(true);
 
+        // Configure routes
         $routeProvider
             .when("/albums/:albumId/details", { templateUrl: "ng-apps/MusicStore.Admin/Catalog/AlbumDetails.cshtml" })
             .when("/albums/:albumId/:mode", { templateUrl: "ng-apps/MusicStore.Admin/Catalog/AlbumEdit.cshtml" })

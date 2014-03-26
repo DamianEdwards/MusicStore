@@ -2,7 +2,7 @@
 
 module MusicStore.TitleCase {
 
-    //@NgFilter(titlecase)
+    //@NgFilter('titlecase')
     function titleCase(input: string) {
         var out = "",
             lastChar = "";

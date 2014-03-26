@@ -1,7 +1,9 @@
-﻿// <reference path="node_modules/grunt/lib/grunt.js" />
+﻿/// <reference path="node_modules/grunt/lib/grunt.js" />
 
 module.exports = function (grunt) {
-
+    /// <param name="grunt" type="grunt" />
+    
+    grunt.loadNpmTasks('grunt-debug-task');
     grunt.loadNpmTasks('grunt-contrib-uglify');
     grunt.loadNpmTasks('grunt-contrib-watch');
     grunt.loadNpmTasks('grunt-contrib-copy');
@@ -12,6 +14,8 @@ module.exports = function (grunt) {
     //grunt.loadNpmTasks('grunt-contrib-jshint');
     //grunt.loadNpmTasks('grunt-contrib-qunit');
     //grunt.loadNpmTasks('grunt-contrib-concat');
+
+    grunt.loadTasks('Grunt');
 
     grunt.initConfig({
         staticFilePattern: '**/*.{js,css,map,html,htm,ico,jpg,jpeg,png,gif,eot,svg,ttf,woff}',
@@ -105,6 +109,17 @@ module.exports = function (grunt) {
                 files: {
                     "public/css/site.css": "Client/**/*.less"
                 }
+            }
+        },
+        tsng: {
+            dev: {
+                //files: "<%= typescript.dev.files %>"
+                files: {
+                    src: "Client/**/ViewMessage/*.ts"
+                }
+            },
+            release: {
+                files: "<%= typescript.release.files %>"
             }
         },
         tslint: {
