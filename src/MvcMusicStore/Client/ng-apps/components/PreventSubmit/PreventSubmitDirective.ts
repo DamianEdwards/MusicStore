@@ -6,6 +6,7 @@ module MusicStore.PreventSubmit {
         appPreventSubmit: string;
     }
 
+    //@NgDirective('appPreventSubmit')
     class PreventSubmitDirective implements ng.IDirective {
         private _preventSubmit: any;
 

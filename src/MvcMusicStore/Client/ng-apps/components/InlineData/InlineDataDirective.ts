@@ -6,6 +6,7 @@ module MusicStore.InlineData {
         for: string;
     }
 
+    //@NgDirective('appInlineData')
     class InlineDataDirective implements ng.IDirective {
         private _cache: ng.ICacheObject;
         private _log: ng.ILogService;

@@ -1,7 +1,7 @@
-﻿/// <reference path="titlecase.ts" />
+﻿/// <reference path="TitleCase.ts" />
 
 module MusicStore.TitleCase {
-
+    
     //@NgFilter('titlecase')
     function titleCase(input: string) {
         var out = "",

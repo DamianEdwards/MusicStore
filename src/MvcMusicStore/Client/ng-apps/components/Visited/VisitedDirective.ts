@@ -6,11 +6,10 @@ module MusicStore.Visited {
         visited?: boolean;
     }
 
+    //@NgDirective('input')
     class VisitedDirective implements ng.IDirective {
         private _window: ng.IWindowService;
         
-        //@NgDirective(input)
-        //@NgDirective(select)
         constructor($window: ng.IWindowService) {
             this._window = $window;
 

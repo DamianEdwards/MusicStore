@@ -5,6 +5,7 @@ module MusicStore.LoginLink {
         href: string;
     }
 
+    //@NgDirective('appLoginLink')
     class LoginLinkDirective implements ng.IDirective {
         private _window: ng.IWindowService;
 

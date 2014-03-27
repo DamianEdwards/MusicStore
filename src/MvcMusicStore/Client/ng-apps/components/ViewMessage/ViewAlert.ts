@@ -1,4 +1,3 @@
-﻿//@NgModule('OmgAmazingModule.ZOMG')
-module MusicStore.ViewAlert {
+﻿module MusicStore.ViewAlert {
     angular.module("MusicStore.ViewAlert", []);
 }

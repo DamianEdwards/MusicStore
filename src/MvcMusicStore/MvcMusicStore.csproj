@@ -204,6 +204,7 @@
     <Content Include="Client\ng-apps\MusicStore.Admin\Catalog\AlbumDetails.cshtml" />
     <Content Include="Client\ng-apps\MusicStore.Admin\Catalog\AlbumEdit.cshtml" />
     <None Include="Client\Site.less" />
+    <Content Include="Grunt\grunt-tsng.js" />
     <Content Include="Gruntfile.js" />
     <Content Include="Client\images\home-showcase.png" />
     <Content Include="Client\images\logo.png" />

@@ -1,9 +1,10 @@
 ﻿/// <reference path="node_modules/grunt/lib/grunt.js" />
 
+// node-debug (Resolve-Path ~\AppData\Roaming\npm\node_modules\grunt-cli\bin\grunt) task:target
+
 module.exports = function (grunt) {
     /// <param name="grunt" type="grunt" />
     
-    grunt.loadNpmTasks('grunt-debug-task');
     grunt.loadNpmTasks('grunt-contrib-uglify');
     grunt.loadNpmTasks('grunt-contrib-watch');
     grunt.loadNpmTasks('grunt-contrib-copy');
@@ -113,10 +114,10 @@ module.exports = function (grunt) {
         },
         tsng: {
             dev: {
-                //files: "<%= typescript.dev.files %>"
-                files: {
-                    src: "Client/**/ViewMessage/*.ts"
-                }
+                files: "<%= typescript.dev.files %>"
+                //files: {
+                //    src: "Client/**/TitleCase/*.ts"
+                //}
             },
             release: {
                 files: "<%= typescript.release.files %>"

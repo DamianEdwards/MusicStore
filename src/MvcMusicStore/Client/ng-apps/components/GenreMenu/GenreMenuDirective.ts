@@ -1,6 +1,8 @@
 /// <reference path="GenreMenu.ts" />
 
 module MusicStore.GenreMenu {
+
+    //@NgDirective('appGenreMenu')
     class GenreMenuDirective implements ng.IDirective {
         public replace = true;
         public restrict = "A";

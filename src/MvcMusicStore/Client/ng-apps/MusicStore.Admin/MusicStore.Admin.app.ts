@@ -46,7 +46,7 @@ module MusicStore.Admin {
     // Register the application module with AngularJS
     angular
         .module("MusicStore.Admin", [
-            // Dependencies
+        // Dependencies
             "ngRoute",
             "ui.bootstrap",
             "MusicStore.InlineData",
@@ -63,11 +63,11 @@ module MusicStore.Admin {
             "MusicStore.ViewAlert",
             "MusicStore.Admin.Catalog"
         ]).config([
-            // Dependencies
+        // Dependencies
             "$routeProvider",
             "$logProvider",
 
-            // Config method
+        // Config method
             configuration
         ]);
 }
