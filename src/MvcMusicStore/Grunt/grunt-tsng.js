@@ -1,7 +1,7 @@
 ﻿module.exports = function (grunt) {
     "use strict";
 
-    grunt.registerMultiTask("tsng", "Generate AngularJS registration blocks based on annotations.", function () {
+    grunt.registerMultiTask("tsng", "Generate AngularJS registration blocks based on conventions and annotations in TypeScript files.", function () {
 
         // this.target is current target
         // this.data is config for current target
@@ -16,7 +16,8 @@
             fileTally: 0
         };
         var error;
-        
+        var emitFileExtension = ".ng.ts";
+
         this.files.forEach(function (fileSet, idx) {
             var setResult = processSet(fileSet);
 
@@ -25,51 +26,13 @@
                 return false;
             }
 
-            grunt.log.writeln("------------------------------------------");
-            grunt.log.writeln("File Set #" + (idx + 1));
-            grunt.log.writeln("------------------------------------------");
-
-            grunt.log.writeln("Modules:");
-            setResult.modules.forEach(function (module) {
-                grunt.log.writeln("   " + module.name + (module.isModuleFile ? " defined in " + module.file + " with " + module.dependencies.length + " dependencies" : " has no file"));
-            });
-
-            grunt.log.writeln("Controllers:");
-            setResult.controllers.forEach(function (controller) {
-                grunt.log.writeln("   " + controller.name + " using fn " + controller.fnName + " with " + controller.dependencies.length + " dependencies from " + controller.file);
-            });
-
-            grunt.log.writeln("Services:");
-            setResult.services.forEach(function (service) {
-                grunt.log.writeln("   " + service.name + " using fn " + service.fnName + " with " + service.dependencies.length + " dependencies from " + service.file);
-            });
-
-            grunt.log.writeln("Directives:");
-            setResult.directives.forEach(function (directive) {
-                grunt.log.writeln("   " + directive.name + " using fn " + directive.fnName + " with " + directive.dependencies.length + " dependencies from " + directive.file);
-            });
-
-            grunt.log.writeln("Filters:");
-            setResult.filters.forEach(function (filter) {
-                grunt.log.writeln("   " + filter.name + " using fn " + filter.fnName + " from " + filter.file);
-            });
-
+            logResult(setResult, idx + 1);
             sumResult(setResult, overallResult);
         });
 
         if (error) {
             grunt.log.error(error);
             return;
-        }
-
-        for (var key in overallResult) {
-            if (key === "fileTally" || !overallResult.hasOwnProperty(key)) {
-                continue;
-            }
-
-            var result = overallResult[key];
-
-            grunt.log.writeln(result.length + " " + key + " found in " + overallResult.fileTally + " files");
         }
 
         function sumResult(source, target) {
@@ -97,6 +60,46 @@
             }
         }
 
+        function logResult(result, setId) {
+            grunt.log.writeln("------------------------------------------");
+            grunt.log.writeln("File Set #" + setId);
+            grunt.log.writeln("------------------------------------------");
+
+            grunt.log.writeln("Modules:");
+            result.modules.forEach(function (module) {
+                grunt.log.writeln("   " + module.name + (module.file ? " defined in " + module.file + " with " + module.dependencies.length + " dependencies" : " has no file"));
+            });
+
+            grunt.log.writeln("Controllers:");
+            result.controllers.forEach(function (controller) {
+                grunt.log.writeln("   " + controller.name + " using fn " + controller.fnName + " with " + controller.dependencies.length + " dependencies from " + controller.file);
+            });
+
+            grunt.log.writeln("Services:");
+            result.services.forEach(function (service) {
+                grunt.log.writeln("   " + service.name + " using fn " + service.fnName + " with " + service.dependencies.length + " dependencies from " + service.file);
+            });
+
+            grunt.log.writeln("Directives:");
+            result.directives.forEach(function (directive) {
+                grunt.log.writeln("   " + directive.name + " using fn " + directive.fnName + " with " + directive.dependencies.length + " dependencies from " + directive.file);
+            });
+
+            grunt.log.writeln("Filters:");
+            result.filters.forEach(function (filter) {
+                grunt.log.writeln("   " + filter.name + " using fn " + filter.fnName + " from " + filter.file);
+            });
+
+            for (var key in result) {
+                if (key === "fileTally" || !result.hasOwnProperty(key)) {
+                    continue;
+                }
+
+                var items = result[key];
+                grunt.log.writeln(items.length + " " + key + " found in " + result.fileTally + " files");
+            }
+        }
+
         function processSet(fileSet) {
             var result = {
                 modules: [],
@@ -106,17 +109,21 @@
                 filters: [],
                 fileTally: 0
             };
+            var modules = {};
+            var files = {};
             var error;
 
-            fileSet.src.forEach(function (src) {
-                var fileResult = processFile(src);
-
-                //grunt.log.writeln(fileResult.modules.length + " modules found in file " + src);
+            fileSet.src.forEach(function (path) {
+                var fileResult = processFile(path);
+                fileResult.path = path;
 
                 if (fileResult.error) {
                     error = fileResult.error;
                     return false;
                 }
+
+                mergeModules(fileResult, modules);
+                files[path] = fileResult;
 
                 sumResult(fileResult, result);
                 result.fileTally++;
@@ -126,7 +133,43 @@
                 return { error: error };
             }
 
+            // Emit files for modules that don't have definitions
+            for (var name in modules) {
+                if (!modules.hasOwnProperty(name)) {
+                    continue;
+                }
+                
+                emitModuleFile(modules[name]);
+            }
+
+            // Emit
+            fileSet.src.forEach(function (path) {
+                emitFile(path, files[path], modules);
+            });
+
             return result;
+        }
+
+        function emitModuleFile(module) {
+            if (module.file) {
+                // Module already has a file defined, just skip
+                return;
+            }
+            
+            var path = "";
+            var content = "module " + module.name + " {\r\n";
+
+            if (module.dependencies && module.dependencies.length) {
+                
+            }
+
+            content = content + "}";
+
+            grunt.file.write(path, content);
+        }
+
+        function emitFile(details, modules) {
+
         }
 
         function processFile(path) {
@@ -271,7 +314,7 @@
                         expecting = expect.constructor;
                         continue;
                     }
-                    
+
                     // Check for directive comment
                     matches = line.match(regex.directiveComment);
                     if (matches) {
@@ -463,10 +506,7 @@
                 runFn: /function\s*(run)\s*\(\s*([\w$:.,\s]*)\s*\)\s*{/
             };
             var matches = {};
-            var result = {
-                isModuleFile: false,
-                file: path
-            };
+            var result = { };
             var content = grunt.file.read(path);
 
             for (var key in regex) {
@@ -476,11 +516,11 @@
 
                 matches[key] = content.match(regex[key]);
                 if (matches[key]) {
-                    result.isModuleFile = true;
+                    result.file = path;
                 }
             }
 
-            if (!result.isModuleFile) {
+            if (!result.file) {
                 return result;
             }
 
@@ -510,11 +550,11 @@
                         args.split(",").forEach(function (arg) {
                             var parts = arg.split(":");
                             var dependency = {
-                                name: parts[0]
+                                name: trim(parts[0])
                             };
 
                             if (parts[1]) {
-                                dependency.type = parts[1];
+                                dependency.type = trim(parts[1]);
                             }
 
                             dependencies.push(dependency);
@@ -526,6 +566,54 @@
                     };
                 }
             });
+
+            return result;
+        }
+
+        function mergeModules(result, modules) {
+            if (!result.modules) {
+                return;
+            }
+
+            result.modules.forEach(function (module) {
+                if (modules[module.name]) {
+                    // Existing module
+                    if (modules[module.name].file && module.file) {
+                        // Error: Module defined in multiple files
+                        throw new Error("tsng: Module '" + module.name + "' defined in multiple files");
+                    }
+                    if (module.file) {
+                        modules[module.name].file = module.file;
+                    }
+                } else {
+                    modules[module.name] = module;
+                }
+            });
+        }
+
+        function trim(target, chars) {
+            /// <param name="target" type="String" />
+            /// <param name="chars" type="String" />
+
+            chars = chars || " ";
+
+            if (!target) {
+                return target;
+            }
+
+            var result = target;
+
+            var indexOf = result.indexOf(chars);
+            while (indexOf === 0) {
+                result = result.substr(chars.length);
+                indexOf = result.indexOf(chars);
+            }
+
+            var lastIndexOf = result.lastIndexOf(chars);
+            while (lastIndexOf >= 0 && (result.length === lastIndexOf + chars.length)) {
+                result = result.substring(0, lastIndexOf);
+                lastIndexOf = result.lastIndexOf(chars);
+            }
 
             return result;
         }
