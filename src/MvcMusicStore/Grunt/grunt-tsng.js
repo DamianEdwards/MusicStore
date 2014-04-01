@@ -31,7 +31,7 @@
 
             grunt.log.writeln("Modules:");
             setResult.modules.forEach(function (module) {
-                grunt.log.writeln("   " + module.name);
+                grunt.log.writeln("   " + module.name + (module.isModuleFile ? " defined in " + module.file + " with " + module.dependencies.length + " dependencies" : " has no file"));
             });
 
             grunt.log.writeln("Controllers:");
@@ -203,7 +203,11 @@
                             error = "Error: " + path + "(" + i + "): Only one module can be declared per file";
                             break;
                         }
-                        module = { name: matches[1] };
+
+                        var moduleFile = parseModuleFile(path);
+                        moduleFile.name = matches[1];
+                        module = moduleFile;
+
                         state = null;
                     }
 
@@ -296,9 +300,11 @@
                             error = "Error: " + path + "(" + i + "): Only one module can be declared per file";
                             break;
                         }
-                        module = {
-                            name: state[1] || matches[1]
-                        };
+
+                        var moduleFile = parseModuleFile(path);
+                        moduleFile.name = state[1] || matches[1];
+                        module = moduleFile;
+
                         state = null;
                         expecting = expect.anything;
                     } else {
@@ -451,12 +457,77 @@
         }
 
         function parseModuleFile(path) {
-            var dependenciesRegex = /var\s+dependencies\s*=\s*\[([\w\s.,"']*)\]/;
-            var configFnRegex = /function\s*configuration\s*\(\s*([\w$:.,\s]*)\s*\)\s*{/;
-            var runFnRegex = /function\s*run\s*\(\s*([\w$:.,\s]*)\s*\)\s*{/;
+            var regex = {
+                dependencies: /var\s+dependencies\s*=\s*\[([\w\s.,"']*)\]/,
+                configFn: /function\s*(configuration)\s*\(\s*([\w$:.,\s]*)\s*\)\s*{/,
+                runFn: /function\s*(run)\s*\(\s*([\w$:.,\s]*)\s*\)\s*{/
+            };
+            var matches = {};
+            var result = {
+                isModuleFile: false,
+                file: path
+            };
             var content = grunt.file.read(path);
 
+            for (var key in regex) {
+                if (!regex.hasOwnProperty(key)) {
+                    continue;
+                }
 
+                matches[key] = content.match(regex[key]);
+                if (matches[key]) {
+                    result.isModuleFile = true;
+                }
+            }
+
+            if (!result.isModuleFile) {
+                return result;
+            }
+
+            if (matches["dependencies"]) {
+                var arrayMembers = matches["dependencies"][1];
+                var dependencies = [];
+                if (arrayMembers) {
+                    arrayMembers.split(",").forEach(function (dependency) {
+                        if (dependency.substr(0, 1) === "\"" && dependency.substr(dependency.length - 1) === "\"") {
+                            // Trim leading & trailing quotes
+                            dependency = dependency.substr(1, dependency.length - 2);
+                        } else if (dependency.substr(0, 1) === "\'" && dependency.substr(dependency.length - 1) === "\'") {
+                            // Trim leading & trailing quotes
+                            dependency = dependency.substr(1, dependency.length - 2);
+                        }
+                        dependencies.push(dependency);
+                    });
+                }
+                result.dependencies = dependencies;
+            }
+
+            ["configFn", "runFn"].forEach(function (fn) {
+                if (matches[fn]) {
+                    var args = matches[fn][2];
+                    var dependencies = [];
+                    if (args) {
+                        args.split(",").forEach(function (arg) {
+                            var parts = arg.split(":");
+                            var dependency = {
+                                name: parts[0]
+                            };
+
+                            if (parts[1]) {
+                                dependency.type = parts[1];
+                            }
+
+                            dependencies.push(dependency);
+                        });
+                    }
+                    result.configFn = {
+                        fnName: matches[fn][1],
+                        dependencies: dependencies
+                    };
+                }
+            });
+
+            return result;
         }
     });
 };
