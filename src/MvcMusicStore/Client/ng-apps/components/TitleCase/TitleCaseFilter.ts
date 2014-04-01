@@ -1,6 +1,5 @@
 ﻿/// <reference path="TitleCase.ts" />
 
-//@NgModule('Foo')
 module MusicStore.TitleCase {
     
     //@NgFilter('titlecase')

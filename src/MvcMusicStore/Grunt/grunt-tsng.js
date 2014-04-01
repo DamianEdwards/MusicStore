@@ -53,6 +53,11 @@
             grunt.log.writeln("   " + controller.name + " using fn " + controller.fnName + " with " + controller.dependencies.length + " dependencies from " + controller.file);
         });
 
+        grunt.log.writeln("Services:");
+        overallResult.services.forEach(function (service) {
+            grunt.log.writeln("   " + service.name + " using fn " + service.fnName + " with " + service.dependencies.length + " dependencies from " + service.file);
+        });
+
         grunt.log.writeln("Directives:");
         overallResult.directives.forEach(function (directive) {
             grunt.log.writeln("   " + directive.name + " using fn " + directive.fnName + " with " + directive.dependencies.length + " dependencies from " + directive.file);
@@ -142,7 +147,7 @@
                 // //@NgService('serviceName')
                 // class MyService implements IMyService {
                 serviceComment: /^\s*\/\/@NgService(?:\(?['"]?(\w+)['"]?\)?\s*)?$/,
-                serviceDeclaration: /^\s*(?:export\s+)?class (\w+Service)\s+(?:implements\s+(\w.+)\s*{)?/,
+                serviceDeclaration: /^\s*(?:export\s+)?class (\w+Service)\s+(?:implements\s+([\w.]+)\s*{)?/,
 
                 // //@NgDirective('directiveName')
                 // class MyDirective implements ng.IDirective {
@@ -236,6 +241,28 @@
                         continue;
                     }
 
+                    // Check for service declaration
+                    matches = line.match(regex.serviceDeclaration);
+                    if (matches) {
+                        (function () {
+                            var className = matches[1];
+                            var interfaceName = matches[2];
+                            var name = (module ? module.name + "." : "") + (interfaceName || className);
+                            state = {
+                                push: function (d, s) {
+                                    result.services.push({
+                                        module: module,
+                                        name: name,
+                                        fnName: className,
+                                        dependencies: d,
+                                        file: path
+                                    });
+                                }
+                            };
+                        }());
+                        expecting = expect.constructor;
+                        continue;
+                    }
                     
                     // Check for directive comment
                     matches = line.match(regex.directiveComment);
@@ -247,7 +274,6 @@
                         continue;
                     }
 
-
                     // Check for filter comment
                     matches = line.match(regex.filterComment);
                     if (matches) {
@@ -255,7 +281,6 @@
                         state = matches;
                         continue;
                     }
-
                 }
 
                 if (expecting === expect.moduleDeclaration) {
@@ -301,6 +326,31 @@
                         // A controller comment was found but the next line wasn't a controller declaration
                         error = "Error: " + path + "(" + i + "): @NgController must be followed by a TypeScript class declaration ending with 'Controller', e.g. class MyController implements IMyViewModel {";
                         break;
+                    }
+                }
+
+                if (expecting === expect.serviceDeclaration) {
+                    // Check for service declaration
+                    matches = line.match(regex.serviceDeclaration);
+                    if (matches) {
+                        (function () {
+                            var className = matches[1];
+                            var interfaceName = matches[2];
+                            var name = (module ? module.name + "." : "") + ((state ? state[1] : null) || interfaceName || className);
+                            state = {
+                                push: function (d, s) {
+                                    result.services.push({
+                                        module: module,
+                                        name: name,
+                                        fnName: className,
+                                        dependencies: d,
+                                        file: path
+                                    });
+                                }
+                            };
+                        }());
+                        expecting = expect.constructor;
+                        continue;
                     }
                 }
 
@@ -377,7 +427,12 @@
             }
 
             if (expecting !== expect.anything) {
-                error = "Error: End of file " + path + " reached while expecting " + expecting;
+                if (expecting === expect.constructor) {
+                    // No constructor found so just push with zero dependencies
+                    state.push([], state);
+                } else {
+                    error = "Error: End of file " + path + " reached while expecting " + expecting;
+                }
             }
 
             if (error) {
@@ -389,6 +444,12 @@
             result.modules.push(module);
 
             return result;
+        }
+
+        function parseModuleFile(path) {
+            var regex = /var\s+dependencies\s*=\s*\[([\w\s.,"']*)\]\s*;(?:[\w\s/.]*function\s*([\w!$_]+)\s*\(\s*([\w$:.,\s]*)\s*\)\s*{)*/;
+            var content = grunt.file.read(path);
+
         }
     });
 };

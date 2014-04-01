@@ -114,10 +114,10 @@ module.exports = function (grunt) {
         },
         tsng: {
             dev: {
-                //files: "<%= typescript.dev.files %>"
-                files: {
-                    src: "Client/**/GenreMenu/*.ts"
-                }
+                files: "<%= typescript.dev.files %>"
+                //files: {
+                //    src: "Client/**/ViewMessage/*.ts"
+                //}
             },
             release: {
                 files: "<%= typescript.release.files %>"
