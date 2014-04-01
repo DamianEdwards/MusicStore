@@ -50,7 +50,7 @@
 
         grunt.log.writeln("Controllers:");
         overallResult.controllers.forEach(function (controller) {
-            grunt.log.writeln("   " + controller.name);
+            grunt.log.writeln("   " + controller.name + " using fn " + controller.fnName + " with " + controller.dependencies.length + " dependencies from " + controller.file);
         });
 
         grunt.log.writeln("Directives:");
@@ -209,11 +209,22 @@
                     // Check for controller declaration
                     matches = line.match(regex.controllerDeclaration);
                     if (matches) {
-                        result.controllers.push({
-                            module: module,
-                            name: (module ? module.name + "." : "") + matches[1],
-                        });
-                        state = null;
+                        (function () {
+                            var fnName = matches[1];
+                            var name = (module ? module.name + "." : "") + fnName;
+                            state = {
+                                push: function (d, s) {
+                                    result.controllers.push({
+                                        module: module,
+                                        name: name,
+                                        fnName: fnName,
+                                        dependencies: d,
+                                        file: path
+                                    });
+                                }
+                            };
+                        }());
+                        expecting = expect.constructor;
                         continue;
                     }
 
@@ -225,7 +236,7 @@
                         continue;
                     }
 
-
+                    
                     // Check for directive comment
                     matches = line.match(regex.directiveComment);
                     if (matches) {
@@ -272,12 +283,19 @@
                     // Check for controller declaration
                     matches = line.match(regex.controllerDeclaration);
                     if (matches) {
-                        result.controllers.push({
-                            module: module,
-                            name: (module ? module.name + "." : "") + (state[1] || matches[1]),
-                        });
-                        state = null;
-                        expecting = expect.anything;
+                        (function () {
+                            var name = (module ? module.name + "." : "") + (state[1] || matches[1]);
+                            state.push = function (d, s) {
+                                result.controllers.push({
+                                    module: module,
+                                    name: name,
+                                    fnName: matches[1],
+                                    dependencies: d,
+                                    file: path
+                                });
+                            };
+                        }());
+                        expecting = expect.constructor;
                         continue;
                     } else {
                         // A controller comment was found but the next line wasn't a controller declaration

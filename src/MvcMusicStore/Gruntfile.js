@@ -116,7 +116,7 @@ module.exports = function (grunt) {
             dev: {
                 //files: "<%= typescript.dev.files %>"
                 files: {
-                    src: "Client/**/Truncate/*.ts"
+                    src: "Client/**/GenreMenu/*.ts"
                 }
             },
             release: {
