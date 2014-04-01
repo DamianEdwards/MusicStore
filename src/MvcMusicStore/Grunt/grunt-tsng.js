@@ -17,13 +17,42 @@
         };
         var error;
         
-        this.files.forEach(function (fileSet) {
+        this.files.forEach(function (fileSet, idx) {
             var setResult = processSet(fileSet);
 
             if (setResult.error) {
                 error = setResult.error;
                 return false;
             }
+
+            grunt.log.writeln("------------------------------------------");
+            grunt.log.writeln("File Set #" + (idx + 1));
+            grunt.log.writeln("------------------------------------------");
+
+            grunt.log.writeln("Modules:");
+            setResult.modules.forEach(function (module) {
+                grunt.log.writeln("   " + module.name);
+            });
+
+            grunt.log.writeln("Controllers:");
+            setResult.controllers.forEach(function (controller) {
+                grunt.log.writeln("   " + controller.name + " using fn " + controller.fnName + " with " + controller.dependencies.length + " dependencies from " + controller.file);
+            });
+
+            grunt.log.writeln("Services:");
+            setResult.services.forEach(function (service) {
+                grunt.log.writeln("   " + service.name + " using fn " + service.fnName + " with " + service.dependencies.length + " dependencies from " + service.file);
+            });
+
+            grunt.log.writeln("Directives:");
+            setResult.directives.forEach(function (directive) {
+                grunt.log.writeln("   " + directive.name + " using fn " + directive.fnName + " with " + directive.dependencies.length + " dependencies from " + directive.file);
+            });
+
+            grunt.log.writeln("Filters:");
+            setResult.filters.forEach(function (filter) {
+                grunt.log.writeln("   " + filter.name + " using fn " + filter.fnName + " from " + filter.file);
+            });
 
             sumResult(setResult, overallResult);
         });
@@ -42,31 +71,6 @@
 
             grunt.log.writeln(result.length + " " + key + " found in " + overallResult.fileTally + " files");
         }
-
-        grunt.log.writeln("Modules:");
-        overallResult.modules.forEach(function (module) {
-            grunt.log.writeln("   " + module.name);
-        });
-
-        grunt.log.writeln("Controllers:");
-        overallResult.controllers.forEach(function (controller) {
-            grunt.log.writeln("   " + controller.name + " using fn " + controller.fnName + " with " + controller.dependencies.length + " dependencies from " + controller.file);
-        });
-
-        grunt.log.writeln("Services:");
-        overallResult.services.forEach(function (service) {
-            grunt.log.writeln("   " + service.name + " using fn " + service.fnName + " with " + service.dependencies.length + " dependencies from " + service.file);
-        });
-
-        grunt.log.writeln("Directives:");
-        overallResult.directives.forEach(function (directive) {
-            grunt.log.writeln("   " + directive.name + " using fn " + directive.fnName + " with " + directive.dependencies.length + " dependencies from " + directive.file);
-        });
-
-        grunt.log.writeln("Filters:");
-        overallResult.filters.forEach(function (filter) {
-            grunt.log.writeln("   " + filter.name + " using fn " + filter.fnName + " from " + filter.file);
-        });
 
         function sumResult(source, target) {
             if (!source || !target) {
@@ -447,8 +451,11 @@
         }
 
         function parseModuleFile(path) {
-            var regex = /var\s+dependencies\s*=\s*\[([\w\s.,"']*)\]\s*;(?:[\w\s/.]*function\s*([\w!$_]+)\s*\(\s*([\w$:.,\s]*)\s*\)\s*{)*/;
+            var dependenciesRegex = /var\s+dependencies\s*=\s*\[([\w\s.,"']*)\]/;
+            var configFnRegex = /function\s*configuration\s*\(\s*([\w$:.,\s]*)\s*\)\s*{/;
+            var runFnRegex = /function\s*run\s*\(\s*([\w$:.,\s]*)\s*\)\s*{/;
             var content = grunt.file.read(path);
+
 
         }
     });

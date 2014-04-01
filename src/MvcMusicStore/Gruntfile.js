@@ -116,7 +116,7 @@ module.exports = function (grunt) {
             dev: {
                 files: "<%= typescript.dev.files %>"
                 //files: {
-                //    src: "Client/**/ViewMessage/*.ts"
+                //    src: "Client/**/MusicStore.Admin/Catalog/*.ts"
                 //}
             },
             release: {
