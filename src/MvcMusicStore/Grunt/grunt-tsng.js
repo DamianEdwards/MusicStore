@@ -15,10 +15,23 @@
             filters: [],
             fileTally: 0
         };
-
+        var error;
+        
         this.files.forEach(function (fileSet) {
-            sumResult(processSet(fileSet), overallResult);
+            var setResult = processSet(fileSet);
+
+            if (setResult.error) {
+                error = setResult.error;
+                return false;
+            }
+
+            sumResult(setResult, overallResult);
         });
+
+        if (error) {
+            grunt.log.error(error);
+            return;
+        }
 
         for (var key in overallResult) {
             if (key === "fileTally" || !overallResult.hasOwnProperty(key)) {
@@ -30,18 +43,24 @@
             grunt.log.writeln(result.length + " " + key + " found in " + overallResult.fileTally + " files");
         }
 
-        //overallResult.modules.forEach(function (module) {
-        //    grunt.log.writeln("   " + module.name);
-        //});
+        grunt.log.writeln("Modules:");
+        overallResult.modules.forEach(function (module) {
+            grunt.log.writeln("   " + module.name);
+        });
+
+        grunt.log.writeln("Controllers:");
+        overallResult.controllers.forEach(function (controller) {
+            grunt.log.writeln("   " + controller.name);
+        });
 
         grunt.log.writeln("Directives:");
         overallResult.directives.forEach(function (directive) {
-            grunt.log.writeln("   " + directive.name + " from " + directive.file);
+            grunt.log.writeln("   " + directive.name + " using fn " + directive.fnName + " with " + directive.dependencies.length + " dependencies from " + directive.file);
         });
 
         grunt.log.writeln("Filters:");
         overallResult.filters.forEach(function (filter) {
-            grunt.log.writeln("   " + filter.name + " from " + filter.file);
+            grunt.log.writeln("   " + filter.name + " using fn " + filter.fnName + " from " + filter.file);
         });
 
         function sumResult(source, target) {
@@ -78,194 +97,30 @@
                 filters: [],
                 fileTally: 0
             };
+            var error;
 
             fileSet.src.forEach(function (src) {
                 var fileResult = processFile(src);
 
                 //grunt.log.writeln(fileResult.modules.length + " modules found in file " + src);
 
+                if (fileResult.error) {
+                    error = fileResult.error;
+                    return false;
+                }
+
                 sumResult(fileResult, result);
                 result.fileTally++;
             });
+
+            if (error) {
+                return { error: error };
+            }
 
             return result;
         }
 
         function processFile(path) {
-            var annotations = {
-                NgModule: {
-                    //@NgModule('moduleName')
-                    explicit: /^\s*\/\/@NgModule(?:\(?['"]?([\w.]+)['"]?\)?\s*)?$/,
-                    implicit: /^\s*(?:export\s+)?module\s*(\w.*)\s*{\s*$/,
-                    process: function (explicitMatches, implicitMatches, module, fileName) {
-                        var moduleName;
-
-                        if (explicitMatches && explicitMatches[1]) {
-                            // Name explicitly declared
-                            moduleName = explicitMatches[1];
-                        } else if (implicitMatches && implicitMatches[1]) {
-                            // Get controller name from module declaration
-                            moduleName = implicitMatches[1];
-                        }
-
-                        if (!moduleName) {
-                            return;
-                        }
-
-                        return {
-                            modules: [
-                                {
-                                    name: moduleName,
-                                    file: fileName
-                                }
-                            ]
-                        };
-                    }
-                },
-                NgController: {
-                    //@NgController('controllerName', exclude = true)
-                    explicit: /^\s*\/\/@NgController(?:\(?['"]?(\w+)['"]?\)?\s*)?$/,
-                    implicit: /^\s*(?:export\s+)?class (\w+Controller)\s*/,
-                    process: function (explicitMatches, implicitMatches, module, fileName) {
-                        var controllerName, fullControllerName;
-
-                        if (explicitMatches && explicitMatches[1]) {
-                            // Name explicitly declared
-                            controllerName = explicitMatches[1];
-                        } else if (implicitMatches && implicitMatches[1]) {
-                            // Get controller name from class
-                            controllerName = implicitMatches[1];
-                        }
-
-                        if (!controllerName) {
-                            return;
-                        }
-
-                        fullControllerName = module + "." + controllerName;
-
-                        return {
-                            controllers: [
-                                {
-                                    name: fullControllerName,
-                                    module: module,
-                                    file: fileName
-                                }
-                            ]
-                        };
-                    }
-                },
-                NgService: {
-                    //@NgService('serviceName')
-                    explicit: /^\s*\/\/@NgService(?:\(?['"]?(\w+)['"]?\)?\s*)?$/,
-                    implicit: /^\s*(?:export\s+)?class (\w+Service)\s+(?:implements\s+(\w.+)\s*{)?/,
-                    process: function (explicitMatches, implicitMatches, module, fileName) {
-                        var serviceName, fullServiceName, serviceFunctionName;
-
-                        if (explicitMatches && explicitMatches[1]) {
-                            // Name explicitly declared
-                            serviceName = explicitMatches[1];
-                        } else if (implicitMatches && implicitMatches.length === 2) {
-                            // Get name from class
-                            serviceName = implicitMatches[1];
-                        } else if (implicitMatches && implicitMatches.length === 3) {
-                            // Get name from interface
-                            serviceName = implicitMatches[2];
-                        }
-
-                        if (!serviceName) {
-                            return;
-                        }
-
-                        serviceFunctionName = implicitMatches[1];
-
-                        fullServiceName = module + "." + serviceName;
-
-                        return {
-                            services: [
-                                {
-                                    name: fullServiceName,
-                                    fnName: serviceFunctionName,
-                                    module: module,
-                                    file: fileName
-                                }
-                            ]
-                        };
-                    }
-                },
-                NgDirective: {
-                    //@NgDirective('directiveName')
-                    explicit: /^\s*\/\/@NgDirective(?:\(?['"]?(\w+)['"]?\)?\s*)?$/,
-                    implicit: /^\s*(?:export\s+)?class (\w+Directive)\s+(?:implements\s+(\w.+)\s*{)?/,
-                    process: function (explicitMatches, implicitMatches, module, fileName) {
-                        var directiveName, directiveFunctionName;
-
-                        if (explicitMatches && explicitMatches[1]) {
-                            // Name explicitly declared
-                            directiveName = explicitMatches[1];
-                        } else if (implicitMatches && implicitMatches[1]) {
-                            // Get name from class
-                            directiveName = implicitMatches[1];
-                        } else {
-                            return;
-                        }
-
-                        directiveFunctionName = implicitMatches[1];
-
-                        return {
-                            directives: [
-                                {
-                                    name: directiveName,
-                                    fnName: directiveFunctionName,
-                                    module: module,
-                                    file: fileName
-                                }
-                            ]
-                        };
-                    }
-                },
-                NgFilter: {
-                    // //@NgFilter('filterName')
-                    // function filter(input: string) {
-                    explicit: /^\s*\/\/\s*@NgFilter(?:\s*\(\s*['"]?(\w+)['"]?\s*\))?\s*$/,
-                    implicit: /^\s*function\s*([a-zA-Z_$]+)\s*\([a-zA-Z0-9_$:,\s]*\)/,
-                    process: function (explicitMatches, implicitMatches, module, fileName) {
-                        var filterName, fullfilterName, filterFunctionName;
-
-                        if (!explicitMatches || !implicitMatches) {
-                            // Must be explicitly declared and function must be found
-                            return;
-                        }
-
-                        if (explicitMatches[1]) {
-                            // Name explicitly declared
-                            filterName = explicitMatches[1];
-                        } else {
-                            // Get name from function
-                            filterName = implicitMatches[1];
-                        }
-
-                        if (!filterName) {
-                            return;
-                        }
-
-                        filterFunctionName = implicitMatches[1];
-
-                        fullfilterName = module + "." + filterName;
-
-                        return {
-                            filters: [
-                                {
-                                    name: fullfilterName,
-                                    fnName: filterFunctionName,
-                                    module: module,
-                                    file: fileName
-                                }
-                            ]
-                        };
-                    }
-                }
-            };
-
             var result = {
                 modules: [],
                 controllers: [],
@@ -273,47 +128,247 @@
                 directives: [],
                 filters: []
             };
+            var regex = {
+                // //@NgModule('moduleName')
+                // module My.Great.Module {
+                moduleComment: /^\s*\/\/@NgModule(?:\(?['"]?([\w.]+)['"]?\)?\s*)?$/,
+                moduleDeclaration: /^\s*(?:export\s+)?module\s*([\w.]*)\s*{\s*$/,
+
+                // //@NgController('controllerName')
+                // class MyController implements IMyViewModel {
+                controllerComment: /^\s*\/\/@NgController(?:\(?['"]?(\w+)['"]?\)?\s*)?$/,
+                controllerDeclaration: /^\s*(?:export\s+)?class (\w+Controller)\s*/,
+
+                // //@NgService('serviceName')
+                // class MyService implements IMyService {
+                serviceComment: /^\s*\/\/@NgService(?:\(?['"]?(\w+)['"]?\)?\s*)?$/,
+                serviceDeclaration: /^\s*(?:export\s+)?class (\w+Service)\s+(?:implements\s+(\w.+)\s*{)?/,
+
+                // //@NgDirective('directiveName')
+                // class MyDirective implements ng.IDirective {
+                directiveComment: /^\s*\/\/@NgDirective(?:\(?['"]?(\w+)['"]?\)?\s*)?$/,
+                directiveDeclaration: /^\s*(?:export\s+)?class (\w+Directive)\s+(?:implements\s+(\w.+)\s*{)?/,
+
+                // //@NgFilter('filterName')
+                // function filter(input: string) {
+                filterComment: /^\s*\/\/\s*@NgFilter(?:\s*\(\s*['"]?(\w+)['"]?\s*\))?\s*$/,
+                filterDeclaration: /^\s*function\s*([a-zA-Z_$]+)\s*\([a-zA-Z0-9_$:,\s]*\)/,
+
+                // constructor($window: ng.IWindowService) {
+                constructor: /constructor\s*\(([^{]*\)?)\s*{/
+            };
             var content = grunt.file.read(path);
             var lines = content.split("\r\n");
-            var currentModule = "";
+            var module, line, matches, state, error;
+            var expect = {
+                anything: 0,
+                moduleDeclaration: 1,
+                controllerDeclaration: 2,
+                serviceDeclaration: 4,
+                directiveComment: 8,
+                directiveDeclaration: 16,
+                filterDeclaration: 32,
+                constructor: 64
+            };
+            var expecting = expect.anything;
 
             //debugger;
 
-            annotations: for (var key in annotations) {
-                if (!annotations.hasOwnProperty(key)) {
-                    continue;
+            for (var i = 0; i < lines.length; i++) {
+                line = lines[i];
+
+                if (expecting === expect.anything) {
+                    // Check for module comment
+                    matches = line.match(regex.moduleComment);
+                    if (matches) {
+                        expecting = expect.moduleDeclaration;
+                        state = matches;
+                        continue;
+                    }
+
+                    // Check for module declaration
+                    matches = line.match(regex.moduleDeclaration);
+                    if (matches) {
+                        if (module) {
+                            // A module is already declared for this file
+                            error = "Error: " + path + "(" + i + "): Only one module can be declared per file";
+                            break;
+                        }
+                        module = { name: matches[1] };
+                        state = null;
+                    }
+
+                    // Check for controller comment
+                    matches = line.match(regex.controllerComment);
+                    if (matches) {
+                        expecting = expect.controllerDeclaration;
+                        state = matches;
+                        continue;
+                    }
+
+                    // Check for controller declaration
+                    matches = line.match(regex.controllerDeclaration);
+                    if (matches) {
+                        result.controllers.push({
+                            module: module,
+                            name: (module ? module.name + "." : "") + matches[1],
+                        });
+                        state = null;
+                        continue;
+                    }
+
+                    // Check for service comment
+                    matches = line.match(regex.serviceComment);
+                    if (matches) {
+                        expecting = expect.serviceDeclaration;
+                        state = matches;
+                        continue;
+                    }
+
+
+                    // Check for directive comment
+                    matches = line.match(regex.directiveComment);
+                    if (matches) {
+                        debugger;
+                        expecting = expect.directiveComment | expect.directiveDeclaration;
+                        state = { names: [] };
+                        state.names.push(matches[1]);
+                        continue;
+                    }
+
+
+                    // Check for filter comment
+                    matches = line.match(regex.filterComment);
+                    if (matches) {
+                        expecting = expect.filterDeclaration;
+                        state = matches;
+                        continue;
+                    }
+
                 }
 
-                var annotation = annotations[key];
-
-                lines: for (var i = 0; i < lines.length; i++) {
-                    var line = lines[i];
-
-                    if (key === "NgFilter") {
-                        debugger;
-                    }
-
-                    var explicitMatch = line.match(annotation.explicit);
-                    if (explicitMatch) {
-                        // Move to next line to grab implicit match
-                        i++;
-                        line = lines[i];
-                        if (!line) {
-                            // Next line is last so move to next annotation
-                            continue annotations;
+                if (expecting === expect.moduleDeclaration) {
+                    // Check for module declaration
+                    matches = line.match(regex.moduleDeclaration);
+                    if (matches) {
+                        if (module) {
+                            // A module is already declared for this file
+                            error = "Error: " + path + "(" + i + "): Only one module can be declared per file";
+                            break;
                         }
+                        module = {
+                            name: state[1] || matches[1]
+                        };
+                        state = null;
+                        expecting = expect.anything;
+                    } else {
+                        // A module comment was found but the next line wasn't a module declaration
+                        error = "Error: " + path + "(" + i + "): @NgModule must be followed by a TypeScript module declaration, e.g. module My.Module.Name {";
+                        break;
                     }
-                    var implicitMatch = line.match(annotation.implicit);
+                }
 
-                    var annotationResult = annotation.process(explicitMatch, implicitMatch, currentModule, path);
-
-                    if (annotationResult && annotationResult.modules && annotationResult.modules.length) {
-                        currentModule = annotationResult.modules[annotationResult.modules.length - 1].name;
+                if (expecting === expect.controllerDeclaration) {
+                    // Check for controller declaration
+                    matches = line.match(regex.controllerDeclaration);
+                    if (matches) {
+                        result.controllers.push({
+                            module: module,
+                            name: (module ? module.name + "." : "") + (state[1] || matches[1]),
+                        });
+                        state = null;
+                        expecting = expect.anything;
+                        continue;
+                    } else {
+                        // A controller comment was found but the next line wasn't a controller declaration
+                        error = "Error: " + path + "(" + i + "): @NgController must be followed by a TypeScript class declaration ending with 'Controller', e.g. class MyController implements IMyViewModel {";
+                        break;
                     }
+                }
 
-                    sumResult(annotationResult, result);
+                if (expecting & expect.directiveComment) {
+                    // Check for directive comment
+                    matches = line.match(regex.directiveComment);
+                    if (matches) {
+                        expecting = expect.directiveComment | expect.directiveDeclaration;
+                        state.names.push(matches[1]);
+                        continue;
+                    }
+                }
+
+                if (expecting & expect.directiveDeclaration) {
+                    // Check for directive function
+                    matches = line.match(regex.directiveDeclaration);
+                    if (matches) {
+                        (function () {
+                            var fnName = matches[1];
+                            state.push = function (d, s) {
+                                s.names.forEach(function (name) {
+                                    result.directives.push({
+                                        module: module,
+                                        name: name,
+                                        fnName: fnName,
+                                        dependencies: d,
+                                        file: path
+                                    });
+                                });
+                            };
+                        }());
+                        expecting = expect.constructor;
+                        continue;
+                    }
+                }
+
+                if (expecting === expect.filterDeclaration) {
+                    // Check for filter function
+                    matches = line.match(regex.filterDeclaration);
+                    if (matches) {
+                        result.filters.push({
+                            module: module,
+                            name: state[1] || matches[1],
+                            fnName: matches[1],
+                            file: path
+                        });
+                        state = null;
+                        expecting = expect.anything;
+                        continue;
+                    }
+                }
+
+                if (expecting === expect.constructor) {
+                    // Check for the constructor function
+                    matches = line.match(regex.constructor);
+                    if (matches) {
+                        var args = [];
+                        if (matches[1]) {
+                            matches[1].split(",").forEach(function (arg) {
+                                var argParts = arg.split(":");
+                                var a = { name: argParts[0] };
+                                if (argParts.length > 1) {
+                                    a.type = argParts[1];
+                                }
+                                args.push(a);
+                            });
+                        }
+                        state.push(args, state);
+                        state = null;
+                        expecting = expect.anything;
+                        continue;
+                    }
                 }
             }
+
+            if (expecting !== expect.anything) {
+                error = "Error: End of file " + path + " reached while expecting " + expecting;
+            }
+
+            if (error) {
+                return {
+                    error: error
+                };
+            }
+
+            result.modules.push(module);
 
             return result;
         }
