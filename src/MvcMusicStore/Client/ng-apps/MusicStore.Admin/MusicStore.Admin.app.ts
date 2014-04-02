@@ -1,6 +1,5 @@
 /// <reference path="../references.ts" />
 
-//@NgModule
 module MusicStore.Admin {
 
     var dependencies = [

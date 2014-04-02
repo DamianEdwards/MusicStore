@@ -151,21 +151,56 @@
         }
 
         function emitModuleFile(module) {
-            if (module.file) {
-                // Module already has a file defined, just skip
-                return;
-            }
-            
             var path = "";
-            var content = "module " + module.name + " {\r\n";
+            var content = "";
+            var srcLines;
 
-            if (module.dependencies && module.dependencies.length) {
-                
+            if (module.file) {
+                // Module already has a file defined, just render the module registration
+                path = module.file.substr(0, module.file.length - 3) + emitFileExtension;
+                srcLines = grunt.file.read(module.file).split("\r\n");
+
+                grunt.log.writeln("module.declarationLine=" + module.declarationLine);
+
+                srcLines.forEach(function (line, i) {
+                    if (i === (module.declarationLine + 1)) {
+                        
+                        // Add the module registration
+                        content = content + "    angular.module(\"" + module.name + "\", [\r\n";
+
+                        if (module.dependencies && module.dependencies.length) {
+                            module.dependencies.forEach(function (d) {
+                                content = content + "        \"" + d + "\",\r\n";
+                            });
+                        }
+
+                        content = content + "    ])";
+
+                        ["config", "run"].forEach(function (method) {
+                            var fn = module[method + "Fn"];
+                            if (fn) {
+                                content = content + "." + method + "([\r\n";
+                                fn.dependencies.forEach(function (d) {
+                                    var name = d.name.substr(0, 1) === "$" ? d.name : d.type;
+                                    content = content + "        \"" + name + "\",\r\n";
+                                });
+                                content = content + "        " + fn.fnName + "\r\n    ])";
+                            }
+                        });
+
+                        content = content + ";\r\n\r\n";
+                    } else {
+                        // Just add the line
+                        content = content + line + "\r\n";
+                    }
+                });
+
+                grunt.file.write(path, content);
+                return path;
             }
 
-            content = content + "}";
-
-            grunt.file.write(path, content);
+            // We need to render a whole file
+            
         }
 
         function emitFile(details, modules) {
@@ -249,6 +284,7 @@
 
                         var moduleFile = parseModuleFile(path);
                         moduleFile.name = matches[1];
+                        moduleFile.declarationLine = i;
                         module = moduleFile;
 
                         state = null;
@@ -506,7 +542,7 @@
                 runFn: /function\s*(run)\s*\(\s*([\w$:.,\s]*)\s*\)\s*{/
             };
             var matches = {};
-            var result = { };
+            var result = {};
             var content = grunt.file.read(path);
 
             for (var key in regex) {
@@ -529,13 +565,7 @@
                 var dependencies = [];
                 if (arrayMembers) {
                     arrayMembers.split(",").forEach(function (dependency) {
-                        if (dependency.substr(0, 1) === "\"" && dependency.substr(dependency.length - 1) === "\"") {
-                            // Trim leading & trailing quotes
-                            dependency = dependency.substr(1, dependency.length - 2);
-                        } else if (dependency.substr(0, 1) === "\'" && dependency.substr(dependency.length - 1) === "\'") {
-                            // Trim leading & trailing quotes
-                            dependency = dependency.substr(1, dependency.length - 2);
-                        }
+                        dependency = trim(dependency.trim(), ["\"", "'"]);
                         dependencies.push(dependency);
                     });
                 }
@@ -550,17 +580,17 @@
                         args.split(",").forEach(function (arg) {
                             var parts = arg.split(":");
                             var dependency = {
-                                name: trim(parts[0])
+                                name: parts[0].trim()
                             };
 
                             if (parts[1]) {
-                                dependency.type = trim(parts[1]);
+                                dependency.type = parts[1].trim();
                             }
 
                             dependencies.push(dependency);
                         });
                     }
-                    result.configFn = {
+                    result[fn] = {
                         fnName: matches[fn][1],
                         dependencies: dependencies
                     };
@@ -593,26 +623,34 @@
 
         function trim(target, chars) {
             /// <param name="target" type="String" />
-            /// <param name="chars" type="String" />
+            /// <param name="chars" type="Array" />
 
-            chars = chars || " ";
+            //debugger;
+
+            chars = chars || [" "];
 
             if (!target) {
                 return target;
             }
 
-            var result = target;
+            var result = "";
 
-            var indexOf = result.indexOf(chars);
-            while (indexOf === 0) {
-                result = result.substr(chars.length);
-                indexOf = result.indexOf(chars);
+            // Trim from start
+            for (var i = 0; i < target.length; i++) {
+                var c = target[i];
+                if (chars.indexOf(c) < 0) {
+                    result = target.substr(i);
+                    break;
+                }
             }
 
-            var lastIndexOf = result.lastIndexOf(chars);
-            while (lastIndexOf >= 0 && (result.length === lastIndexOf + chars.length)) {
-                result = result.substring(0, lastIndexOf);
-                lastIndexOf = result.lastIndexOf(chars);
+            // Trim from end
+            for (var i = result.length - 1; i >= 0; i--) {
+                var c = result[i];
+                if (chars.indexOf(c) < 0) {
+                    result = result.substring(0, i + 1);
+                    break;
+                }
             }
 
             return result;
