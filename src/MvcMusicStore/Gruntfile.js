@@ -117,18 +117,20 @@ module.exports = function (grunt) {
                 extension: ".ng.ts",
                 cwd: "Client/ng-apps" // Any module files that need to be created with go here
             },
-            //files: [
-            //    // TODO: Automate the generation of this config based on convention
-            //    {
-            //        src: ['Client/ng-apps/components/**/*.ts', 'Client/ng-apps/MusicStore.Store/**/*.ts', "!**/*.ng.ts"]
-            //    },
-            //    {
-            //        src: ['Client/ng-apps/components/**/*.ts', 'Client/ng-apps/MusicStore.Admin/**/*.ts', "!**/*.ng.ts"]
-            //    }
-            //]
-            files: {
-                src: "Client/ng-apps/MusicStore.Admin/Catalog/AlbumEditController.ts"
+            dev: {
+                files: [
+                    // TODO: Automate the generation of this config based on convention
+                    {
+                        src: ['Client/ng-apps/components/**/*.ts', 'Client/ng-apps/MusicStore.Store/**/*.ts', "!**/*.ng.ts"]
+                    },
+                    {
+                        src: ['Client/ng-apps/components/**/*.ts', 'Client/ng-apps/MusicStore.Admin/**/*.ts', "!**/*.ng.ts"]
+                    }
+                ]
             }
+            //files: {
+            //    src: "Client/ng-apps/MusicStore.Admin/Catalog/AlbumEditController.ts"
+            //}
         },
         tslint: {
             options: {
