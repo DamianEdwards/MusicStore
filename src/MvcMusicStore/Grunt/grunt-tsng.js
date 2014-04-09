@@ -1,11 +1,22 @@
 ﻿module.exports = function (grunt) {
     "use strict";
 
+    var path = require('path');
+
     grunt.registerMultiTask("tsng", "Generate AngularJS registration blocks based on conventions and annotations in TypeScript files.", function () {
 
         // this.target is current target
         // this.data is config for current target
         // this.files is globbed files array for current target
+
+        var options = this.options({
+            extension: ".ng.ts",
+            cwd: "."
+        });
+
+        options.cwd = path.resolve(options.cwd);
+
+        grunt.log.writeln("Extension path: " + options.extension);
 
         var overallResult = {
             modules: [],
@@ -16,10 +27,9 @@
             fileTally: 0
         };
         var error;
-        var emitFileExtension = ".ng.ts";
 
         this.files.forEach(function (fileSet, idx) {
-            var setResult = processSet(fileSet);
+            var setResult = processSet(fileSet, options);
 
             if (setResult.error) {
                 error = setResult.error;
@@ -67,7 +77,7 @@
 
             grunt.log.writeln("Modules:");
             result.modules.forEach(function (module) {
-                grunt.log.writeln("   " + module.name + (module.file ? " defined in " + module.file + " with " + module.dependencies.length + " dependencies" : " has no file"));
+                grunt.log.writeln("   " + module.name + (module.file ? " defined in " + module.file + " with " + (module.dependencies ? module.dependencies.length : 0) + " dependencies" : " has no file"));
             });
 
             grunt.log.writeln("Controllers:");
@@ -100,7 +110,7 @@
             }
         }
 
-        function processSet(fileSet) {
+        function processSet(fileSet, options) {
             var result = {
                 modules: [],
                 controllers: [],
@@ -114,7 +124,7 @@
             var error;
 
             fileSet.src.forEach(function (path) {
-                var fileResult = processFile(path);
+                var fileResult = processFile(path, options);
                 fileResult.path = path;
 
                 if (fileResult.error) {
@@ -133,81 +143,84 @@
                 return { error: error };
             }
 
-            // Emit files for modules that don't have definitions
+            // Emit module files
             for (var name in modules) {
                 if (!modules.hasOwnProperty(name)) {
                     continue;
                 }
                 
-                emitModuleFile(modules[name]);
+                emitModuleFile(modules[name], options);
             }
 
             // Emit
             fileSet.src.forEach(function (path) {
-                emitFile(path, files[path], modules);
+                emitFile(path, files[path], modules, options);
             });
 
             return result;
         }
 
-        function emitModuleFile(module) {
-            var path = "";
+        function emitModuleFile(module, options) {
+            var filepath = "";
             var content = "";
             var srcLines;
 
             if (module.file) {
-                // Module already has a file defined, just render the module registration
-                path = module.file.substr(0, module.file.length - 3) + emitFileExtension;
+                // Module already has a file defined, just add the module registration
+                filepath = module.file.substr(0, module.file.length - 3) + options.extension;
                 srcLines = grunt.file.read(module.file).split("\r\n");
 
-                grunt.log.writeln("module.declarationLine=" + module.declarationLine);
+                //grunt.log.writeln("module.declarationLine=" + module.declarationLine);
 
                 srcLines.forEach(function (line, i) {
                     if (i === (module.declarationLine + 1)) {
-                        
+
                         // Add the module registration
-                        content = content + "    angular.module(\"" + module.name + "\", [\r\n";
+                        content += "    angular.module(\"" + module.name + "\", [\r\n";
 
                         if (module.dependencies && module.dependencies.length) {
                             module.dependencies.forEach(function (d) {
-                                content = content + "        \"" + d + "\",\r\n";
+                                content += "        \"" + d + "\",\r\n";
                             });
                         }
 
-                        content = content + "    ])";
+                        content += "    ])";
 
                         ["config", "run"].forEach(function (method) {
                             var fn = module[method + "Fn"];
                             if (fn) {
-                                content = content + "." + method + "([\r\n";
+                                content += "." + method + "([\r\n";
                                 fn.dependencies.forEach(function (d) {
                                     var name = d.name.substr(0, 1) === "$" ? d.name : d.type;
-                                    content = content + "        \"" + name + "\",\r\n";
+                                    content += "        \"" + name + "\",\r\n";
                                 });
-                                content = content + "        " + fn.fnName + "\r\n    ])";
+                                content += "        " + fn.fnName + "\r\n    ])";
                             }
                         });
 
-                        content = content + ";\r\n\r\n";
+                        content += ";\r\n\r\n";
                     } else {
                         // Just add the line
-                        content = content + line + "\r\n";
+                        content += line + "\r\n";
                     }
                 });
-
-                grunt.file.write(path, content);
-                return path;
+            } else {
+                // We need to render a whole file
+                filepath = path.join(options.cwd, module.name + options.extension);
+                content = "module " + module.name + " {\r\n";
+                content += "    angular.module(\"" + module.name + "\", []);\r\n";
+                content += "}";
             }
 
-            // We need to render a whole file
-            
+            grunt.file.write(filepath, content);
+            module.file = filepath;
         }
 
         function emitFile(details, modules) {
 
         }
 
-        function processFile(path) {
+        function processFile(filepath, options) {
             var result = {
                 modules: [],
                 controllers: [],
@@ -244,7 +257,7 @@
                 // constructor($window: ng.IWindowService) {
                 constructor: /constructor\s*\(([^{]*\)?)\s*{/
             };
-            var content = grunt.file.read(path);
+            var content = grunt.file.read(filepath);
             var lines = content.split("\r\n");
             var module, line, matches, state, error;
             var expect = {
@@ -278,11 +291,11 @@
                     if (matches) {
                         if (module) {
                             // A module is already declared for this file
-                            error = "Error: " + path + "(" + i + "): Only one module can be declared per file";
+                            error = "Error: " + filepath + "(" + i + "): Only one module can be declared per file";
                             break;
                         }
 
-                        var moduleFile = parseModuleFile(path);
+                        var moduleFile = parseModuleFile(filepath);
                         moduleFile.name = matches[1];
                         moduleFile.declarationLine = i;
                         module = moduleFile;
@@ -311,7 +324,7 @@
                                         name: name,
                                         fnName: fnName,
                                         dependencies: d,
-                                        file: path
+                                        file: filepath
                                     });
                                 }
                             };
@@ -342,7 +355,7 @@
                                         name: name,
                                         fnName: className,
                                         dependencies: d,
-                                        file: path
+                                        file: filepath
                                     });
                                 }
                             };
@@ -376,11 +389,11 @@
                     if (matches) {
                         if (module) {
                             // A module is already declared for this file
-                            error = "Error: " + path + "(" + i + "): Only one module can be declared per file";
+                            error = "Error: " + filepath + "(" + i + "): Only one module can be declared per file";
                             break;
                         }
 
-                        var moduleFile = parseModuleFile(path);
+                        var moduleFile = parseModuleFile(filepath);
                         moduleFile.name = state[1] || matches[1];
                         module = moduleFile;
 
@@ -388,7 +401,7 @@
                         expecting = expect.anything;
                     } else {
                         // A module comment was found but the next line wasn't a module declaration
-                        error = "Error: " + path + "(" + i + "): @NgModule must be followed by a TypeScript module declaration, e.g. module My.Module.Name {";
+                        error = "Error: " + filepath + "(" + i + "): @NgModule must be followed by a TypeScript module declaration, e.g. module My.Module.Name {";
                         break;
                     }
                 }
@@ -405,7 +418,7 @@
                                     name: name,
                                     fnName: matches[1],
                                     dependencies: d,
-                                    file: path
+                                    file: filepath
                                 });
                             };
                         }());
@@ -413,7 +426,7 @@
                         continue;
                     } else {
                         // A controller comment was found but the next line wasn't a controller declaration
-                        error = "Error: " + path + "(" + i + "): @NgController must be followed by a TypeScript class declaration ending with 'Controller', e.g. class MyController implements IMyViewModel {";
+                        error = "Error: " + filepath + "(" + i + "): @NgController must be followed by a TypeScript class declaration ending with 'Controller', e.g. class MyController implements IMyViewModel {";
                         break;
                     }
                 }
@@ -433,7 +446,7 @@
                                         name: name,
                                         fnName: className,
                                         dependencies: d,
-                                        file: path
+                                        file: filepath
                                     });
                                 }
                             };
@@ -466,7 +479,7 @@
                                         name: name,
                                         fnName: fnName,
                                         dependencies: d,
-                                        file: path
+                                        file: filepath
                                     });
                                 });
                             };
@@ -484,7 +497,7 @@
                             module: module,
                             name: state[1] || matches[1],
                             fnName: matches[1],
-                            file: path
+                            file: filepath
                         });
                         state = null;
                         expecting = expect.anything;
@@ -520,7 +533,7 @@
                     // No constructor found so just push with zero dependencies
                     state.push([], state);
                 } else {
-                    error = "Error: End of file " + path + " reached while expecting " + expecting;
+                    error = "Error: End of file " + filepath + " reached while expecting " + expecting;
                 }
             }
 
@@ -535,7 +548,7 @@
             return result;
         }
 
-        function parseModuleFile(path) {
+        function parseModuleFile(filepath) {
             var regex = {
                 dependencies: /var\s+dependencies\s*=\s*\[([\w\s.,"']*)\]/,
                 configFn: /function\s*(configuration)\s*\(\s*([\w$:.,\s]*)\s*\)\s*{/,
@@ -543,7 +556,7 @@
             };
             var matches = {};
             var result = {};
-            var content = grunt.file.read(path);
+            var content = grunt.file.read(filepath);
 
             for (var key in regex) {
                 if (!regex.hasOwnProperty(key)) {
@@ -552,7 +565,7 @@
 
                 matches[key] = content.match(regex[key]);
                 if (matches[key]) {
-                    result.file = path;
+                    result.file = filepath;
                 }
             }
 

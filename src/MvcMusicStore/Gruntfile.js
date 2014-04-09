@@ -113,14 +113,21 @@ module.exports = function (grunt) {
             }
         },
         tsng: {
-            dev: {
-                //files: "<%= typescript.dev.files %>"
-                files: {
-                    src: "Client/**/MusicStore.Admin/MusicStore.Admin.app.ts"
-                }
+            options: {
+                extension: ".ng.ts",
+                cwd: "Client/ng-apps" // Any module files that need to be created with go here
             },
-            release: {
-                files: "<%= typescript.release.files %>"
+            //files: [
+            //    // TODO: Automate the generation of this config based on convention
+            //    {
+            //        src: ['Client/ng-apps/components/**/*.ts', 'Client/ng-apps/MusicStore.Store/**/*.ts', "!**/*.ng.ts"]
+            //    },
+            //    {
+            //        src: ['Client/ng-apps/components/**/*.ts', 'Client/ng-apps/MusicStore.Admin/**/*.ts', "!**/*.ng.ts"]
+            //    }
+            //]
+            files: {
+                src: "Client/ng-apps/MusicStore.Admin/Catalog/AlbumEditController.ts"
             }
         },
         tslint: {
@@ -141,11 +148,11 @@ module.exports = function (grunt) {
                 files: [
                     // TODO: Automate the generation of this config based on convention
                     {
-                        src: ['Client/ng-apps/components/**/*.ts', 'Client/ng-apps/MusicStore.Store/**/*.ts'],
+                        src: ['Client/ng-apps/components/**/*.ng.ts', 'Client/ng-apps/MusicStore.Store/**/*.ng.ts'],
                         dest: 'public/js/MusicStore.Store.js'
                     },
                     {
-                        src: ['Client/ng-apps/components/**/*.ts', 'Client/ng-apps/MusicStore.Admin/**/*.ts'],
+                        src: ['Client/ng-apps/components/**/*.ng.ts', 'Client/ng-apps/MusicStore.Admin/**/*.ng.ts'],
                         dest: 'public/js/MusicStore.Admin.js'
                     }
                 ]
