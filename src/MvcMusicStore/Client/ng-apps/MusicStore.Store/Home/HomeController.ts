@@ -1,5 +1,3 @@
-/// <reference path="Home.ts" />
-
 module MusicStore.Store.Home {
     interface IHomeViewModel {
         albums: Array<Models.IAlbum>
@@ -17,9 +15,9 @@ module MusicStore.Store.Home {
         }
     }
 
-    angular.module("MusicStore.Store.Home")
-        .controller("MusicStore.Store.Home.HomeController", [
-            "MusicStore.AlbumApi.IAlbumApiService",
-            HomeController
-        ]);
+    //angular.module("MusicStore.Store.Home")
+    //    .controller("MusicStore.Store.Home.HomeController", [
+    //        "MusicStore.AlbumApi.IAlbumApiService",
+    //        HomeController
+    //    ]);
 } 

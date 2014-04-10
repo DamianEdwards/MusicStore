@@ -1,5 +1,3 @@
-/// <reference path="Catalog.ts" />
-
 module MusicStore.Store.Catalog {
     interface IAlbumDetailsViewModel {
         album: Models.IAlbum;
@@ -22,10 +20,10 @@ module MusicStore.Store.Catalog {
         }
     }
 
-    angular.module("MusicStore.Store.Catalog")
-        .controller("MusicStore.Store.Catalog.AlbumDetailsController", [
-            "$routeParams",
-            "MusicStore.AlbumApi.IAlbumApiService",
-            AlbumDetailsController
-        ]);
+    //angular.module("MusicStore.Store.Catalog")
+    //    .controller("MusicStore.Store.Catalog.AlbumDetailsController", [
+    //        "$routeParams",
+    //        "MusicStore.AlbumApi.IAlbumApiService",
+    //        AlbumDetailsController
+    //    ]);
 } 

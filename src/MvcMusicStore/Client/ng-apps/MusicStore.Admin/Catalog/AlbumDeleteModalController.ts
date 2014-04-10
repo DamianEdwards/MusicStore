@@ -1,12 +1,11 @@
-﻿/// <reference path="Catalog.ts" />
-
-module MusicStore.Admin.Catalog {
+﻿module MusicStore.Admin.Catalog {
     export interface IAlbumDeleteModalViewModel {
         album: Models.IAlbum;
         ok();
         cancel();
     }
 
+    //@NgController(skip=true)
     export class AlbumDeleteModalController implements IAlbumDeleteModalViewModel {
         private _modalInstance: ng.ui.bootstrap.IModalServiceInstance;
 

@@ -1,6 +1,4 @@
-﻿/// <reference path="ViewAlert.ts" />
-
-module MusicStore.ViewAlert {
+﻿module MusicStore.ViewAlert {
     export interface IViewAlertService {
         alert: Models.IAlert;
     }
@@ -9,8 +7,8 @@ module MusicStore.ViewAlert {
         public alert: Models.IAlert;
     }
 
-    angular.module("MusicStore.ViewAlert")
-        .service("MusicStore.ViewAlert.IViewAlertService", [
-            ViewAlertService
-        ]);
+    //angular.module("MusicStore.ViewAlert")
+    //    .service("MusicStore.ViewAlert.IViewAlertService", [
+    //        ViewAlertService
+    //    ]);
 } 

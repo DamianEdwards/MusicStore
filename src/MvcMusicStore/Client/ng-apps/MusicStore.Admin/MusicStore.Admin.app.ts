@@ -43,30 +43,30 @@ module MusicStore.Admin {
 
     // TODO: Generate this!!
     // Register the application module with AngularJS
-    angular
-        .module("MusicStore.Admin", [
-        // Dependencies
-            "ngRoute",
-            "ui.bootstrap",
-            "MusicStore.InlineData",
-            "MusicStore.GenreMenu",
-            "MusicStore.UrlResolver",
-            "MusicStore.UserDetails",
-            "MusicStore.LoginLink",
-            "MusicStore.Visited",
-            "MusicStore.TitleCase",
-            "MusicStore.Truncate",
-            "MusicStore.GenreApi",
-            "MusicStore.AlbumApi",
-            "MusicStore.ArtistApi",
-            "MusicStore.ViewAlert",
-            "MusicStore.Admin.Catalog"
-        ]).config([
-        // Dependencies
-            "$routeProvider",
-            "$logProvider",
+    //angular
+    //    .module("MusicStore.Admin", [
+    //    // Dependencies
+    //        "ngRoute",
+    //        "ui.bootstrap",
+    //        "MusicStore.InlineData",
+    //        "MusicStore.GenreMenu",
+    //        "MusicStore.UrlResolver",
+    //        "MusicStore.UserDetails",
+    //        "MusicStore.LoginLink",
+    //        "MusicStore.Visited",
+    //        "MusicStore.TitleCase",
+    //        "MusicStore.Truncate",
+    //        "MusicStore.GenreApi",
+    //        "MusicStore.AlbumApi",
+    //        "MusicStore.ArtistApi",
+    //        "MusicStore.ViewAlert",
+    //        "MusicStore.Admin.Catalog"
+    //    ]).config([
+    //    // Dependencies
+    //        "$routeProvider",
+    //        "$logProvider",
 
-        // Config method
-            configuration
-        ]);
+    //    // Config method
+    //        configuration
+    //    ]);
 }

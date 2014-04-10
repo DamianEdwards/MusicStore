@@ -1,6 +1,4 @@
-﻿/// <reference path="Catalog.ts" />
-
-module MusicStore.Admin.Catalog {
+﻿module MusicStore.Admin.Catalog {
     interface IAlbumDetailsRouteParams extends ng.route.IRouteParamsService {
         albumId: number;
     }
@@ -58,13 +56,13 @@ module MusicStore.Admin.Catalog {
         }
     }
     
-    angular.module("MusicStore.Admin.Catalog")
-        .controller("MusicStore.Admin.Catalog.AlbumDetailsController", [
-            "$routeParams",
-            "$modal",
-            "$location",
-            "MusicStore.AlbumApi.IAlbumApiService",
-            "MusicStore.ViewAlert.IViewAlertService",
-            AlbumDetailsController
-        ]);
+    //angular.module("MusicStore.Admin.Catalog")
+    //    .controller("MusicStore.Admin.Catalog.AlbumDetailsController", [
+    //        "$routeParams",
+    //        "$modal",
+    //        "$location",
+    //        "MusicStore.AlbumApi.IAlbumApiService",
+    //        "MusicStore.ViewAlert.IViewAlertService",
+    //        AlbumDetailsController
+    //    ]);
 }

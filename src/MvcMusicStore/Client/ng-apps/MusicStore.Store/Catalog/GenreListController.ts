@@ -1,5 +1,3 @@
-/// <reference path="Catalog.ts" />
-
 module MusicStore.Store.Catalog {
     interface IGenreListViewModel {
         genres: Array<Models.IGenre>;
@@ -17,9 +15,9 @@ module MusicStore.Store.Catalog {
         }
     }
 
-    angular.module("MusicStore.Store.Catalog")
-        .controller("MusicStore.Store.Catalog.GenreListController", [
-            "MusicStore.GenreApi.IGenreApiService",
-            GenreListController
-        ]);
+    //angular.module("MusicStore.Store.Catalog")
+    //    .controller("MusicStore.Store.Catalog.GenreListController", [
+    //        "MusicStore.GenreApi.IGenreApiService",
+    //        GenreListController
+    //    ]);
 } 

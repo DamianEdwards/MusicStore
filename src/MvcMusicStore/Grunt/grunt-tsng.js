@@ -150,14 +150,59 @@
                 }
                 
                 emitModuleFile(modules[name], options);
+
+                if (!modules[name].file) {
+                    throw new Error("Module " + name + " doesn't have a file");
+                }
             }
 
-            // Emit
-            fileSet.src.forEach(function (path) {
-                emitFile(path, files[path], modules, options);
-            });
+            // Emit non-module files
+            for (var path in files) {
+                if (!files.hasOwnProperty(path)) {
+                    continue;
+                }
+
+                emitFile(files[path], result.services, options);
+            }
 
             return result;
+        }
+
+        function resolveTypeName(name, moduleName, allNames) {
+            /// <param name="name" type="String" />
+            /// <param name="moduleName" type="String" />
+            /// <param name="allNames" type="Array" elementType="String" />
+
+            debugger;
+
+            var prefix, matchedIndex;
+            var parts = moduleName.split(".");
+
+            if (parts.length === 1) {
+                matchedIndex = allNames.indexOf(moduleName);
+                if (matchedIndex >= 0) {
+                    return allNames[matchedIndex];
+                }
+                // No match found!
+                return null;
+            }
+
+            for (var i = parts.length - 1; i >= 0; i--) {
+                prefix = "";
+                parts.forEach(function (part, index) {
+                    if (index <= i) {
+                        prefix += part + ".";
+                    }
+                });
+
+                matchedIndex = allNames.indexOf(prefix + name)
+                if (matchedIndex >= 0) {
+                    return allNames[matchedIndex];
+                }
+            }
+
+            // No match found!
+            return null;
         }
 
         function emitModuleFile(module, options) {
@@ -199,10 +244,9 @@
                         });
 
                         content += ";\r\n\r\n";
-                    } else {
-                        // Just add the line
-                        content += line + "\r\n";
                     }
+
+                    content += line + "\r\n";
                 });
             } else {
                 // We need to render a whole file
@@ -216,8 +260,109 @@
             module.file = filepath;
         }
 
-        function emitFile(details, modules) {
+        function emitFile(file, services, options) {
+            var filepath;
+            var srcLines;
+            var content = "";
+            var module = file.modules[0];
+            var serviceNames = services.map(function (service) {
+                return service.name;
+            });
 
+            filepath = file.path.substr(0, file.path.length - 3) + options.extension;
+            srcLines = grunt.file.read(file.path).split("\r\n");
+
+            srcLines.forEach(function (line, i) {
+                if (i === 0) {
+                    // Add reference to module file
+                    // e.g. /// <reference path="../../MyModule.ng.ts" />
+
+                    if (!module.file) {
+                        throw new Error("Module " + module.name + " doesn't have a file?");
+                    }
+
+                    content += "/// <reference path=\"" + module.file + "\" />\r\n\r\n";
+                }
+
+                if (i === (module.declarationLine + 1)) {
+
+                    content += "    angular.module(\"" + module.name + "\")\r\n";
+
+                    // Register controllers
+                    file.controllers.forEach(function (controller) {
+                        content += "       .controller(\"" + controller.name + "\", [\r\n";
+
+                        if (controller.dependencies && controller.dependencies.length) {
+                            controller.dependencies.forEach(function (d) {
+                                var typeName;
+                                if (d.name.substr(0, 1) === "$") {
+                                    typeName = d.name;
+                                } else {
+                                    typeName = resolveTypeName(d.type, module.name, serviceNames);
+                                    if (!typeName) {
+                                        // Couldn't resolve type name
+                                        throw new Error("Error: Can't resolve dependency for controller " + controller.name + " with name " + d.type);
+                                    }
+                                }
+                                content += "            \"" + typeName + "\",\r\n";
+                            });
+                        }
+
+                        content += "            " + controller.fnName + "\r\n";
+                        content += "    ])\r\n";
+                    });
+
+                    // Register services
+                    file.services.forEach(function (service) {
+                        content += "       .service(\"" + service.name + "\", [\r\n";
+
+                        if (service.dependencies && service.dependencies.length) {
+                            service.dependencies.forEach(function (d) {
+                                content += "            \"" + d.type + "\",\r\n";
+                            });
+                        }
+
+                        content += "        " + service.fnName + "\r\n";
+                        content += "    ])\r\n";
+                    });
+
+                    // Register directives
+                    file.directives.forEach(function (directive) {
+                        content += "       .directive(\"" + directive.name + "\", [\r\n";
+
+                        if (directive.dependencies && directive.dependencies.length) {
+                            directive.dependencies.forEach(function (d) {
+                                content += "            \"" + d.type + "\",\r\n";
+                            });
+                        }
+
+                        var alphabet = "abcdefghijklmnopqrstuvwxyz";
+                        alphabet += alphabet.toUpperCase();
+
+                        var argList = directive.dependencies.map(function (d, index) {
+                            return alphabet.substr(index, 1);
+                        });
+
+                        content += "        function (";
+                        content += argList;
+                        content += ") {\r\n";
+                        content += "            return new " + directive.fnName + "(" + argList + ");";
+                        content += "        }\r\n";
+                        content += "    ])\r\n";
+                    });
+
+                    // Register filters
+                    file.directives.forEach(function (filter) {
+                        content += "       .filter(\"" + filter.name + "\", () => " + filter.fnName + ")\r\n";
+                    });
+
+                    content += ";\r\n\r\n";
+                }
+
+                content += line + "\r\n";
+
+                grunt.file.write(filepath, content);
+            });
         }
 
         function processFile(filepath, options) {
@@ -236,7 +381,7 @@
 
                 // //@NgController('controllerName')
                 // class MyController implements IMyViewModel {
-                controllerComment: /^\s*\/\/@NgController(?:\(?['"]?(\w+)['"]?\)?\s*)?$/,
+                controllerComment: /^\s*\/\/@NgController(?:\(?['"]?([\w]*|skip\=true)['"]?\)?\s*)?$/,
                 controllerDeclaration: /^\s*(?:export\s+)?class (\w+Controller)\s*/,
 
                 // //@NgService('serviceName')
@@ -255,7 +400,7 @@
                 filterDeclaration: /^\s*function\s*([a-zA-Z_$]+)\s*\([a-zA-Z0-9_$:,\s]*\)/,
 
                 // constructor($window: ng.IWindowService) {
-                constructor: /constructor\s*\(([^{]*\)?)\s*{/
+                constructor: /constructor\s*\(\s*([^(]*)\s*\)\s*{/
             };
             var content = grunt.file.read(filepath);
             var lines = content.split("\r\n");
@@ -367,7 +512,7 @@
                     // Check for directive comment
                     matches = line.match(regex.directiveComment);
                     if (matches) {
-                        debugger;
+                        //debugger;
                         expecting = expect.directiveComment | expect.directiveDeclaration;
                         state = { names: [] };
                         state.names.push(matches[1]);
@@ -407,6 +552,11 @@
                 }
 
                 if (expecting === expect.controllerDeclaration) {
+                    if (state[1] === "skip=true") {
+                        state = null;
+                        expecting = expect.anything;
+                        continue;
+                    }
                     // Check for controller declaration
                     matches = line.match(regex.controllerDeclaration);
                     if (matches) {
@@ -513,9 +663,9 @@
                         if (matches[1]) {
                             matches[1].split(",").forEach(function (arg) {
                                 var argParts = arg.split(":");
-                                var a = { name: argParts[0] };
+                                var a = { name: argParts[0].trim() };
                                 if (argParts.length > 1) {
-                                    a.type = argParts[1];
+                                    a.type = argParts[1].trim();
                                 }
                                 args.push(a);
                             });

@@ -137,7 +137,7 @@ module.exports = function (grunt) {
                 configuration: grunt.file.readJSON("tslint.json")
             },
             files: {
-                src: ['Client/**/*.ts']
+                src: ['Client/**/*.ts', '!**/*.ng.ts']
             }
         },
         typescript: {

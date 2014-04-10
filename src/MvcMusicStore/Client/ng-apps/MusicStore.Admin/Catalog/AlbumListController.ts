@@ -1,6 +1,4 @@
-﻿/// <reference path="Catalog.ts" />
-
-module MusicStore.Admin.Catalog {
+﻿module MusicStore.Admin.Catalog {
     interface IAlbumListViewModel {
         albums: Array<Models.IAlbum>;
         totalCount: number;
@@ -123,13 +121,13 @@ module MusicStore.Admin.Catalog {
         }
     }
 
-    angular.module("MusicStore.Admin.Catalog")
-        .controller("MusicStore.Admin.Catalog.AlbumListController", [
-            "MusicStore.AlbumApi.IAlbumApiService",
-            "MusicStore.ViewAlert.IViewAlertService",
-            "$modal",
-            "$timeout",
-            "$log",
-            AlbumListController
-        ]);
+    //angular.module("MusicStore.Admin.Catalog")
+    //    .controller("MusicStore.Admin.Catalog.AlbumListController", [
+    //        "MusicStore.AlbumApi.IAlbumApiService",
+    //        "MusicStore.ViewAlert.IViewAlertService",
+    //        "$modal",
+    //        "$timeout",
+    //        "$log",
+    //        AlbumListController
+    //    ]);
 }

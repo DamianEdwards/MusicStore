@@ -1,5 +1,3 @@
-/// <reference path="PreventSubmit.ts" />
-
 module MusicStore.PreventSubmit {
     interface IPreventSubmitAttributes extends ng.IAttributes {
         name: string;
@@ -28,10 +26,10 @@ module MusicStore.PreventSubmit {
         }
     }
 
-    angular.module("MusicStore.PreventSubmit")
-        .directive("appPreventSubmit", [
-            function () {
-                return new PreventSubmitDirective();
-            }
-        ]);
+    //angular.module("MusicStore.PreventSubmit")
+    //    .directive("appPreventSubmit", [
+    //        function () {
+    //            return new PreventSubmitDirective();
+    //        }
+    //    ]);
 }  

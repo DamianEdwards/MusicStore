@@ -38,27 +38,27 @@ module MusicStore.Store {
     
     // TODO: Generate this!!
     // Register the application module with AngularJS
-    var _app = angular.module("MusicStore.Store", [
-        // Dependencies
-        "ngRoute",
-        "MusicStore.InlineData",
-        "MusicStore.PreventSubmit",
-        "MusicStore.GenreMenu",
-        "MusicStore.UrlResolver",
-        "MusicStore.UserDetails",
-        "MusicStore.LoginLink",
-        "MusicStore.GenreApi",
-        "MusicStore.AlbumApi",
-        "MusicStore.Store.Home",
-        "MusicStore.Store.Catalog"
-    ]);
+    //var _app = angular.module("MusicStore.Store", [
+    //    // Dependencies
+    //    "ngRoute",
+    //    "MusicStore.InlineData",
+    //    "MusicStore.PreventSubmit",
+    //    "MusicStore.GenreMenu",
+    //    "MusicStore.UrlResolver",
+    //    "MusicStore.UserDetails",
+    //    "MusicStore.LoginLink",
+    //    "MusicStore.GenreApi",
+    //    "MusicStore.AlbumApi",
+    //    "MusicStore.Store.Home",
+    //    "MusicStore.Store.Catalog"
+    //]);
 
-    _app.config([
-        // Dependencies
-        "$routeProvider",
-        "$logProvider",
+    //_app.config([
+    //    // Dependencies
+    //    "$routeProvider",
+    //    "$logProvider",
 
-        // Config method
-        configuration
-    ]);
+    //    // Config method
+    //    configuration
+    //]);
 }

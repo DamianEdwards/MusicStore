@@ -1,5 +1,3 @@
-/// <reference path="InlineData.ts" />
-
 module MusicStore.InlineData {
     interface InlineDataAttributes extends ng.IAttributes {
         type: string;
@@ -33,12 +31,12 @@ module MusicStore.InlineData {
         }
     }
 
-    angular.module("MusicStore.InlineData")
-        .directive("appInlineData", [
-            "$cacheFactory",
-            "$log",
-            function ($cacheFactory, $log) {
-                return new InlineDataDirective($cacheFactory, $log);
-            }
-        ]);
+    //angular.module("MusicStore.InlineData")
+    //    .directive("appInlineData", [
+    //        "$cacheFactory",
+    //        "$log",
+    //        function ($cacheFactory, $log) {
+    //            return new InlineDataDirective($cacheFactory, $log);
+    //        }
+    //    ]);
 } 

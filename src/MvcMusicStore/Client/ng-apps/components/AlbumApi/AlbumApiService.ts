@@ -1,5 +1,3 @@
-// <reference path="AlbumApi.ts" />
-
 module MusicStore.AlbumApi {
     export interface IAlbumApiService {
         getAlbums(page?: number, pageSize?: number, sortBy?: string): ng.IPromise<Models.IPagedList<Models.IAlbum>>;
@@ -98,12 +96,12 @@ module MusicStore.AlbumApi {
         }
     }
 
-    angular.module("MusicStore.AlbumApi")
-        .service("MusicStore.AlbumApi.IAlbumApiService", [
-            "$cacheFactory",
-            "$q",
-            "$http",
-            "MusicStore.UrlResolver.IUrlResolverService",
-            AlbumApiService
-        ]);
+    //angular.module("MusicStore.AlbumApi")
+    //    .service("MusicStore.AlbumApi.IAlbumApiService", [
+    //        "$cacheFactory",
+    //        "$q",
+    //        "$http",
+    //        "MusicStore.UrlResolver.IUrlResolverService",
+    //        AlbumApiService
+    //    ]);
 } 

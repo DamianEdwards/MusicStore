@@ -1,5 +1,3 @@
-/// <reference path="UserDetails.ts" />
-
 module MusicStore.UserDetails {
     export interface IUserDetailsService {
         getUserDetails(elementId: string): Models.IUserDetails;
@@ -32,9 +30,9 @@ module MusicStore.UserDetails {
         }
     }
 
-    angular.module("MusicStore.UserDetails")
-        .service("MusicStore.UserDetails.IUserDetailsService", [
-            "$document",
-            UserDetailsService
-        ]);
+    //angular.module("MusicStore.UserDetails")
+    //    .service("MusicStore.UserDetails.IUserDetailsService", [
+    //        "$document",
+    //        UserDetailsService
+    //    ]);
 } 
