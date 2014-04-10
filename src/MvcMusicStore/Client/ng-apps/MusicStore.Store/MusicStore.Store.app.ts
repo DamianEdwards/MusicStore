@@ -32,7 +32,7 @@ module MusicStore.Store {
     }
 
     // Use this method to register work which should be performed when the injector is done loading all modules.
-    //function run() {
+    //function BUG:run() {
         
     //}
     

@@ -123,19 +123,27 @@
             var files = {};
             var error;
 
-            fileSet.src.forEach(function (path) {
-                var fileResult = processFile(path, options);
-                fileResult.path = path;
+            fileSet.src.forEach(function (filepath) {
+                var fileResult = processFile(filepath, options);
+                fileResult.path = filepath;
 
                 if (fileResult.error) {
                     error = fileResult.error;
                     return false;
                 }
 
-                mergeModules(fileResult, modules);
-                files[path] = fileResult;
+                fileResult.module = mergeModules(fileResult, modules);
+
+                if (!fileResult.module) {
+                    throw new Error("File result for file " + filepath + " doesn't have a module");
+                }
+
+                if (!fileResult.module.file) {
+                    files[filepath] = fileResult;
+                }
 
                 sumResult(fileResult, result);
+                result.modules.push(fileResult.module);
                 result.fileTally++;
             });
 
@@ -168,49 +176,13 @@
             return result;
         }
 
-        function resolveTypeName(name, moduleName, allNames) {
-            /// <param name="name" type="String" />
-            /// <param name="moduleName" type="String" />
-            /// <param name="allNames" type="Array" elementType="String" />
-
-            debugger;
-
-            var prefix, matchedIndex;
-            var parts = moduleName.split(".");
-
-            if (parts.length === 1) {
-                matchedIndex = allNames.indexOf(moduleName);
-                if (matchedIndex >= 0) {
-                    return allNames[matchedIndex];
-                }
-                // No match found!
-                return null;
-            }
-
-            for (var i = parts.length - 1; i >= 0; i--) {
-                prefix = "";
-                parts.forEach(function (part, index) {
-                    if (index <= i) {
-                        prefix += part + ".";
-                    }
-                });
-
-                matchedIndex = allNames.indexOf(prefix + name)
-                if (matchedIndex >= 0) {
-                    return allNames[matchedIndex];
-                }
-            }
-
-            // No match found!
-            return null;
-        }
-
         function emitModuleFile(module, options) {
             var filepath = "";
             var content = "";
             var srcLines;
 
             if (module.file) {
+                //debugger;
                 // Module already has a file defined, just add the module registration
                 filepath = module.file.substr(0, module.file.length - 3) + options.extension;
                 srcLines = grunt.file.read(module.file).split("\r\n");
@@ -264,7 +236,7 @@
             var filepath;
             var srcLines;
             var content = "";
-            var module = file.modules[0];
+            var module = file.module;
             var serviceNames = services.map(function (service) {
                 return service.name;
             });
@@ -273,24 +245,20 @@
             srcLines = grunt.file.read(file.path).split("\r\n");
 
             srcLines.forEach(function (line, i) {
-                if (i === 0) {
+                if (i === 0 && module.file) {
                     // Add reference to module file
                     // e.g. /// <reference path="../../MyModule.ng.ts" />
 
-                    if (!module.file) {
-                        throw new Error("Module " + module.name + " doesn't have a file?");
-                    }
-
-                    content += "/// <reference path=\"" + module.file + "\" />\r\n\r\n";
+                    content += "/// <reference path=\"" + path.relative(path.dirname(filepath), module.file) + "\" />\r\n\r\n";
                 }
 
-                if (i === (module.declarationLine + 1)) {
+                if (i === file.closingBraceLine && module.file) {
 
                     content += "    angular.module(\"" + module.name + "\")\r\n";
 
                     // Register controllers
                     file.controllers.forEach(function (controller) {
-                        content += "       .controller(\"" + controller.name + "\", [\r\n";
+                        content += indent(2) + ".controller(\"" + controller.name + "\", [\r\n";
 
                         if (controller.dependencies && controller.dependencies.length) {
                             controller.dependencies.forEach(function (d) {
@@ -309,7 +277,7 @@
                         }
 
                         content += "            " + controller.fnName + "\r\n";
-                        content += "    ])\r\n";
+                        content += "        ])\r\n";
                     });
 
                     // Register services
@@ -318,12 +286,22 @@
 
                         if (service.dependencies && service.dependencies.length) {
                             service.dependencies.forEach(function (d) {
-                                content += "            \"" + d.type + "\",\r\n";
+                                var typeName;
+                                if (d.name.substr(0, 1) === "$") {
+                                    typeName = d.name;
+                                } else {
+                                    typeName = resolveTypeName(d.type, module.name, serviceNames);
+                                    if (!typeName) {
+                                        // Couldn't resolve type name
+                                        throw new Error("Error: Can't resolve dependency for service " + service.name + " with name " + d.type);
+                                    }
+                                }
+                                content += "            \"" + typeName + "\",\r\n";
                             });
                         }
 
-                        content += "        " + service.fnName + "\r\n";
-                        content += "    ])\r\n";
+                        content += indent(3) + service.fnName + "\r\n";
+                        content += indent(2) + "])\r\n";
                     });
 
                     // Register directives
@@ -332,7 +310,17 @@
 
                         if (directive.dependencies && directive.dependencies.length) {
                             directive.dependencies.forEach(function (d) {
-                                content += "            \"" + d.type + "\",\r\n";
+                                var typeName;
+                                if (d.name.substr(0, 1) === "$") {
+                                    typeName = d.name;
+                                } else {
+                                    typeName = resolveTypeName(d.type, module.name, serviceNames);
+                                    if (!typeName) {
+                                        // Couldn't resolve type name
+                                        throw new Error("Error: Can't resolve dependency for directive " + directive.name + " with name " + d.type);
+                                    }
+                                }
+                                content += "            \"" + typeName + "\",\r\n";
                             });
                         }
 
@@ -343,20 +331,20 @@
                             return alphabet.substr(index, 1);
                         });
 
-                        content += "        function (";
+                        content += "            function (";
                         content += argList;
                         content += ") {\r\n";
-                        content += "            return new " + directive.fnName + "(" + argList + ");";
-                        content += "        }\r\n";
-                        content += "    ])\r\n";
+                        content += "                return new " + directive.fnName + "(" + argList + ");\r\n";
+                        content += "            }\r\n";
+                        content += "        ])\r\n";
                     });
 
                     // Register filters
-                    file.directives.forEach(function (filter) {
+                    file.filters.forEach(function (filter) {
                         content += "       .filter(\"" + filter.name + "\", () => " + filter.fnName + ")\r\n";
                     });
 
-                    content += ";\r\n\r\n";
+                    content += "    ;\r\n";
                 }
 
                 content += line + "\r\n";
@@ -367,7 +355,7 @@
 
         function processFile(filepath, options) {
             var result = {
-                modules: [],
+                module: null,
                 controllers: [],
                 services: [],
                 directives: [],
@@ -400,11 +388,13 @@
                 filterDeclaration: /^\s*function\s*([a-zA-Z_$]+)\s*\([a-zA-Z0-9_$:,\s]*\)/,
 
                 // constructor($window: ng.IWindowService) {
-                constructor: /constructor\s*\(\s*([^(]*)\s*\)\s*{/
-            };
+                constructor: /constructor\s*\(\s*([^(]*)\s*\)\s*{/,
+
+                closingBrace: /^\s*}\s*$/
+        };
             var content = grunt.file.read(filepath);
             var lines = content.split("\r\n");
-            var module, line, matches, state, error;
+            var module, line, matches, state, lastClosingBraceLine, error;
             var expect = {
                 anything: 0,
                 moduleDeclaration: 1,
@@ -421,6 +411,13 @@
 
             for (var i = 0; i < lines.length; i++) {
                 line = lines[i];
+
+                //  Check for closing brace on a line by itself
+                matches = line.match(regex.closingBrace);
+                if (matches) {
+                    lastClosingBraceLine = i;
+                    continue;
+                }
 
                 if (expecting === expect.anything) {
                     // Check for module comment
@@ -657,7 +654,8 @@
 
                 if (expecting === expect.constructor) {
                     // Check for the constructor function
-                    matches = line.match(regex.constructor);
+                    matches = lines.join("\r\n").match(regex.constructor);
+                    //matches = line.match(regex.constructor);
                     if (matches) {
                         var args = [];
                         if (matches[1]) {
@@ -678,6 +676,7 @@
                 }
             }
 
+            // EOF
             if (expecting !== expect.anything) {
                 if (expecting === expect.constructor) {
                     // No constructor found so just push with zero dependencies
@@ -693,7 +692,8 @@
                 };
             }
 
-            result.modules.push(module);
+            result.closingBraceLine = lastClosingBraceLine;
+            result.module = module;
 
             return result;
         }
@@ -763,26 +763,79 @@
             return result;
         }
 
-        function mergeModules(result, modules) {
-            if (!result.modules) {
-                return;
+        function mergeModules(fileResult, modules) {
+            var module = fileResult.module;
+
+            if (!module) {
+                return module;
             }
 
-            result.modules.forEach(function (module) {
-                if (modules[module.name]) {
-                    // Existing module
-                    if (modules[module.name].file && module.file) {
+            if (!module.file
+                && (!fileResult.controllers || !fileResult.controllers.length)
+                && (!fileResult.services || !fileResult.services.length)
+                && (!fileResult.directives || !fileResult.directives.length)
+                && (!fileResult.filters || !fileResult.filters.length)) {
+
+                grunt.log.writeln("Module " + module.name + " contains no angular types, skipping file emission");
+
+                // No angular types created, just no-op
+                return module;
+            }
+
+            var resolvedModule = module;
+
+            if (modules[module.name]) {
+                // Existing module
+                if (module.file) {
+                    if (modules[module.name].file) {
                         // Error: Module defined in multiple files
                         throw new Error("tsng: Module '" + module.name + "' defined in multiple files");
                     }
-                    if (module.file) {
-                        modules[module.name].file = module.file;
-                    }
-                    // BUG: Need to normalize references to repeated modules, e.g. GenreMenu
-                } else {
-                    modules[module.name] = module;
+                    modules[module.name].file = module.file;
                 }
-            });
+                resolvedModule = modules[module.name];
+            } else {
+                modules[module.name] = module;
+            }
+
+            return resolvedModule;
+        }
+
+        function resolveTypeName(name, moduleName, allNames) {
+            /// <param name="name" type="String" />
+            /// <param name="moduleName" type="String" />
+            /// <param name="allNames" type="Array" elementType="String" />
+
+            debugger;
+
+            var prefix, matchedIndex;
+            var parts = moduleName.split(".");
+
+            if (parts.length === 1) {
+                matchedIndex = allNames.indexOf(moduleName);
+                if (matchedIndex >= 0) {
+                    return allNames[matchedIndex];
+                }
+                // No match found!
+                return null;
+            }
+
+            for (var i = parts.length - 1; i >= 0; i--) {
+                prefix = "";
+                parts.forEach(function (part, index) {
+                    if (index <= i) {
+                        prefix += part + ".";
+                    }
+                });
+
+                matchedIndex = allNames.indexOf(prefix + name)
+                if (matchedIndex >= 0) {
+                    return allNames[matchedIndex];
+                }
+            }
+
+            // No match found!
+            return null;
         }
 
         function trim(target, chars) {
@@ -817,6 +870,15 @@
                 }
             }
 
+            return result;
+        }
+
+        function indent(length, char) {
+            char = char || "    "; // Default to 4 spaces
+            var result = "";
+            for (var i = 0; i < length; i++) {
+                result += char;
+            }
             return result;
         }
     });

@@ -1,5 +1,3 @@
-/// <reference path="GenreMenu.ts" />
-
 module MusicStore.GenreMenu {
 
     //@NgDirective('appGenreMenu')
@@ -13,11 +11,11 @@ module MusicStore.GenreMenu {
         }
     }
 
-    angular.module("MusicStore.GenreMenu")
-        .directive("appGenreMenu", [
-            "MusicStore.UrlResolver.IUrlResolverService",
-            function (urlResolver) {
-                return new GenreMenuDirective(urlResolver);
-            }
-        ]);
+    //angular.module("MusicStore.GenreMenu")
+    //    .directive("appGenreMenu", [
+    //        "MusicStore.UrlResolver.IUrlResolverService",
+    //        function (urlResolver) {
+    //            return new GenreMenuDirective(urlResolver);
+    //        }
+    //    ]);
 }

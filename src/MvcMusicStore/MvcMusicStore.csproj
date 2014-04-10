@@ -255,6 +255,7 @@
   </ItemGroup>
   <ItemGroup>
     <TypeScriptCompile Include="Client\ng-apps\components\ArtistApi\ArtistApiService.ts" />
+    <TypeScriptCompile Include="Client\ng-apps\components\GenreMenu\GenreMenuDirective.ts" />
     <TypeScriptCompile Include="Client\ng-apps\components\Models\IAlert.ts" />
     <TypeScriptCompile Include="Client\ng-apps\components\Models\IApiResult.ts" />
     <TypeScriptCompile Include="Client\ng-apps\components\Models\IGenreLookup.ts" />
@@ -284,7 +285,6 @@
     <TypeScriptCompile Include="Client\ng-apps\MusicStore.Store\Catalog\GenreDetailsController.ts" />
     <TypeScriptCompile Include="Client\ng-apps\MusicStore.Store\Catalog\GenreListController.ts" />
     <TypeScriptCompile Include="Client\ng-apps\components\GenreMenu\GenreMenuController.ts" />
-    <TypeScriptCompile Include="Client\ng-apps\components\GenreApi\GenreMenuDirective.ts" />
     <TypeScriptCompile Include="Client\ng-apps\components\Models\IUserDetails.ts" />
     <TypeScriptCompile Include="Client\ng-apps\components\UserDetails\UserDetailsService.ts" />
     <TypeScriptCompile Include="Client\ng-apps\references.ts" />
