@@ -778,6 +778,7 @@
                     if (module.file) {
                         modules[module.name].file = module.file;
                     }
+                    // BUG: Need to normalize references to repeated modules, e.g. GenreMenu
                 } else {
                     modules[module.name] = module;
                 }
