@@ -9,7 +9,12 @@ module MusicStore.PreventSubmit {
         private _preventSubmit: any;
 
         constructor() {
-            this.link = this.link.bind(this);
+            // TODO: Generate this in grunt-tsng
+            for (var m in this) {
+                if (this[m].bind) {
+                    this[m] = this[m].bind(this);
+                }
+            }
         }
 
         public restrict = "A";

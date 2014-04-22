@@ -10,9 +10,14 @@
         private _window: ng.IWindowService;
         
         constructor($window: ng.IWindowService) {
-            this._window = $window;
+            // TODO: Generate this in grunt-tsng
+            for (var m in this) {
+                if (this[m].bind) {
+                    this[m] = this[m].bind(this);
+                }
+            }
 
-            this.link = this.link.bind(this);
+            this._window = $window;
         }
 
         public restrict = "E";
