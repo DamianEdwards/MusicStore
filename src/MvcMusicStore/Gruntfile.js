@@ -12,11 +12,10 @@ module.exports = function (grunt) {
     grunt.loadNpmTasks('grunt-contrib-less');
     grunt.loadNpmTasks('grunt-typescript');
     grunt.loadNpmTasks('grunt-tslint');
+    grunt.loadNpmTasks('grunt-tsng');
     //grunt.loadNpmTasks('grunt-contrib-jshint');
     //grunt.loadNpmTasks('grunt-contrib-qunit');
     //grunt.loadNpmTasks('grunt-contrib-concat');
-
-    grunt.loadTasks('Grunt');
 
     grunt.initConfig({
         staticFilePattern: '**/*.{js,css,map,html,htm,ico,jpg,jpeg,png,gif,eot,svg,ttf,woff}',
@@ -114,17 +113,18 @@ module.exports = function (grunt) {
         },
         tsng: {
             options: {
-                extension: ".ng.ts",
-                cwd: "Client/ng-apps" // Any module files that need to be created will go here
+                extension: ".ng.ts"
             },
             dev: {
                 files: [
                     // TODO: Automate the generation of this config based on convention
                     {
-                        src: ['Client/ng-apps/components/**/*.ts', 'Client/ng-apps/MusicStore.Store/**/*.ts', "!**/*.ng.ts"]
+                        src: ['Client/ng-apps/components/**/*.ts', 'Client/ng-apps/MusicStore.Store/**/*.ts', "!**/*.ng.ts"],
+                        dest: "Client/ng-apps" // This needs to be the same across all sets so shared components work
                     },
                     {
-                        src: ['Client/ng-apps/components/**/*.ts', 'Client/ng-apps/MusicStore.Admin/**/*.ts', "!**/*.ng.ts"]
+                        src: ['Client/ng-apps/components/**/*.ts', 'Client/ng-apps/MusicStore.Admin/**/*.ts', "!**/*.ng.ts"],
+                        dest: "Client/ng-apps" // This needs to be the same across all sets so shared components work
                     }
                 ]
             }
