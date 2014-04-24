@@ -10,13 +10,6 @@
         private _window: ng.IWindowService;
         
         constructor($window: ng.IWindowService) {
-            // TODO: Generate this in grunt-tsng
-            for (var m in this) {
-                if (this[m].bind) {
-                    this[m] = this[m].bind(this);
-                }
-            }
-
             this._window = $window;
         }
 

@@ -8,15 +8,6 @@ module MusicStore.PreventSubmit {
     class PreventSubmitDirective implements ng.IDirective {
         private _preventSubmit: any;
 
-        constructor() {
-            // TODO: Generate this in grunt-tsng
-            for (var m in this) {
-                if (this[m].bind) {
-                    this[m] = this[m].bind(this);
-                }
-            }
-        }
-
         public restrict = "A";
 
         public link(scope: any, element: ng.IAugmentedJQuery, attrs: IPreventSubmitAttributes) {

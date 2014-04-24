@@ -10,13 +10,6 @@ module MusicStore.InlineData {
         private _log: ng.ILogService;
 
         constructor($cacheFactory: ng.ICacheFactoryService, $log: ng.ILogService) {
-            // TODO: Generate this in grunt-tsng
-            for (var m in this) {
-                if (this[m].bind) {
-                    this[m] = this[m].bind(this);
-                }
-            }
-
             this._cache = $cacheFactory.get("inlineData") || $cacheFactory("inlineData");
             this._log = $log;
         }
