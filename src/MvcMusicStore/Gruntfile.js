@@ -32,11 +32,17 @@ module.exports = function (grunt) {
         },
         clean: {
             options: { force: true },
-            typescript: ['<%= typescript.dev.files[0].src %>', '<%= typescript.dev.files[1].src %>'],
             bower: ['public'],
-            assets: ['public']
+            assets: ['public'],
+            tsng: ['client/**/*.ng.ts']
         },
         copy: {
+            // This is to work around an issue with the dt-angular bower package https://github.com/dt-bower/dt-angular/issues/4
+            fix: {
+                files: {
+                    "bower_components/jquery/jquery.d.ts": ["bower_components/dt-jquery/jquery.d.ts"]
+                }
+            },
             bower: {
                 files: [
                     {   // JavaScript

@@ -1,5 +1,6 @@
 module MusicStore.UserDetails {
     export interface IUserDetailsService {
+        getUserDetails(): Models.IUserDetails;
         getUserDetails(elementId: string): Models.IUserDetails;
     }
 
@@ -13,10 +14,11 @@ module MusicStore.UserDetails {
 
         public getUserDetails(elementId = "userDetails") {
             if (!this._userDetails) {
-                var el = this._document.querySelector("[data-json-id='" + elementId + "']");
+                //var el = this._document.querySelector("[data-json-id='" + elementId + "']");
+                var el = this._document.find("#" + elementId + "[type='application/json']");
                 
-                if (el && el.firstChild && el.firstChild.nodeValue) {
-                    this._userDetails = angular.fromJson(el.firstChild.nodeValue);
+                if (el.length) {
+                    this._userDetails = angular.fromJson(el.text());
                 } else {
                     this._userDetails = {
                         isAuthenticated: false,

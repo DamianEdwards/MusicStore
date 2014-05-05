@@ -259,7 +259,7 @@
     <TypeScriptCompile Include="Client\ng-apps\components\Models\IApiResult.ts" />
     <TypeScriptCompile Include="Client\ng-apps\components\Models\IGenreLookup.ts" />
     <TypeScriptCompile Include="Client\ng-apps\components\Models\IModelError.ts" />
-    <TypeScriptCompile Include="Client\ng-apps\components\Models\IPagedList%27T.ts" />
+    <TypeScriptCompile Include="Client\ng-apps\components\Models\IPagedList.ts" />
     <TypeScriptCompile Include="Client\ng-apps\components\TitleCase\TitleCaseFilter.ts" />
     <TypeScriptCompile Include="Client\ng-apps\components\Truncate\TruncateFilter.ts" />
     <TypeScriptCompile Include="Client\ng-apps\components\ViewMessage\ViewAlertService.ts" />
@@ -293,6 +293,10 @@
     <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>
   </PropertyGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
+  <PropertyGroup Condition="'$(Configuration)' == 'Debug'">
+    <TypeScriptSourceMap>False</TypeScriptSourceMap>
+    <TypeScriptModuleKind>amd</TypeScriptModuleKind>
+  </PropertyGroup>
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)\TypeScript\Microsoft.TypeScript.targets" Condition="Exists('$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)\TypeScript\Microsoft.TypeScript.targets')" />
   <Import Project="$(VSToolsPath)\WebApplications\Microsoft.WebApplication.targets" Condition="'$(VSToolsPath)' != ''" />
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v10.0\WebApplications\Microsoft.WebApplication.targets" Condition="false" />

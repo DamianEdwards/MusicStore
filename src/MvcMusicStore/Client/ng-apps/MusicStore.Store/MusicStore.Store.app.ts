@@ -22,7 +22,7 @@ module MusicStore.Store {
         // TODO: Enable debug logging based on server config
         // TODO: Capture all logged errors and send back to server
         $logProvider.debugEnabled(true);
-
+        
         $routeProvider
             .when("/", { templateUrl: "ng-apps/MusicStore.Store/Home/Home.html" })
             .when("/albums/genres", { templateUrl: "ng-apps/MusicStore.Store/Catalog/GenreList.html" })
@@ -32,7 +32,7 @@ module MusicStore.Store {
     }
 
     // Use this method to register work which should be performed when the injector is done loading all modules.
-    //function BUG:run() {
-        
-    //}
+    function run($log: ng.ILogService, userDetails: UserDetails.IUserDetailsService) {
+        $log.log(userDetails.getUserDetails());
+    }
 }
